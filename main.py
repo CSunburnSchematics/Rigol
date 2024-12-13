@@ -7,9 +7,6 @@ import os
 import argparse
 
 
-
-
-
 # Initialize PyVISA Resource Manager
 rm = pyvisa.ResourceManager()
 
@@ -135,11 +132,19 @@ def read_power_supply_channel(power_supply, channel):
         print(f"Failed to read power supply measurements for CH{channel}: {e}")
         return None, None, None
 
+def oscilloscope_trigger_single(oscilloscope_address):
+    oscilloscope = rm.open_resource(oscilloscope_address)
+    oscilloscope.write(":SINGle")
+
+def oscilloscope_trigger_run(oscilloscope_address):
+    oscilloscope = rm.open_resource(oscilloscope_address)
+    oscilloscope.write(":RUN")
+
 # Function to capture oscilloscope screenshot
 def capture_screenshot_oscilloscope(oscilloscope_adress, filename, format="PNG"):
     try:
         oscilloscope = rm.open_resource(oscilloscope_adress)
-        oscilloscope.timeout = 15000  # Set a long timeout for large binary data transfer
+        oscilloscope.timeout = 2000  # Set a long timeout for large binary data transfer
         time.sleep(1)
         print(f"Capturing screenshot in {format} format...")
         oscilloscope.write(f":DISP:DATA? ON,OFF,{format}")
@@ -194,6 +199,8 @@ def ramp_current_and_capture_with_power_supply(
             # Set power supply to the specified voltage
             set_power_supply_voltage_current(power_supply, voltage, input_current_limit)
 
+
+
             # Create a new CSV file for this voltage
             csv_filename = os.path.join(test_folder, f"test_results_{voltage:.2f}V.csv")
             with open(csv_filename, mode="w", newline="") as csv_file:
@@ -227,8 +234,13 @@ def ramp_current_and_capture_with_power_supply(
                     print(f"Setting load current to {current:.3f} A")
                     load.write(f":CURR {current:.3f}")
                     load.write(":INPUT ON")
-                    time.sleep(dwell_time)
-
+                    time.sleep(dwell_time/2)
+                    #trigger oscilloscope "single"
+                    oscilloscope_trigger_single(OSCILLOSCOPE_1_ADDRESS)
+                    print("switching oscilloscope 1 to single")
+                    oscilloscope_trigger_single(OSCILLOSCOPE_2_ADDRESS)
+                    print("switching oscilloscope 2 to single")
+                    time.sleep(dwell_time/2)
                     # Read measurements from the load
                     load_voltage = float(load.query(":MEAS:VOLT?"))
                     load_power = float(load.query(":MEAS:POW?"))
@@ -273,6 +285,10 @@ def ramp_current_and_capture_with_power_supply(
                     )
                     capture_screenshot_oscilloscope(OSCILLOSCOPE_1_ADDRESS, osc1_filename)
                     capture_screenshot_oscilloscope(OSCILLOSCOPE_2_ADDRESS, osc2_filename)
+                    oscilloscope_trigger_run(OSCILLOSCOPE_1_ADDRESS)
+                    print("Switching osciloscope 1 to run mode")
+                    oscilloscope_trigger_run(OSCILLOSCOPE_2_ADDRESS)
+                    print("Switching osciloscope 2 to run mode")
 
         # Turn off load and power supply after the tests
         load.write(":INPUT OFF")

@@ -28,11 +28,14 @@ def load_oscilloscope_screenshots(test_folder):
                 oscilloscope2.append(os.path.relpath(os.path.join(test_folder, file), test_folder))
     return sorted(oscilloscope1), sorted(oscilloscope2)
 
-def load_setup_picture(test_folder):
-    setup_image_path = os.path.join(test_folder, "webcam_image.png")
-    if os.path.exists(setup_image_path):
-        return os.path.relpath(setup_image_path, test_folder)
-    return None
+# Load setup pictures
+def load_setup_pictures(test_folder):
+    setup_images = []
+    for i in range(1, 3):
+        setup_image_path = os.path.join(test_folder, f"webcam_image_{i}.png")
+        if os.path.exists(setup_image_path):
+            setup_images.append(os.path.relpath(setup_image_path, test_folder))
+    return setup_images
 
 # Generate columns for the data table based on the data
 def generate_table_columns(data):
@@ -61,25 +64,27 @@ def generate_efficiency_graph(data_by_voltage):
         fig.update_layout(
             margin={"l": 40, "r": 40, "t": 40, "b": 40},
             height=400,
+            width=600,
             legend=dict(
                 title="Input Voltage",
-                orientation="h",  # Horizontal legend
-                x=0.5,  # Center the legend
+                orientation="h",
+                x=0.5,
                 xanchor="center",
-                y=-0.2,  # Place below the chart
+                y=-0.2,
             ),
         )
-        return dcc.Graph(figure=fig)
+        return html.Div(
+            dcc.Graph(figure=fig),
+            style={"display": "flex", "justifyContent": "center"},
+        )
     else:
         return html.Div(
             "Efficiency graph cannot be displayed. Required data is missing.",
             className="text-center text-muted my-4",
         )
-    
-
 
 # Generate the layout for the Dash app
-def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, setup_picture):
+def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, setup_pictures, osc1_notes, osc2_notes):
     title_section = html.Div([
         html.H1(test_setup_name, className="text-center my-4"),
         html.H4("Notes:", className="text-center my-2"),
@@ -110,16 +115,16 @@ def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_
     ])
 
     def create_image_with_caption(img_path):
+        print(f"Creating captioned image for: {img_path}")  # Debugging
         file_name = os.path.basename(img_path).split(".png")[0]
         return html.Div([
             html.Img(src=f"/assets/{img_path}", style={"width": "100%", "margin": "10px"}),
             html.P(file_name, className="text-center text-muted", style={"fontSize": "12px"})
         ], style={"display": "inline-block", "width": "200px"})
-    
+
     def group_screenshots_by_voltage(screenshots):
         grouped = {}
         for img_path in screenshots:
-            # Extract voltage from the filename (e.g., "oscilloscope1_48.00V_0.50A.png")
             parts = os.path.basename(img_path).split("_")
             if len(parts) > 1 and "V" in parts[1]:
                 voltage = parts[1].replace("V", "")
@@ -128,9 +133,11 @@ def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_
                 grouped[voltage].append(img_path)
         return grouped
 
-# Updated oscilloscope section generation
-    def generate_oscilloscope_section(title, grouped_screenshots):
+    def generate_oscilloscope_section(title, grouped_screenshots, notes):
         sections = []
+        sections.append(html.Div([
+            html.P(notes, className="text-center text-muted my-3")
+        ]))
         for voltage, images in sorted(grouped_screenshots.items()):
             sections.append(html.Div([
                 html.H4(f"{title} for {voltage} V", className="text-center my-3"),
@@ -141,37 +148,24 @@ def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_
             ]))
         return html.Div(sections)
 
-    # oscilloscope1_section = html.Div([
-    #     html.H3("Oscilloscope 1 Screenshots", className="text-center my-4"),
-    #     html.Div([
-    #         create_image_with_caption(img) for img in oscilloscope1_screenshots
-    #     ]) if oscilloscope1_screenshots else html.Div("No screenshots available for Oscilloscope 1.", className="text-center text-muted my-4"),
-    # ])
-
-    # oscilloscope2_section = html.Div([
-    #     html.H3("Oscilloscope 2 Screenshots", className="text-center my-4"),
-    #     html.Div([
-    #         create_image_with_caption(img) for img in oscilloscope2_screenshots
-    #     ]) if oscilloscope2_screenshots else html.Div("No screenshots available for Oscilloscope 2.", className="text-center text-muted my-4"),
-    # ])
-
     oscilloscope1_grouped = group_screenshots_by_voltage(oscilloscope1_screenshots)
     oscilloscope1_section = html.Div([
         html.H3("Oscilloscope 1 Screenshots", className="text-center my-4"),
-        generate_oscilloscope_section("Oscilloscope 1 Screenshots", oscilloscope1_grouped)
+        generate_oscilloscope_section("Oscilloscope 1 Screenshots", oscilloscope1_grouped, osc1_notes)
     ])
 
     oscilloscope2_grouped = group_screenshots_by_voltage(oscilloscope2_screenshots)
     oscilloscope2_section = html.Div([
         html.H3("Oscilloscope 2 Screenshots", className="text-center my-4"),
-        generate_oscilloscope_section("Oscilloscope 2 Screenshots", oscilloscope2_grouped)
+        generate_oscilloscope_section("Oscilloscope 2 Screenshots", oscilloscope2_grouped, osc2_notes)
     ])
 
-
     setup_section = html.Div([
-        html.H3("Setup Picture", className="text-center my-4"),
-        html.Img(src=f"/assets/{setup_picture}", style={"width": "50%", "display": "block", "margin": "auto"}) if setup_picture else
-        html.Div("No setup picture available.", className="text-center text-muted my-4"),
+        html.H3("Setup Pictures", className="text-center my-4"),
+        html.Div([
+            create_image_with_caption(img)
+            for img in setup_pictures
+        ], style={"textAlign": "center"})
     ])
 
     return dbc.Container([
@@ -186,7 +180,8 @@ def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_
         setup_section,
     ], fluid=True)
 
-def main(test_folder, test_setup_name, notes):
+
+def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes):
     assets_folder = os.path.join(test_folder, "assets")
     if not os.path.exists(assets_folder):
         os.makedirs(assets_folder)
@@ -200,23 +195,37 @@ def main(test_folder, test_setup_name, notes):
 
     data_by_voltage = load_all_csv_data(test_folder)
     oscilloscope1_screenshots, oscilloscope2_screenshots = load_oscilloscope_screenshots(assets_folder)
-    setup_picture = load_setup_picture(assets_folder)
+    setup_pictures = load_setup_pictures(assets_folder)
 
     app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
     app.title = test_setup_name
-    app.layout = generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, setup_picture)
+
+    app.layout = generate_dash_layout(
+        test_setup_name,
+        notes,
+        data_by_voltage,
+        oscilloscope1_screenshots,
+        oscilloscope2_screenshots,
+        setup_pictures,
+        osc1_notes,
+        osc2_notes
+    )
 
     host = "127.0.0.1"
     port = 8050
     print(f"\nDashboard is running! Open your browser and go to: http://{host}:{port}\n")
     app.run_server(debug=True, host=host, port=port)
 
+
 if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print("Usage: python dashboard.py <test_folder> <test_setup_name> <notes>")
+    if len(sys.argv) < 12:
+        print("Usage: python dashboard.py <test_folder> <test_setup_name> <notes> <osc1_ch1> <osc1_ch2> <osc1_ch3> <osc1_ch4> <osc2_ch1> <osc2_ch2> <osc2_ch3> <osc2_ch4>")
         sys.exit(1)
 
     test_folder = sys.argv[1]
     test_setup_name = sys.argv[2]
-    notes = " ".join(sys.argv[3:])
-    main(test_folder, test_setup_name, notes)
+    notes = sys.argv[3].replace("_", " ")
+    osc1_notes = f"Channels: 1) {sys.argv[4].replace("_", " ")}, 2) {sys.argv[5].replace("_", " ")}, 3) {sys.argv[6].replace("_", " ")}, 4) {sys.argv[7].replace("_", " ")}"
+    osc2_notes = f"Channels: 1) {sys.argv[8].replace("_", " ")}, 2) {sys.argv[9].replace("_", " ")}, 3) {sys.argv[10].replace("_", " ")}, 4) {sys.argv[11].replace("_", " ")}"
+
+    main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes)
