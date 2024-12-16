@@ -6,6 +6,7 @@ from dash import html, dash_table, dcc
 import pandas as pd
 import plotly.express as px
 
+
 # Load all CSV data from the specified test folder
 def load_all_csv_data(test_folder):
     csv_files = [file for file in os.listdir(test_folder) if file.endswith(".csv")]
@@ -215,6 +216,7 @@ def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes):
     port = 8050
     print(f"\nDashboard is running! Open your browser and go to: http://{host}:{port}\n")
     app.run_server(debug=True, host=host, port=port)
+
 
 
 if __name__ == "__main__":
