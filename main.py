@@ -1,10 +1,16 @@
 import shutil
+import sys
+from typing import Union
 import pyvisa
 import datetime
 import time
 import csv
 import os
 import argparse
+from Korad_KA3305P import KoradPowerSupply
+from Rigol_DP832A import RigolPowerSupply
+from Rigol_DS1054z import RigolOscilloscope
+from Rigol_DL3021A import RigolLoad
 
 
 # Initialize PyVISA Resource Manager
@@ -14,7 +20,8 @@ rm = pyvisa.ResourceManager()
 OSCILLOSCOPE_1_ADDRESS = "USB0::0x1AB1::0x04CE::DS1ZA269M00375::INSTR"
 OSCILLOSCOPE_2_ADDRESS = "USB0::0x1AB1::0x04CE::DS1ZA172215665::INSTR"
 LOAD_ADDRESS = "USB0::0x1AB1::0x0E11::DL3B262800287::INSTR"
-POWER_SUPPLY_ADDRESS = "USB0::0x1AB1::0x0E11::DP8B261601128::INSTR"
+RIGOL_POWER_SUPPLY_ADDRESS = "USB0::0x1AB1::0x0E11::DP8B261601128::INSTR"
+KORAD_POWER_SUPPLY_COM = "COM6"
 
 # Function to create a unique folder for each test
 def create_test_folder(test_setup_name):
@@ -24,109 +31,141 @@ def create_test_folder(test_setup_name):
     return folder_name
 
 # Check connection function
-def check_connection(address): 
-    """Check if the instrument is connected and responding."""
-    try:
-        instrument = rm.open_resource(address)
-        instrument.query("*IDN?")  # Send an identification query
-        print(f"Connected to: {instrument.query('*IDN?').strip()}")
-        instrument.close()
-        return True
-    except Exception as e:
-        print(f"Connection failed for {address}: {e}")
-        return False
+# def check_connection(address): 
+#     """Check if the instrument is connected and responding."""
+#     try:
+#         instrument = rm.open_resource(address)
+#         instrument.query("*IDN?")  # Send an identification query
+#         print(f"Connected to: {instrument.query('*IDN?').strip()}")
+#         instrument.close()
+#         return True
+#     except Exception as e:
+#         print(f"Connection failed for {address}: {e}")
+#         return False
 
 
 # Function to set voltage and current on the power supply
-def set_power_supply_voltage_current(power_supply, voltage, current, max_retries=3):
-    try:
-        # Check if the voltage is above the limit
-        if voltage > 60:
-            print("Error: Setting voltage above 60V is not supported. Program will terminate.")
-            return  # Stop the execution of the function
+# def set_power_supply_voltage_current(power_supply: Union[RigolPowerSupply, KoradPowerSupply], voltage, current, max_retries=3):
+#     try:
+#         # Check if the voltage is above the limit
+#         if voltage > 60:
+#             print("Error: Setting voltage above 60V is not supported. Program will terminate.")
+#             return  # Stop the execution of the function
 
-        def verify_and_retry(channel, expected_voltage):
-            for attempt in range(max_retries):
-                # Select channel
-
-                power_supply.write(f":INSTrument:SELect CH{channel}")
-                time.sleep(1)
-
-                # Read back settings
-                actual_voltage = float(power_supply.query(":MEAS:VOLT?"))
+#         def verify_and_retry(channel, expected_voltage):
+#             for attempt in range(max_retries):
+#                 # Select channel
                 
+#                 # power_supply.write(f":INSTrument:SELect CH{channel}")
+#                 time.sleep(1)
 
-                if abs(actual_voltage - expected_voltage) < 0.1:
-                    print(f"Channel {channel} settings verified: Voltage={actual_voltage:.2f} V")
-                    return True
-                else:
-                    print(f"Retry {attempt + 1}: Adjusting settings for Channel {channel}")
-                    power_supply.write(f":SOUR:VOLT {expected_voltage:.2f}")
-                    time.sleep(1)
+#                 # Read back settings
+#                 # actual_voltage = float(power_supply.query(":MEAS:VOLT?"))
+#                 actual_voltage = float(power_supply.measure_voltage(channel))
+
+#                 if abs(actual_voltage - expected_voltage) < 0.1:
+#                     print(f"Channel {channel} settings verified: Voltage={actual_voltage:.2f} V")
+#                     return True
+#                 else:
+#                     print(f"Retry {attempt + 1}: Adjusting settings for Channel {channel}")
+#                     power_supply.set_voltage(channel, expected_voltage)
+#                     # power_supply.write(f":SOUR:VOLT {expected_voltage:.2f}")
+#                     time.sleep(1)
                    
 
-            print(f"Failed to set Channel {channel} settings after {max_retries} attempts.")
-            return False
+#             print(f"Failed to set Channel {channel} settings after {max_retries} attempts.")
+#             return False
 
-        # Voltage between 30 and 60 (split across channels)
-        if 30 < voltage <= 60:
-            voltage_1 = 30
-            voltage_2 = voltage - 30
+#         # Voltage between 30 and 60 (split across channels)
+#         if 30 < voltage <= 60:
+#             voltage_1 = 30
+#             voltage_2 = voltage - 30
 
-            power_supply.write(f":INSTrument:SELect CH1")
-            time.sleep(1)
-            power_supply.write(":OUTPut ON")
-            time.sleep
-            power_supply.write(f":SOUR:VOLT {voltage_1:.2f}")
-            time.sleep(1)
-            power_supply.write(f":SOUR:CURR {current:.2f}")
-            time.sleep(1)
-            power_supply.write(f":INSTrument:SELect CH2")
-            time.sleep(1)
-            power_supply.write(":OUTPut ON")
-            time.sleep(1)
-            power_supply.write(f":SOUR:VOLT {voltage_2:.2f}")
-            time.sleep(1)
-            power_supply.write(f":SOUR:CURR {current:.2f}")
+#             power_supply.turn_channel_on(1)
+#             time.sleep(1)
+#             power_supply.set_voltage(1, voltage_1)
+#             time.sleep(1)
+#             power_supply.set_current_limit(1, current)
+#             time.sleep(1)
+#             power_supply.turn_channel_on(2)
+#             time.sleep(1)
+#             power_supply.set_voltage(2, voltage_2)
+#             time.sleep(1)
+#             power_supply.set_current_limit(2, current)
 
-            print(f"Setting power supply voltage to {voltage:.2f} V (split: {voltage_1:.2f} V on CH1, {voltage_2:.2f} V on CH2) and current to {current:.2f} A")
+#             # power_supply.write(f":INSTrument:SELect CH1")
+#             # time.sleep(1)
+#             # power_supply.write(":OUTPut ON")
+#             # time.sleep
+#             # power_supply.write(f":SOUR:VOLT {voltage_1:.2f}")
+#             # time.sleep(1)
+#             # power_supply.write(f":SOUR:CURR {current:.2f}")
+#             # time.sleep(1)
+#             # power_supply.write(f":INSTrument:SELect CH2")
+#             # time.sleep(1)
+#             # power_supply.write(":OUTPut ON")
+#             # time.sleep(1)
+#             # power_supply.write(f":SOUR:VOLT {voltage_2:.2f}")
+#             # time.sleep(1)
+#             # power_supply.write(f":SOUR:CURR {current:.2f}")
 
-            # Set and verify CH1
-            if not verify_and_retry(1, voltage_1):
-                raise ValueError("Failed to properly set Channel 1.")
+#             print(f"Setting power supply voltage to {voltage:.2f} V (split: {voltage_1:.2f} V on CH1, {voltage_2:.2f} V on CH2) and current to {current:.2f} A")
 
-            # Set and verify CH2
-            if not verify_and_retry(2, voltage_2):
-                raise ValueError("Failed to properly set Channel 2.")
+#             # Set and verify CH1
+#             if not verify_and_retry(1, voltage_1):
+#                 raise ValueError("Failed to properly set Channel 1.")
 
-        # Voltage up to 30 (single channel)
-        elif voltage <= 30:
+#             # Set and verify CH2
+#             if not verify_and_retry(2, voltage_2):
+#                 raise ValueError("Failed to properly set Channel 2.")
 
-            print(f"Setting power supply voltage to {voltage:.2f} V and current to {current:.2f} A on CH1")
+#         # Voltage up to 30 (single channel)
+#         elif voltage <= 30:
 
-            power_supply.write(f":INSTrument:SELect CH1")
-            time.sleep(1)
-            power_supply.write(f":SOUR:VOLT {voltage:.2f}")
-            time.sleep(1)
-            power_supply.write(f":SOUR:CURR {current:.2f}")
-            time.sleep(1)
-            power_supply.write(":OUTP CH2,OFF") #verify channel 2 is off!
+#             print(f"Setting power supply voltage to {voltage:.2f} V and current to {current:.2f} A on CH1")
 
-            if not verify_and_retry(1, voltage):
-                raise ValueError("Failed to properly set Channel 1.")
+#             power_supply.turn_on()
+#             time.sleep(1)
+#             power_supply.turn_channel_on(1)
+#             time.sleep(1)
+#             power_supply.set_voltage(1, voltage)
+#             time.sleep(1)
+#             power_supply.set_current_limit(1, current)
+#             time.sleep(1)
+#             power_supply.set_voltage(2, 0.0)
 
-    except Exception as e:
-        print(f"Failed to set power supply: {e}")
-        raise
+#             #power_supply.turn_channel_off(2)#verify channel 2 is off!
+
+#             # power_supply.write(f":INSTrument:SELect CH1")
+#             # time.sleep(1)
+#             # power_supply.write(f":SOUR:VOLT {voltage:.2f}")
+#             # time.sleep(1)
+#             # power_supply.write(f":SOUR:CURR {current:.2f}")
+#             # time.sleep(1)
+#             # power_supply.write(":OUTP CH2,OFF") #verify channel 2 is off!
+
+#             if not verify_and_retry(1, voltage):
+#                 raise ValueError("Failed to properly set Channel 1.")
+
+#     except Exception as e:
+#         print(f"Failed to set power supply: {e}")
+#         raise
 
 
 # Function to read voltage, current, and power from the power supply
-def read_power_supply_channel(power_supply, channel):
+def read_power_supply_channel(power_supply: Union[RigolPowerSupply, KoradPowerSupply], channel):
     try:
-        power_supply.write(f":INSTrument:SELect CH{channel}")
-        voltage = float(power_supply.query(":MEAS:VOLT?"))
-        current = float(power_supply.query(":MEAS:CURR?"))
-        power = float(power_supply.query(":MEAS:POWE?"))
+
+        voltage = power_supply.measure_voltage(channel)
+        time.sleep(0.1)
+        current = power_supply.measure_current(channel)
+        time.sleep(0.1)
+        power = voltage*current
+
+        # power_supply.write(f":INSTrument:SELect CH{channel}")
+        # voltage = float(power_supply.query(":MEAS:VOLT?"))
+        # current = float(power_supply.query(":MEAS:CURR?"))
+        # power = float(power_supply.query(":MEAS:POWE?"))
         return voltage, current, power
     except Exception as e:
         print(f"Failed to read power supply measurements for CH{channel}: {e}")
@@ -177,27 +216,39 @@ def copy_screenshots_to_assets(test_folder):
 
 # Main test function
 def ramp_current_and_capture_with_power_supply(
-    voltage_list, current_list, dwell_time, input_current_limit, test_folder
+    voltage_list, current_list, dwell_time, input_current_limit, test_folder, power_supply: Union[RigolPowerSupply, KoradPowerSupply],
+                                                                                                  load: RigolLoad, 
+                                                                                                  oscilloscope_1: RigolOscilloscope,
+                                                                                                  oscilloscope_2: RigolOscilloscope,
+                                                                                                  
 ):
     try:
-        oscilloscope_1 = rm.open_resource(OSCILLOSCOPE_1_ADDRESS)
-        oscilloscope_2 = rm.open_resource(OSCILLOSCOPE_2_ADDRESS)
-        load = rm.open_resource(LOAD_ADDRESS)
-        power_supply = rm.open_resource(POWER_SUPPLY_ADDRESS)
+        # oscilloscope_1 = rm.open_resource(OSCILLOSCOPE_1_ADDRESS)
+        # oscilloscope_2 = rm.open_resource(OSCILLOSCOPE_2_ADDRESS)
+        # load = rm.open_resource(LOAD_ADDRESS)
+        # power_supply = rm.open_resource(RIGOL_POWER_SUPPLY_ADDRESS)
 
         # Configure the DL3021A electronic load
-        load.write(":INPUT ON")
-        load.write(":FUNC CURR")  # Set to current mode
+        #set current mode and set to zero before turning on
+        load.reset()
+        load.turn_on()
+
+        # load.write(":INPUT ON")
+        # load.write(":FUNC CURR")  # Set to current mode
 
         # Turn on the power supply
         print("Turning on the power supply output...")
-        power_supply.write(":OUTP ON")  # Enable output
+
+        power_supply.reset()
+        power_supply.turn_on()
+        # power_supply.write(":OUTP ON")  # Enable output
 
         for voltage in voltage_list:
             print(f"Starting tests for voltage: {voltage:.2f} V")
             
             # Set power supply to the specified voltage
-            set_power_supply_voltage_current(power_supply, voltage, input_current_limit)
+            # set_power_supply_voltage_current(power_supply, voltage, input_current_limit)
+            power_supply.configure_voltage_current(voltage, input_current_limit)
 
 
 
@@ -223,29 +274,42 @@ def ramp_current_and_capture_with_power_supply(
                 for current in current_list:
                     # Adjust current range on the load
                     if current > 4:
-                        load.write(":INPUT OFF")
-                        load.write(":CURR:RANG 40")
+                        load.turn_off()
+                        # load.write(":INPUT OFF")
+                        # load.write(":CURR:RANG 40")
+                        load.set_current_range(40)
                         print("Set current range to 40 A")
                     else:
-                        load.write(":INPUT OFF")
-                        load.write(":CURR:RANG 4")
+                        load.turn_off()
+                        load.set_current_range(40)
+                        # load.write(":INPUT OFF")
+                        # load.write(":CURR:RANG 4")
                         print("Set current range to 4 A")
 
                     print(f"Setting load current to {current:.3f} A")
-                    load.write(f":CURR {current:.3f}")
-                    load.write(":INPUT ON")
+                    # load.write(f":CURR {current:.3f}")
+                    # load.write(":INPUT ON")
+                    load.set_current(current)
+                    load.turn_on
                     time.sleep(dwell_time/2)
                     #trigger oscilloscope "single"
-                    oscilloscope_trigger_single(OSCILLOSCOPE_1_ADDRESS)
+                    # oscilloscope_trigger_single(OSCILLOSCOPE_1_ADDRESS)
+                    oscilloscope_1.trigger_single()
                     print("switching oscilloscope 1 to single")
-                    oscilloscope_trigger_single(OSCILLOSCOPE_2_ADDRESS)
+                    # oscilloscope_trigger_single(OSCILLOSCOPE_2_ADDRESS)
+                    oscilloscope_2.trigger_single()
                     print("switching oscilloscope 2 to single")
                     time.sleep(dwell_time/2)
                     # Read measurements from the load
-                    load_voltage = float(load.query(":MEAS:VOLT?"))
-                    load_power = float(load.query(":MEAS:POW?"))
-                    load_resistance = float(load.query(":MEAS:RES?"))
-                    load_measured_current = float(load.query(":MEAS:CURR?"))
+                    # load_voltage = float(load.query(":MEAS:VOLT?"))
+                    # load_power = float(load.query(":MEAS:POW?"))
+                    # load_resistance = float(load.query(":MEAS:RES?"))
+                    # load_measured_current = float(load.query(":MEAS:CURR?"))
+
+                    load_voltage = load.read_voltage()
+                    load_resistance = load.read_resistance()
+                    load_measured_current = load.read_current()
+                    load_power = load.read_power()
 
                     if voltage <= 30:
                         # Single-channel setup
@@ -281,20 +345,31 @@ def ramp_current_and_capture_with_power_supply(
                         test_folder, f"oscilloscope1_{voltage:.2f}V_{current:.2f}A.png"
                     )
                     osc2_filename = os.path.join(
-                        test_folder, f"oscilloscope2_{voltage:.2f}V_{current:.2f}.png"
+                        test_folder, f"oscilloscope2_{voltage:.2f}V_{current:.2f}A.png"
                     )
-                    capture_screenshot_oscilloscope(OSCILLOSCOPE_1_ADDRESS, osc1_filename)
-                    capture_screenshot_oscilloscope(OSCILLOSCOPE_2_ADDRESS, osc2_filename)
-                    oscilloscope_trigger_run(OSCILLOSCOPE_1_ADDRESS)
+                    # capture_screenshot_oscilloscope(OSCILLOSCOPE_1_ADDRESS, osc1_filename)
+                    # capture_screenshot_oscilloscope(OSCILLOSCOPE_2_ADDRESS, osc2_filename)
+                    oscilloscope_1.capture_screenshot(osc1_filename)
+                    oscilloscope_2.capture_screenshot(osc2_filename)
+                    time.sleep(1)
+                    oscilloscope_1.trigger_run()
+                    # oscilloscope_trigger_run(OSCILLOSCOPE_1_ADDRESS)
                     print("Switching osciloscope 1 to run mode")
-                    oscilloscope_trigger_run(OSCILLOSCOPE_2_ADDRESS)
+                    oscilloscope_2.trigger_run()
+                    # oscilloscope_trigger_run(OSCILLOSCOPE_2_ADDRESS)
                     print("Switching osciloscope 2 to run mode")
+            
+            #set current to zero before running through again
+            load.set_current(0)
+
 
         # Turn off load and power supply after the tests
-        load.write(":INPUT OFF")
-        load.write(":CURR:RANG 4")  # Reset to default current range
-        power_supply.write(":OUTP CH1,OFF")
-        power_supply.write(":OUTP CH2,OFF")
+        load.turn_off()
+        load.set_current_range(4)
+        # Reset to default current range
+        power_supply.turn_off()
+        # power_supply.write(":OUTP CH1,OFF")
+        # power_supply.write(":OUTP CH2,OFF")
         print("Tests completed. Power supply turned off.")
 
     except Exception as e:
@@ -340,25 +415,49 @@ if __name__ == "__main__":
         help="Input voltage list (V)")
     parser.add_argument("--dwell_time", type=float, required=True, help="Time between current changes (s)")
     parser.add_argument("--input_current_limit", type=float, required=True, help="Input current limit (A)")
+    parser.add_argument("--power_supply", type=str, required=True, help = "power supply type rigol or korad")
     parser.add_argument("--test_folder", type=str, required=True, help="Folder to save test results")
     args = parser.parse_args()
 
     # Debugging: Print the parsed current_list
     print(f"Parsed current_list: {args.current_list}")
 
-    oscilloscope_1_connected = check_connection(OSCILLOSCOPE_1_ADDRESS)
-    oscilloscope_2_connected = check_connection(OSCILLOSCOPE_2_ADDRESS)
-    load_connected = check_connection(LOAD_ADDRESS)
-    power_supply_connected = check_connection(POWER_SUPPLY_ADDRESS)
+    # oscilloscope_1_connected = check_connection(OSCILLOSCOPE_1_ADDRESS)
+    # oscilloscope_2_connected = check_connection(OSCILLOSCOPE_2_ADDRESS)
+    # load_connected = check_connection(LOAD_ADDRESS)
+    oscilloscope_1 = RigolOscilloscope(OSCILLOSCOPE_1_ADDRESS)
+    oscilloscope_2 = RigolOscilloscope(OSCILLOSCOPE_2_ADDRESS)
+    load = RigolLoad(LOAD_ADDRESS)
 
-    if oscilloscope_1_connected and load_connected and power_supply_connected and oscilloscope_2_connected:
+    power_supply = None
+    try:
+        if args.power_supply.lower() == "rigol":
+            power_supply = RigolPowerSupply(RIGOL_POWER_SUPPLY_ADDRESS)
+        elif args.power_supply.lower() == "korad":
+            power_supply = KoradPowerSupply(port=KORAD_POWER_SUPPLY_COM)
+        else:
+            raise ValueError(f"Unknown power supply type: {args.power_supply}")
+
+        if not power_supply.check_connection():
+            raise ConnectionError("Power supply failed to connect.")
+    except Exception as e:
+        print(f"Error initializing power supply: {e}")
+        sys.exit(1)
+
+
+    if oscilloscope_1.check_connection and load.check_connection() and power_supply.check_connection() and oscilloscope_2.check_connection():
         print("Ready to perform test")
         ramp_current_and_capture_with_power_supply(
             args.voltage_list,
             args.current_list, 
             args.dwell_time, 
             args.input_current_limit,
-            args.test_folder
+            args.test_folder,
+            power_supply,
+            load,
+            oscilloscope_1,
+            oscilloscope_2
+
         )
     else:
         print("One or more instruments failed to connect")
