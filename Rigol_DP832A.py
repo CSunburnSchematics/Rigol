@@ -128,97 +128,136 @@ class RigolPowerSupply:
         if self.instrument:
             self.set_voltage(1, 0)
             self.set_voltage(2, 0)
-            print("Resetting Riol DP832A voltage to zero on channel 1 and 2")
+            self.set_voltage(3, 0)
+            print("Resetting Riol DP832A voltage to zero on channel 1, 2, and 3")
         else:
             print("Instrument not initialized.")
     # Function to set voltage and current on the power supply
-def configure_voltage_current(self, voltage, current, max_retries=3):
-    try:
-        # Check if the voltage is above the limit
-        if voltage > 60:
-            print("Error: Setting voltage above 60V is not supported. Program will terminate.")
-            return  # Stop the execution of the function
+    def configure_voltage_current(self, voltage, current, max_retries=3):
+        try:
+            # Check if the voltage is above the limit
+            if voltage > 64:
+                print("Error: Setting voltage above 64V is not supported. Program will terminate.")
+                return  # Stop the execution of the function
 
-        def verify_and_retry(channel, expected_voltage):
-            for attempt in range(max_retries):
+            def verify_and_retry(channel, expected_voltage):
+                for attempt in range(max_retries):
 
-                # Read back settings
-                actual_voltage = float(self.measure_voltage(channel))
+                    # Read back settings
+                    actual_voltage = float(self.measure_voltage(channel))
 
-                if abs(actual_voltage - expected_voltage) < 0.1:
-                    print(f"Channel {channel} settings verified: Voltage={actual_voltage:.2f} V")
-                    return True
-                else:
-                    print(f"Retry {attempt + 1}: Adjusting settings for Channel {channel}")
-                    self.set_voltage(channel, expected_voltage)
-                    time.sleep(1)
-                   
+                    if abs(actual_voltage - expected_voltage) < 0.1:
+                        print(f"Channel {channel} settings verified: Voltage={actual_voltage:.2f} V")
+                        return True
+                    else:
+                        print(f"Retry {attempt + 1}: Adjusting settings for Channel {channel}")
+                        self.set_voltage(channel, expected_voltage)
+                        time.sleep(1)
+                    
 
-            print(f"Failed to set Channel {channel} settings after {max_retries} attempts.")
-            return False
+                print(f"Failed to set Channel {channel} settings after {max_retries} attempts.")
+                return False
+            
+            if 64 < voltage <= 90:
+                voltage_1 = 30
+                voltage_2 = 30
+                voltage_3 = voltage - 60
 
-        # Voltage between 30 and 60 (split across channels)
-        if 30 < voltage <= 60:
-            voltage_1 = 30
-            voltage_2 = voltage - 30
+                self.turn_channel_on(1)
+                time.sleep(1)
+                self.set_voltage(1, voltage_1)
+                time.sleep(1)
+                self.set_current_limit(1, current)
+                time.sleep(1)
+                self.turn_channel_on(2)
+                time.sleep(1)
+                self.set_voltage(2, voltage_2)
+                time.sleep(1)
+                self.set_current_limit(2, current)
+                time.sleep(1)
+                self.turn_channel_on(3)
+                time.sleep(1)
+                self.set_voltage(3, voltage_3)
+                time.sleep(1)
+                self.set_current_limit(3, current)
+                print(f"Setting power supply voltage to {voltage:.2f} V (split: {voltage_1:.2f} V on CH1, {voltage_2:.2f} V on CH2, {voltage_3:.2f} V on CH3) and current to {current:.2f} A")
 
-            self.turn_channel_on(1)
-            time.sleep(1)
-            self.set_voltage(1, voltage_1)
-            time.sleep(1)
-            self.set_current_limit(1, current)
-            time.sleep(1)
-            self.turn_channel_on(2)
-            time.sleep(1)
-            self.set_voltage(2, voltage_2)
-            time.sleep(1)
-            self.set_current_limit(2, current)
+                # Set and verify CH1
+                if not verify_and_retry(1, voltage_1):
+                    raise ValueError("Failed to properly set Channel 1.")
 
-            print(f"Setting power supply voltage to {voltage:.2f} V (split: {voltage_1:.2f} V on CH1, {voltage_2:.2f} V on CH2) and current to {current:.2f} A")
+                # Set and verify CH2
+                if not verify_and_retry(2, voltage_2):
+                    raise ValueError("Failed to properly set Channel 2.")
+                
+                # Set and verify CH3
+                if not verify_and_retry(3, voltage_3):
+                    raise ValueError("Failed to properly set Channel 3.")
 
-            # Set and verify CH1
-            if not verify_and_retry(1, voltage_1):
-                raise ValueError("Failed to properly set Channel 1.")
 
-            # Set and verify CH2
-            if not verify_and_retry(2, voltage_2):
-                raise ValueError("Failed to properly set Channel 2.")
+            # Voltage between 30 and 64 (split across channels)
+            elif 30 < voltage <= 64:
+                voltage_1 = 32
+                voltage_2 = voltage - 32
 
-        # Voltage up to 30 (single channel)
-        elif voltage <= 30:
+                self.turn_channel_on(1)
+                time.sleep(1)
+                self.set_voltage(1, voltage_1)
+                time.sleep(1)
+                self.set_current_limit(1, current)
+                time.sleep(1)
+                self.turn_channel_on(2)
+                time.sleep(1)
+                self.set_voltage(2, voltage_2)
+                time.sleep(1)
+                self.set_current_limit(2, current)
 
-            print(f"Setting power supply voltage to {voltage:.2f} V and current to {current:.2f} A on CH1")
+                print(f"Setting power supply voltage to {voltage:.2f} V (split: {voltage_1:.2f} V on CH1, {voltage_2:.2f} V on CH2) and current to {current:.2f} A")
 
-            self.turn_on()
-            time.sleep(1)
-            self.turn_channel_on(1)
-            time.sleep(1)
-            self.set_voltage(1, voltage)
-            time.sleep(1)
-            self.set_current_limit(1, current)
-            time.sleep(1)
-            self.set_voltage(2, 0.0)
+                # Set and verify CH1
+                if not verify_and_retry(1, voltage_1):
+                    raise ValueError("Failed to properly set Channel 1.")
 
-            self.turn_channel_off(2) #verify channel 2 is off!
+                # Set and verify CH2
+                if not verify_and_retry(2, voltage_2):
+                    raise ValueError("Failed to properly set Channel 2.")
 
-            if not verify_and_retry(1, voltage):
-                raise ValueError("Failed to properly set Channel 1.")
+            # Voltage up to 30 (single channel)
+            elif voltage <= 30:
 
-    except Exception as e:
-        print(f"Failed to set power supply: {e}")
-        raise
+                print(f"Setting power supply voltage to {voltage:.2f} V and current to {current:.2f} A on CH1")
 
-# Function to read voltage, current, and power from the power supply
-def read_power_supply_channel(self, channel):
-    try:
+                self.turn_on()
+                time.sleep(1)
+                self.turn_channel_on(1)
+                time.sleep(1)
+                self.set_voltage(1, voltage)
+                time.sleep(1)
+                self.set_current_limit(1, current)
+                time.sleep(1)
+                self.set_voltage(2, 0.0)
 
-        voltage = self.measure_voltage(channel)
-        time.sleep(0.1)
-        current = self.measure_current(channel)
-        time.sleep(0.1)
-        power = self.measure_power(channel)
+                self.turn_channel_off(2) #verify channel 2 is off
+                self.turn_channel_off(3) #verify channel 3 is off
 
-        return voltage, current, power
-    except Exception as e:
-        print(f"Failed to read power supply measurements for CH{channel}: {e}")
-        return None, None, None
+                if not verify_and_retry(1, voltage):
+                    raise ValueError("Failed to properly set Channel 1.")
+
+        except Exception as e:
+            print(f"Failed to set power supply: {e}")
+            raise
+
+    # Function to read voltage, current, and power from the power supply
+    def read_power_supply_channel(self, channel):
+        try:
+
+            voltage = self.measure_voltage(channel)
+            time.sleep(0.1)
+            current = self.measure_current(channel)
+            time.sleep(0.1)
+            power = self.measure_power(channel)
+
+            return voltage, current, power
+        except Exception as e:
+            print(f"Failed to read power supply measurements for CH{channel}: {e}")
+            return None, None, None

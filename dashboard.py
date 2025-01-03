@@ -1,3 +1,4 @@
+import re
 import shutil
 import sys
 import os
@@ -33,7 +34,7 @@ class PDF(FPDF):
         self.image(image_path, x=None, y=None, w=width)
         self.ln(10)
 
-def generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, setup_pictures, osc1_notes, osc2_notes):
+def generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, oscilloscope3_screenshots, setup_pictures, osc1_notes, osc2_notes, osc3_notes):
     pdf = PDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
@@ -47,12 +48,6 @@ def generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscillosc
     if os.path.exists(efficiency_graph_path):
         pdf.add_section_title("Efficiency Graph")
         pdf.add_image(efficiency_graph_path, width=150)
-
-    # # Add data tables
-    # for voltage, data in data_by_voltage.items():
-    #     pdf.add_section_title(f"Test Data for {voltage} V")
-    #     table_data = data.to_string(index=False)
-    #     pdf.add_text(table_data)
 
     # Add data tables as images
     for voltage in data_by_voltage.keys():
@@ -77,6 +72,13 @@ def generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscillosc
         if os.path.exists(img_path):
             pdf.add_image(img_path, width=100)
 
+    pdf.add_section_title("Oscilloscope 3 Screenshots")
+    pdf.add_text(f"{osc3_notes}")
+    for img in oscilloscope3_screenshots:
+        img_path = os.path.join(test_folder, img)
+        if os.path.exists(img_path):
+            pdf.add_image(img_path, width=100)
+
     # Add setup pictures
     pdf.add_section_title("Setup Pictures")
     for img in setup_pictures:
@@ -88,15 +90,30 @@ def generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscillosc
             
 
     # Save PDF
-    pdf_output_path = os.path.join(test_folder, "dashboard.pdf")
+    pdf_output_path = os.path.join(test_folder, f"{test_setup_name}.pdf")
     pdf.output(pdf_output_path)
     print(f"Dashboard saved as PDF: {pdf_output_path}")
 
 
-
-
-
-
+def copy_test_folder_to_shared_drive(test_folder, destination_folder):
+    """
+    Copy the test_folder and its contents to the shared drive destination.
+    
+    :param test_folder: Path to the folder containing test data.
+    :param destination_folder: Destination folder path on the shared drive.
+    """
+    try:
+        # Ensure the destination folder exists
+        os.makedirs(destination_folder, exist_ok=True)
+        
+        # Define the destination path for the copied folder
+        destination_path = os.path.join(destination_folder, os.path.basename(test_folder))
+        
+        # Copy the folder and its contents
+        shutil.copytree(test_folder, destination_path, dirs_exist_ok=True)
+        print(f"Test folder successfully copied to: {destination_path}")
+    except Exception as e:
+        print(f"Failed to copy test folder to shared drive: {e}")
 
 # Load all CSV data from the specified test folder
 def load_all_csv_data(test_folder):
@@ -111,14 +128,31 @@ def load_all_csv_data(test_folder):
 import plotly.graph_objects as go
 
 def save_table_as_png(data, voltage, output_file):
+    num_columns = len(data.columns)
+
+    # Determine the green header styling based on the number of columns
+    header_fill_colors = []
+    if num_columns == 10:
+        header_fill_colors = [
+            "#b0bfc2" if 0 <= i < 6 else "#b0c2b2" if i == num_columns - 1 else "#dbbfc9"
+            for i in range(num_columns)
+        ]
+    elif num_columns == 7:
+        header_fill_colors = [
+            "#b0bfc2" if 0 <= i < 3 else "#b0c2b2" if i == num_columns - 1 else "#dbbfc9"
+            for i in range(num_columns)
+        ]
+    else:
+        header_fill_colors = ["#dbbfc9"] * num_columns  # Default styling for other cases
+
     fig = go.Figure(
         data=[
             go.Table(
                 header=dict(
                     values=list(data.columns),
-                    fill_color="lightgrey",
+                    fill_color=header_fill_colors,
                     align="center",
-                    font=dict(size=10, color="black"),
+                    font=dict(size=10, color=["white" if color == "green" else "black" for color in header_fill_colors]),
                 ),
                 cells=dict(
                     values=[data[col] for col in data.columns],
@@ -129,6 +163,9 @@ def save_table_as_png(data, voltage, output_file):
             )
         ]
     )
+
+    fig.write_image(output_file)
+
 
     # Update layout for better visual output
     fig.update_layout(
@@ -160,13 +197,16 @@ def run_dash_server(app, host, port):
 def load_oscilloscope_screenshots(assets_folder):
     oscilloscope1 = []
     oscilloscope2 = []
+    oscilloscope3 = []
     for file in os.listdir(assets_folder):
         if file.endswith((".png", ".jpg")):
             if file.startswith("oscilloscope1"):
                 oscilloscope1.append(file)
-            elif file.startswith("oscilloscope2"):
+            if file.startswith("oscilloscope2"):
                 oscilloscope2.append(file)
-    return sorted(oscilloscope1), sorted(oscilloscope2)
+            elif file.startswith("oscilloscope3"):
+                oscilloscope3.append(file)
+    return sorted(oscilloscope1), sorted(oscilloscope2), sorted(oscilloscope3)
 
 # Load setup pictures
 def load_setup_pictures(assets_folder):
@@ -181,12 +221,77 @@ def load_setup_pictures(assets_folder):
 def generate_table_columns(data):
     return [{"name": col, "id": col} for col in data.columns]
 
+def generate_oscilloscope_graphs(data_by_voltage):
+    oscilloscope_graphs = []
+
+    # Trace colors for specific channels
+    trace_colors = {
+        "CH 1": "yellow",
+        "CH 2": "cyan",
+        "CH 3": "magenta",
+        "CH 4": "blue",
+    }
+
+    # Loop through each voltage dataset
+    for voltage, data in data_by_voltage.items():
+        if "Load Current (A)" not in data.columns:
+            continue
+
+        # Identify oscilloscope columns dynamically
+        osc_measurements = {}
+        for column in data.columns:
+            match = re.match(r"(Osc\d+) CH_(\d+) (negative )?(VMax|VMin)", column, re.IGNORECASE)
+            if match:
+                osc_name, channel, is_negative, measurement = match.groups()
+                if osc_name not in osc_measurements:
+                    osc_measurements[osc_name] = []
+                osc_measurements[osc_name].append((channel, measurement, column, bool(is_negative)))
+
+        # Generate graphs for each oscilloscope, combining VMax and VMin
+        for osc_name, measurements in osc_measurements.items():
+            fig = go.Figure()
+
+            # Add traces for each channel
+            for channel, measurement, column, is_negative in measurements:
+                color = trace_colors.get(f"CH {channel}", "black")  # Default to black if channel not in colors
+                fig.add_trace(go.Scatter(
+                    x=data["Load Current (A)"],
+                    y=data[column],
+                    mode="lines+markers",
+                    name=f"CH {channel} {'Negative ' if is_negative else ''}{measurement}",
+                    line=dict(color=color)
+                ))
+
+            # Update layout
+            fig.update_layout(
+                title=f"{osc_name} Measurements vs Load Current for {voltage} V",
+                xaxis_title="Load Current (A)",
+                yaxis_title="Voltage",
+                legend_title="Channel & Measurement",
+                height=400,
+                width=800,
+                margin={"l": 40, "r": 40, "t": 40, "b": 40},
+            )
+
+            # Append to the layout
+            oscilloscope_graphs.append(html.Div([
+                html.H3(f"{osc_name} Measurements for {voltage} V", className="text-center my-4"),
+                html.Div(
+                    dcc.Graph(figure=fig),
+                    style={"display": "flex", "justifyContent": "center"}  # Center the graph
+                )
+            ]))
+
+    return oscilloscope_graphs
+
+
+
 # Generate the efficiency graph with multiple lines for each voltage
 def generate_efficiency_graph(data_by_voltage, save_path):
     graph_data = []
     for voltage, data in data_by_voltage.items():
-        if "Current (A)" in data.columns and "Efficiency (%)" in data.columns:
-            temp_df = data[["Current (A)", "Efficiency (%)"]].copy()
+        if "Load Current (A)" in data.columns and "Efficiency (%)" in data.columns:
+            temp_df = data[["Load Current (A)", "Efficiency (%)"]].copy()
             temp_df["Voltage (V)"] = voltage
             graph_data.append(temp_df)
 
@@ -194,7 +299,7 @@ def generate_efficiency_graph(data_by_voltage, save_path):
         combined_df = pd.concat(graph_data)
         fig = px.line(
             combined_df,
-            x="Current (A)",
+            x="Load Current (A)",
             y="Efficiency (%)",
             color="Voltage (V)",
             markers=True,
@@ -228,30 +333,100 @@ def generate_efficiency_graph(data_by_voltage, save_path):
         )
 
 # Generate the layout for the Dash app
-def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, setup_pictures, osc1_notes, osc2_notes):
+def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, oscilloscope3_screenshots, setup_pictures, osc1_notes, osc2_notes, osc3_notes):
     title_section = html.Div([
         html.H1(test_setup_name, className="text-center my-4"),
         html.H4("Notes:", className="text-center my-2"),
         html.P(notes, className="text-center my-2 text-muted")
     ])
 
+        # Data table sections (excluding the last 4 columns)
     table_sections = []
+
+
     for voltage, data in data_by_voltage.items():
+        filtered_data = data.loc[:, : "Efficiency (%)"]
+        num_columns = len(filtered_data.columns)
+
+        # Determine header groups based on the number of columns
+        input_headers = set()
+        efficiency_headers = set()
+        remaining_headers = set()
+
+        if num_columns == 11:
+            input_headers.update(range(6))  # First 6 columns
+            efficiency_headers.add(num_columns - 1)  # Last column
+            remaining_headers.update(range(6, num_columns - 1))  # Middle columns (pink)
+        elif num_columns == 7:
+            input_headers.update(range(3))  # First 3 columns
+            efficiency_headers.add(num_columns - 1)  # Last column
+            remaining_headers.update(range(3, num_columns - 1))  # Middle columns (pink)
+
+        # Initialize the style_header_conditional list
+        style_header_conditional = []
+
+        # Add styles for input headers (blue)
+        style_header_conditional.extend([
+            {
+                "if": {"column_id": filtered_data.columns[idx]},
+                "backgroundColor": "#b0bfc2",  # Light blue
+                "color": "black",
+                "fontWeight": "bold",
+            }
+            for idx in input_headers
+        ])
+
+        # Add styles for efficiency headers (green)
+        style_header_conditional.extend([
+            {
+                "if": {"column_id": filtered_data.columns[idx]},
+                "backgroundColor": "#b0c2b2",  # Light green
+                "color": "black",
+                "fontWeight": "bold",
+            }
+            for idx in efficiency_headers
+        ])
+
+        # Add styles for remaining headers (pink)
+        style_header_conditional.extend([
+            {
+                "if": {"column_id": filtered_data.columns[idx]},
+                "backgroundColor": "#dbbfc9",  # Light pink
+                "color": "black",
+                "fontWeight": "bold",
+            }
+            for idx in remaining_headers
+        ])
+
+        # Create the table section
         table_sections.append(html.Div([
             html.H3(f"Test Data for {voltage} V", className="text-center my-4"),
             html.Div(
                 dash_table.DataTable(
                     id=f"data-table-{voltage}",
-                    columns=generate_table_columns(data),
-                    data=data.to_dict("records"),
+                    columns=[
+                        {"name": col, "id": col, "type": "text"}
+                        for col in filtered_data.columns
+                    ],
+                    data=filtered_data.to_dict("records"),
                     style_table={"width": "560px", "margin": "auto", "border": "1px solid lightgray", "overflowX": "hidden"},
-                    style_header={"backgroundColor": "rgb(230, 230, 230)", "fontWeight": "bold", "fontSize": "9px", "whiteSpace": "normal", "padding": "2px"},
+                    style_header={  # Default header style
+                        "backgroundColor": "#eaeaea",
+                        "fontWeight": "bold",
+                        "fontSize": "9px",
+                        "whiteSpace": "normal",
+                        "padding": "2px",
+                    },
+                    style_header_conditional=style_header_conditional,
                     style_cell={"textAlign": "center", "padding": "2px", "fontSize": "9px", "maxWidth": "70px", "whiteSpace": "normal", "overflow": "hidden", "textOverflow": "ellipsis"},
                     style_data={"whiteSpace": "normal", "height": "auto"},
                 ),
                 style={"textAlign": "center"}
             )
         ]))
+
+
+
 
     efficiency_graph_section = html.Div([
         html.H3("Efficiency Graph", className="text-center my-4"),
@@ -265,43 +440,112 @@ def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_
             html.P(file_name, className="text-center text-muted", style={"fontSize": "12px"})
         ], style={"display": "inline-block", "width": "200px"})
 
-    def group_screenshots_by_voltage(screenshots):
+    def format_notes_with_linebreaks(notes):
+        # Add a newline before numbers followed by a parenthesis
+        formatted_notes = re.sub(r"(\d\))", r"\n\1", notes)
+        return formatted_notes
+
+    def create_image_tile_with_notes_and_caption(img_path, notes):
+        # Format notes with line breaks
+        formatted_notes = format_notes_with_linebreaks(notes)
+        file_name = os.path.basename(img_path).split(".png")[0]  # Extract file name without extension
+
+        return html.Div([
+            # Notes section on the left
+            html.Div([
+                html.Pre(f"Notes: {formatted_notes}", className="text-left text-muted", style={
+                    "margin": "5px",
+                    "fontSize": "10px",
+                    "whiteSpace": "pre-wrap"  # Ensure line breaks are preserved
+                })
+            ], style={"flex": "1", "padding": "5px"}),  # Flex for notes
+
+            # Image and caption section on the right
+            html.Div([
+                html.Img(src=f"/assets/{img_path}", style={
+                    "width": "100%",
+                    "height": "150px",
+                    "borderRadius": "5px",
+                    "objectFit": "contain",  # Prevent cropping
+                    "backgroundColor": "#f8f8f8"  # Add a background to enhance visibility
+                }),
+                html.P(file_name, className="text-center text-muted", style={"fontSize": "10px", "marginTop": "5px"})  # Caption below the image
+            ], style={"flex": "2", "textAlign": "center"}),  # Flex for image and caption
+
+        ], style={
+            "display": "flex",
+            "flexDirection": "row",
+            "width": "400px",
+            "height": "200px",
+            "border": "1px solid lightgray",
+            "borderRadius": "5px",
+            "padding": "5px",
+            "margin": "5px",
+            "boxShadow": "0 2px 4px rgba(0,0,0,0.1)"
+        })
+
+
+
+    def group_screenshots_by_voltage_and_current(screenshots):
         grouped = {}
         for img_path in screenshots:
             parts = os.path.basename(img_path).split("_")
-            if len(parts) > 1 and "V" in parts[1]:
+            if len(parts) >= 3 and "V" in parts[1] and "A" in parts[2]:
                 voltage = parts[1].replace("V", "")
+                current = parts[2].replace("A", "").replace(".png", "").replace(".jpg", "")
+                try:
+                    # Convert to float for proper numeric sorting
+                    voltage = float(voltage)
+                    current = float(current)
+                except ValueError:
+                    continue  # Skip files with invalid formatting
+
                 if voltage not in grouped:
-                    grouped[voltage] = []
-                grouped[voltage].append(img_path)
+                    grouped[voltage] = {}
+                if current not in grouped[voltage]:
+                    grouped[voltage][current] = []
+                grouped[voltage][current].append(img_path)
         return grouped
 
-    def generate_oscilloscope_section(title, grouped_screenshots, notes):
+
+    def generate_combined_oscilloscope_section(grouped_screenshots, osc_1, osc_2, osc_3):
         sections = []
-        sections.append(html.Div([
-            html.P(notes, className="text-center text-muted my-3")
-        ]))
-        for voltage, images in sorted(grouped_screenshots.items()):
-            sections.append(html.Div([
-                html.H4(f"{title} for {voltage} V", className="text-center my-3"),
-                html.Div([
-                    create_image_with_caption(img)
+        for voltage, currents in sorted(grouped_screenshots.items()):  # Voltage is a float
+            voltage_section = [html.H4(f"Oscilloscope Screenshots for {voltage} V", className="text-center my-3")]
+            for current, images in sorted(currents.items()):  # Current is a float
+                current_section = [html.H5(f"At Current {current} A", className="text-center my-3")]
+                current_section.append(html.Div([
+                    # Create a row of tiles for each current
+                    create_image_tile_with_notes_and_caption(img, 
+                        osc_1 if "oscilloscope1" in img else osc_2 if "oscilloscope2" in img else osc_3)
                     for img in images
-                ], style={"textAlign": "center"})
-            ]))
+                ], style={
+                    "display": "flex",
+                    "flexWrap": "wrap",
+                    "justifyContent": "center",  # Center tiles horizontally
+                    "alignItems": "center",  # Center tiles vertically
+                    "gap": "10px"
+                }))
+                voltage_section.append(html.Div(current_section, style={"textAlign": "center", "marginBottom": "20px"}))
+            sections.append(html.Div(voltage_section, style={"border": "1px solid lightgray", "padding": "10px", "margin": "10px"}))
         return html.Div(sections)
 
-    oscilloscope1_grouped = group_screenshots_by_voltage(oscilloscope1_screenshots)
-    oscilloscope1_section = html.Div([
-        html.H3("Oscilloscope 1 Screenshots", className="text-center my-4"),
-        generate_oscilloscope_section("Oscilloscope 1 Screenshots", oscilloscope1_grouped, osc1_notes)
-    ])
 
-    oscilloscope2_grouped = group_screenshots_by_voltage(oscilloscope2_screenshots)
-    oscilloscope2_section = html.Div([
-        html.H3("Oscilloscope 2 Screenshots", className="text-center my-4"),
-        generate_oscilloscope_section("Oscilloscope 2 Screenshots", oscilloscope2_grouped, osc2_notes)
-    ])
+
+    # Combine all oscilloscope screenshots into one list
+    all_screenshots = oscilloscope1_screenshots + oscilloscope2_screenshots + oscilloscope3_screenshots
+
+    # Group by voltage and current
+    grouped_screenshots = group_screenshots_by_voltage_and_current(all_screenshots)
+
+    # Generate a single section for all screenshots with tiles and specific notes
+# Generate a single section for all screenshots with compact, centered tiles and specific notes
+    oscilloscope_section = html.Div([
+        html.H3("Combined Oscilloscope Screenshots", className="text-center my-4"),
+        generate_combined_oscilloscope_section(grouped_screenshots, osc1_notes, osc2_notes, osc3_notes)
+    ], style={"textAlign": "center"})
+
+    
 
     setup_section = html.Div([
         html.H3("Setup Pictures", className="text-center my-4"),
@@ -311,14 +555,59 @@ def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_
         ], style={"textAlign": "center"})
     ])
 
+    oscilloscope_graphs = generate_oscilloscope_graphs(data_by_voltage)
+
+    # vmax_graph_sections = []
+    # for voltage, data in data_by_voltage.items():
+    #     if "Load Current (A)" in data.columns:
+    #         fig = go.Figure()
+            
+    #         # Define colors for each VMax column
+    #         trace_colors = {
+    #             "CH 1 VMax": "yellow",
+    #             "CH 2 VMax": "cyan",
+    #             "CH 3 VMax": "magenta",
+    #             "CH 4 VMax": "blue"
+    #         }
+
+    #         # Add traces for each VMax column with specified colors
+    #         for vmax_column in ["CH 1 VMax", "CH 2 VMax", "CH 3 VMax", "CH 4 VMax"]:
+    #             if vmax_column in data.columns:
+    #                 fig.add_trace(go.Scatter(
+    #                     x=data["Load Current (A)"],
+    #                     y=data[vmax_column],
+    #                     mode="lines+markers",
+    #                     name=vmax_column,
+    #                     line=dict(color=trace_colors.get(vmax_column, "black"))  # Default to black if color is not found
+    #                 ))
+            
+    #         # Update figure layout
+    #         fig.update_layout(
+    #             title=f"VMax Channels vs Load Current for {voltage} V",
+    #             xaxis_title="Load Current (A)",
+    #             yaxis_title="Voltage (VMax)",
+    #             legend_title="Channels",
+    #             height=400,
+    #             width=800,
+    #             margin={"l": 40, "r": 40, "t": 40, "b": 40},
+    #         )
+
+    #         # Append the graph section to the layout
+    #         vmax_graph_sections.append(html.Div([
+    #             html.H3(f"VMax Channels for {voltage} V", className="text-center my-4"),
+    #             html.Div(
+    #                 dcc.Graph(figure=fig),
+    #                 style={"display": "flex", "justifyContent": "center"}  # Center the graph
+    #             )
+    #         ]))
     return dbc.Container([
         title_section,
         *table_sections,
         efficiency_graph_section,
         html.Hr(),
-        oscilloscope1_section,
+        *oscilloscope_graphs,  # Include VMax graphs
         html.Hr(),
-        oscilloscope2_section,
+        oscilloscope_section,
         html.Hr(),
         setup_section,
     ], fluid=True)
@@ -328,7 +617,7 @@ def start_dash_server(app):
     app.run_server(debug=False, host="127.0.0.1", port=8050)
 
 
-def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes):
+def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes, osc3_notes, save_folder):
     # Use the script directory's assets folder
     script_dir = os.path.dirname(os.path.abspath(__file__))
     assets_folder = os.path.join(script_dir, "assets")
@@ -360,11 +649,13 @@ def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes):
 
 
     # Load images for the dashboard
-    oscilloscope1_screenshots, oscilloscope2_screenshots = load_oscilloscope_screenshots(assets_folder)
+    oscilloscope1_screenshots, oscilloscope2_screenshots, oscilloscope3_screenshots = load_oscilloscope_screenshots(assets_folder)
     setup_pictures = load_setup_pictures(assets_folder)
 
-    generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, setup_pictures, osc1_notes, osc2_notes)
+    generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, oscilloscope3_screenshots, setup_pictures, osc1_notes, osc2_notes, osc3_notes)
 
+    shared_drive_folder = save_folder
+    copy_test_folder_to_shared_drive(test_folder, shared_drive_folder)
     # Create the Dash app
     app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
     app.title = test_setup_name
@@ -375,9 +666,11 @@ def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes):
         data_by_voltage,
         oscilloscope1_screenshots,
         oscilloscope2_screenshots,
+        oscilloscope3_screenshots,
         setup_pictures,
         osc1_notes,
-        osc2_notes
+        osc2_notes,
+        osc3_notes
     )
 
     # Start the Dash server
@@ -387,16 +680,17 @@ def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes):
     app.run_server(debug=True, host=host, port=port)
 
 if __name__ == "__main__":
-    if len(sys.argv) < 12:
+    if len(sys.argv) < 13:
         print("Usage: python dashboard.py <test_folder> <test_setup_name> <notes> <osc1_ch1> <osc1_ch2> <osc1_ch3> <osc1_ch4> <osc2_ch1> <osc2_ch2> <osc2_ch3> <osc2_ch4>")
         sys.exit(1)
 
     test_folder = sys.argv[1]
     test_setup_name = sys.argv[2]
     notes = sys.argv[3].replace("_", " ")
-    osc1_notes = f"Channels: 1) {sys.argv[4].replace('_', ' ')}, 2) {sys.argv[5].replace('_', ' ')}, 3) {sys.argv[6].replace('_', ' ')}, 4) {sys.argv[7].replace('_', ' ')}"
-    osc2_notes = f"Channels: 1) {sys.argv[8].replace('_', ' ')}, 2) {sys.argv[9].replace('_', ' ')}, 3) {sys.argv[10].replace('_', ' ')}, 4) {sys.argv[11].replace('_', ' ')}"
-
-    main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes)
+    osc1_notes = f"Oscilloscope 1 Channels: 1) {sys.argv[4].replace('_', ' ')} 2) {sys.argv[5].replace('_', ' ')} 3) {sys.argv[6].replace('_', ' ')} 4) {sys.argv[7].replace('_', ' ')}"
+    osc2_notes = f"Oscilloscope 2 Channels: 1) {sys.argv[8].replace('_', ' ')} 2) {sys.argv[9].replace('_', ' ')} 3) {sys.argv[10].replace('_', ' ')} 4) {sys.argv[11].replace('_', ' ')}"
+    osc3_notes = f"Oscilloscope 3 Channels: 1) {sys.argv[12].replace('_', ' ')} 2) {sys.argv[13].replace('_', ' ')} 3) {sys.argv[14].replace('_', ' ')} 4) {sys.argv[15].replace('_', ' ')}"
+    save_folder = sys.argv[16]
+    main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes, osc3_notes, save_folder)
 
 

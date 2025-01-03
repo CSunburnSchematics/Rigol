@@ -32,11 +32,19 @@ class KoradPowerSupply:
         :param command: The command string to send.
         """
         if self.connection and self.connection.is_open:
-            full_command = command + "\r\n"  # Add newline as per protocol
+            self.connection.reset_input_buffer()  # Clear buffer
+            self.connection.reset_output_buffer()  # Clear buffer
+            time.sleep(0.01)
+            full_command = f"{command}\r\n"  # add newline
+            test_separator = "(0DX)"
             self.connection.write(full_command.encode())
-            print(f"Sent command: {command}")
+            self.connection.write(test_separator.encode())
+
+            print(f"Sent command: {full_command.strip()}")
+            time.sleep(0.01)
         else:
             print("Connection is not open. Cannot send command.")
+
 
     def read_response(self):
         """
@@ -45,15 +53,15 @@ class KoradPowerSupply:
         :return: The response string.
         """
         if self.connection and self.connection.is_open:
-            response = self.connection.readline() #.decode().strip()
-            # print(f"Raw response: {response}")  # Print raw bytes
+            response = self.connection.readline()  # Read one line
             decoded_response = response.decode(errors="ignore").strip()
             print(f"Decoded response: {decoded_response}")
+            
+
             return decoded_response
-            #print(f"Received response: {response}")
-            #return response
         print("Connection is not open. Cannot read response.")
         return None
+
 
     def check_connection(self):
         """Check if the power supply is responding."""
@@ -137,13 +145,6 @@ class KoradPowerSupply:
             print(f"Failed to measure current on Channel {channel} after {retries} attempts.")
             return None
 
-    def measure_power(self, channel):
-        """Measure the power on a specific channel."""
-        voltage = self.measure_voltage(channel)
-        current = self.measure_current(channel)
-        power = voltage * current
-        print(f"Measured power on Channel {channel}: {power:.2f}W")
-        return power
     
     # Function to set voltage and current on the power supply
     def configure_voltage_current(self, voltage, current, max_retries=3):
@@ -214,8 +215,6 @@ class KoradPowerSupply:
                 self.set_current_limit(1, current)
                 time.sleep(1)
                 self.set_voltage(2, 0.0)
-
-
 
                 if not verify_and_retry(1, voltage):
                     raise ValueError("Failed to properly set Channel 1.")
