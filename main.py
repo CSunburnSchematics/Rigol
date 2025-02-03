@@ -261,7 +261,7 @@ def ramp_current_and_capture_with_power_supply(
                         print("Set current range to 40 A")
                     else:
                         load.turn_off()
-                        load.set_current_range(40)
+                        load.set_current_range(4)
  
                         print("Set current range to 4 A")
 
@@ -270,7 +270,7 @@ def ramp_current_and_capture_with_power_supply(
                     load.set_current(current)
                     load.turn_on
                     time.sleep(dwell_time/2)
-
+                    #freezes oscilloscope screen to take screen shot
                     oscilloscope_1.trigger_single()
                     print("switching oscilloscope 1 to single")
 

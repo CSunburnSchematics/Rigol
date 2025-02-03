@@ -142,42 +142,7 @@ class RigolOscilloscope:
         self.instrument.write(":RUN")
         
 
-    # def trigger_single(self):
-    #     self.instrument.write(":SINGle")
-        
-
-    # def trigger_single(self, timeout=5):
-    #     """
-    #     Trigger oscilloscope for a single acquisition and check for waveform data.
-    #     :param timeout: Time in seconds to wait for waveform data availability.
-    #     :return: True if waveform data is available, False otherwise.
-    #     """
-    #     try:
-    #         self.instrument.write(":SINGle")
-    #         print("Sent :SINGle command. Waiting for waveform data...")
-
-    #         # Wait for waveform data to be available
-    #         start_time = time.time()
-    #         while time.time() - start_time < timeout:
-    #             try:
-    #                 points = int(self.instrument.query(":WAV:POIN?").strip())
-    #                 if points > 0:
-    #                     print(f"Waveform data available: {points} points.")
-    #                     return True
-    #                 else:
-    #                     print("No waveform data yet. Retrying...")
-    #                     time.sleep(0.1)  # Short delay before retrying
-    #             except Exception as e:
-    #                 print(f"Error querying waveform data: {e}")
-    #                 break
-
-    #         print("Timeout: No waveform data available after triggering.")
-    #         return False
-
-    #     except Exception as e:
-    #         print(f"Error during :SINGle trigger: {e}")
-    #         return False
-        
+   
 
 
     def trigger_single(self, max_retries=3, delay_between_retries=.1):
