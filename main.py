@@ -293,7 +293,7 @@ def ramp_current_and_capture_with_power_supply(
                         ps_voltage, ps_current, ps_power = read_power_supply_channel(power_supply, 1)
 
                         # Calculate efficiency
-                        efficiency = (load_power / ps_power) if ps_power > 0 else 0.0
+                        efficiency = (load_power / ps_power)*100 if ps_power > 0 else 0.0
                         standard_measurements = [
                              
                             f"{ps_voltage:.3f}", f"{ps_current:.3f}", f"{ps_power:.3f}",f"{load_voltage:.3f}",
@@ -309,7 +309,7 @@ def ramp_current_and_capture_with_power_supply(
 
                         # Calculate total input power and efficiency
                         total_input_power = ch1_power + ch2_power
-                        efficiency = (load_power / total_input_power) if total_input_power > 0 else 0.0
+                        efficiency = (load_power / total_input_power)*100 if total_input_power > 0 else 0.0
 
                         # Write the data to the CSV
                         standard_measurements =[

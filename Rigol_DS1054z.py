@@ -37,35 +37,77 @@ class RigolOscilloscope:
         """
         Query the Vmax for a specified channel.
         :param channel: The channel number (1 to 4).
-        :return: The Vmax value as a float.
+        :return: The Vmax value as a float, or 0.0 if the instrument reports an invalid value.
         """
         if not (1 <= channel <= 4):
             raise ValueError("Invalid channel number. Must be between 1 and 4.")
         
         command = f"MEASure:VMAX? CHAN{channel}"
+        invalid_threshold = 9.9e+37  # Center of invalid range
+        margin_of_error = 1e+34  # Allowable margin around the invalid value
+        
         try:
-            vmax_response = self.instrument.query(command)
-            return float(vmax_response.strip())
+            vmax_response = self.instrument.query(command).strip()
+            
+            # Check for empty, null, or invalid responses
+            if not vmax_response or vmax_response.lower() in ['null', 'nan', '']:
+                print(f"Null or invalid Vmax response for CHAN{channel}: {vmax_response}")
+                return 0.0
+            
+            # Convert response to float
+            vmax_value = float(vmax_response)
+            
+            # Check if value is within the invalid range (margin of error)
+            if abs(vmax_value - invalid_threshold) <= margin_of_error:
+                print(f"Invalid measurement (within range of {invalid_threshold} ± {margin_of_error}) for CHAN{channel}")
+                return 0.0
+            
+            return vmax_value
+        except ValueError:
+            print(f"Invalid float value for Vmax response from CHAN{channel}: {vmax_response}")
+            return 0.0
         except Exception as e:
             print(f"Error querying Vmax for CHAN{channel}: {e}")
             raise
+
 
     def get_vmin(self, channel: int) -> float:
         """
         Query the Vmin for a specified channel.
         :param channel: The channel number (1 to 4).
-        :return: The Vmin value as a float.
+        :return: The Vmin value as a float, or 0.0 if the instrument reports an invalid value.
         """
         if not (1 <= channel <= 4):
             raise ValueError("Invalid channel number. Must be between 1 and 4.")
         
         command = f"MEASure:VMIN? CHAN{channel}"
+        invalid_threshold = 9.9e+37  # Center of invalid range
+        margin_of_error = 1e+34  # Allowable margin around the invalid value
+        
         try:
-            vmin_response = self.instrument.query(command)
-            return float(vmin_response.strip())
+            vmin_response = self.instrument.query(command).strip()
+            
+            # Check for empty, null, or invalid responses
+            if not vmin_response or vmin_response.lower() in ['null', 'nan', '']:
+                print(f"Null or invalid Vmin response for CHAN{channel}: {vmin_response}")
+                return 0.0
+            
+            # Convert response to float
+            vmin_value = float(vmin_response)
+            
+            # Check if value is within the invalid range (margin of error)
+            if abs(vmin_value - invalid_threshold) <= margin_of_error:
+                print(f"Invalid measurement (within range of {invalid_threshold} ± {margin_of_error}) for CHAN{channel}")
+                return 0.0
+            
+            return vmin_value
+        except ValueError:
+            print(f"Invalid float value for Vmin response from CHAN{channel}: {vmin_response}")
+            return 0.0
         except Exception as e:
             print(f"Error querying Vmin for CHAN{channel}: {e}")
             raise
+
 
 
     def capture_screenshot(self, filename, format="PNG"):

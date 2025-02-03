@@ -47,6 +47,10 @@ def validate_inputs():
 
     return errors
 
+
+
+
+
 # Function to load saved settings
 def load_settings():
     if os.path.exists(SETTINGS_FILE):
@@ -92,8 +96,18 @@ def load_settings():
                       "ch_3": {"measurement": "VMax", "make_negative": False},
                       "ch_4": {"measurement": "VMax", "make_negative": False}}
         },
-        "save_folder": "I:\\Shared drives\\Sunburn Schematics\\Clients\\Relativity Space\\Testing"
-    }
+        "save_folder": "I:\\Shared drives\\Sunburn Schematics\\Clients\\Relativity Space\\Testing",
+        "frequency_list": "100,200,300",
+        "voltage_list_freq_test": "35, 50.50, 64",
+        "waveform": "square",
+        "amplitude": 1.0,
+        "dcoffset": 0.0,
+        "phase": 0.0,
+        "frequency_test_save_folder": "I:\\Shared drives\\Sunburn Schematics\\Clients\\Relativity Space\\Testing",
+        "frequency_test_name" : "Frequency test",
+        "frequency_test_current": 4.0,
+        "frequency_test_current_limit" : 3.2
+        }
 
 
 
@@ -178,7 +192,7 @@ def run_dashboard(test_folder):
 # Function to run the test
 def run_test_gui():
     global current_test_list, voltage_test_list, test_setup_name, notes, dwell_time, current_limit, power_supply, osc_1_channels, osc_2_channels, osc_3_channels, osc_measurement_options, save_folder
-
+    
     errors = validate_inputs()
     if errors:
         messagebox.showerror("Validation Error", "\n".join(errors))
@@ -270,7 +284,17 @@ def run_test_gui():
                         },
 
 
-        "save_folder": save_folder.get()
+        "save_folder": save_folder.get(),
+        "frequency_list": frequency_list.get(),
+        "voltage_list_freq_test": voltage_list_freq_test.get(),
+        "waveform": waveform.get(),
+        "amplitude": amplitude.get(),
+        "dcoffset": dcoffset.get(),
+        "phase": phase.get(),
+        "frequency_test_save_folder": frequency_test_save_folder.get(),
+        "frequency_test_name": frequency_test_name.get(),
+        "frequency_test_current": frequency_test_current.get(),
+        "frequency_test_current_limit": frequency_test_current_limit.get()
     })
 
     run_dashboard(test_folder)
@@ -306,6 +330,13 @@ notebook.add(osc_frame, text="Oscilloscope Settings")
 
 notebook.pack(expand=True, fill="both")
 
+
+# Tab 3: Frequency Sweep
+freq_frame = ttk.Frame(notebook)
+notebook.add(freq_frame, text="Frequency Sweep")
+
+notebook.pack(expand=True, fill="both")
+
 # Load saved settings
 settings = load_settings()
 
@@ -326,6 +357,8 @@ osc_2_channels = {key: tk.StringVar(value=value) for key, value in settings["osc
 osc_3_channels = {key: tk.StringVar(value=value) for key, value in settings["osc_3_channels"].items()}
 
 osc_measurement_options = ["VMax", "VMin", "None"]
+
+
 
 
 # Initialize osc_channel_settings with loaded values
@@ -357,6 +390,16 @@ osc_channel_settings = {
 
 save_folder = tk.StringVar(value=settings["save_folder"])
 
+frequency_list = tk.StringVar(value=settings["frequency_list"])
+voltage_list_freq_test = tk.StringVar(value=settings["voltage_list_freq_test"])
+waveform =tk.StringVar(value=settings["waveform"])
+amplitude = tk.DoubleVar(value=settings["amplitude"])
+dcoffset = tk.DoubleVar(value=settings["dcoffset"])
+phase = tk.DoubleVar(value=settings["phase"])
+frequency_test_save_folder = tk.StringVar(value=settings["frequency_test_save_folder"])
+frequency_test_name = tk.StringVar(value=settings["frequency_test_name"])
+frequency_test_current_limit = tk.DoubleVar(value=settings["frequency_test_current_limit"])
+frequency_test_current = tk.DoubleVar(value=settings["frequency_test_current"])
 # GUI Layout
 tk.Label(main_frame, text="Test Setup Name:").grid(row=0, column=0, sticky="w")
 tk.Entry(main_frame, textvariable=test_setup_name, width=40).grid(row=0, column=1)
@@ -427,54 +470,7 @@ tk.Entry(main_frame, textvariable= save_folder, width=65).grid(row=24, column=1)
 save_folder_entry = tk.Entry(main_frame, textvariable=save_folder, width=65)
 save_folder_entry.grid(row=24, column=1)
 
-# def create_osc_section(frame, osc_name, osc_settings, start_row):
-#     """
-#     Create a section for oscilloscope settings, with dropdowns and checkboxes.
-#     """
-#     tk.Label(frame, text=f"{osc_name.upper()} Channels:", font=("Arial", 12)).grid(
-#         row=start_row, column=0, columnspan=3, sticky="w", pady=5
-#     )
-#     row = start_row + 1
-#     for ch, settings in osc_settings.items():
-#         # Ensure settings is a dictionary
-#         if isinstance(settings, dict):
-#             # Extract existing tkinter variables or initialize new ones
-#             measurement_value = (
-#                 settings["measurement"].get() if isinstance(settings["measurement"], tk.StringVar) else settings.get("measurement", "None")
-#             )
-#             dropdown_var = tk.StringVar(value=measurement_value)
 
-#             dropdown = ttk.Combobox(
-#                 frame,
-#                 textvariable=dropdown_var,
-#                 values=osc_measurement_options,
-#                 state="readonly",
-#                 width=10,
-#             )
-#             dropdown.grid(row=row, column=1, padx=5, pady=2)
-
-#             make_negative_value = (
-#                 settings["make_negative"].get() if isinstance(settings["make_negative"], tk.BooleanVar) else settings.get("make_negative", False)
-#             )
-#             make_negative_var = tk.BooleanVar(value=make_negative_value)
-
-#             tk.Checkbutton(
-#                 frame, text="Make Negative", variable=make_negative_var
-#             ).grid(row=row, column=2, sticky="w", padx=10)
-
-#             # Save the updated variables back into the settings dictionary
-#             settings["measurement"] = dropdown_var  # Bind the dropdown value
-#             settings["make_negative"] = make_negative_var  # Bind the checkbox value
-
-#         else:
-#             print(f"Warning: Unexpected settings format for {ch} in {osc_name}: {settings}")
-
-#         # Add channel label
-#         tk.Label(frame, text=f"{ch.capitalize()}:", width=15).grid(
-#             row=row, column=0, sticky="w", padx=5
-#         )
-#         row += 1
-#     return row
 
 def create_osc_section(frame, osc_name, osc_settings, start_row):
     """
@@ -526,6 +522,107 @@ create_osc_section(osc_frame, "OSC_3", osc_channel_settings["osc_3"], 11)
 
 
 tk.Button(main_frame, text="Run Test", command=run_test_gui, bg="green", fg="white").grid(row=26, column=0, columnspan=2, pady=10)
+
+
+# Frequency Sweep Tab Layout
+
+tk.Label(freq_frame, text="Frequency Test Name").grid(row=0, column=0, sticky="w")
+tk.Entry(freq_frame, textvariable=frequency_test_name, width=40).grid(row=0, column=1)
+
+tk.Label(freq_frame, text="Frequency List (kHz) (comma-separated):").grid(row=1, column=0, sticky="w")
+tk.Entry(freq_frame, textvariable=frequency_list, width=40).grid(row=1, column=1)
+
+tk.Label(freq_frame, text="Waveform:").grid(row=2, column=0, sticky="w")
+ttk.Combobox(freq_frame, textvariable=waveform, values=["sine", "square", "ramp", "pulse", "noise"], state="readonly").grid(row=2, column=1)
+
+tk.Label(freq_frame, text="Amplitude (V):").grid(row=3, column=0, sticky="w")
+tk.Entry(freq_frame, textvariable=amplitude, width=40).grid(row=3, column=1)
+
+tk.Label(freq_frame, text="DC Offset (V):").grid(row=4, column=0, sticky="w")
+tk.Entry(freq_frame, textvariable=dcoffset, width=40).grid(row=4, column=1)
+
+tk.Label(freq_frame, text="Phase (°):").grid(row=5, column=0, sticky="w")
+tk.Entry(freq_frame, textvariable=phase, width=40).grid(row=5, column=1)
+
+tk.Label(freq_frame, text="Dwell Time (s):").grid(row=6, column=0, sticky="w")
+tk.Entry(freq_frame, textvariable=dwell_time, width=40).grid(row=6, column=1)
+
+tk.Label(freq_frame, text="Voltage List (comma-separated):").grid(row=7, column=0, sticky="w")
+tk.Entry(freq_frame, textvariable=voltage_list_freq_test, width=40).grid(row=7, column=1)
+
+tk.Label(freq_frame, text="Current Limit (A):").grid(row=8, column=0, sticky="w")
+tk.Entry(freq_frame, textvariable=frequency_test_current_limit, width=40).grid(row=8, column=1)
+
+tk.Label(freq_frame, text="Current (A):").grid(row=9, column=0, sticky="w")
+tk.Entry(freq_frame, textvariable=frequency_test_current, width=40).grid(row=9, column=1)
+
+
+tk.Label(freq_frame, text="Save Folder").grid(row=10, column=0, sticky="w")
+tk.Entry(freq_frame, textvariable=frequency_test_save_folder, width=40).grid(row=10, column=1)
+
+# tk.Label(freq_frame, text="Test Folder:").grid(row=8, column=0, sticky="w")
+# tk.Entry(freq_frame, textvariable=test_folder, width=40).grid(row=8, column=1)
+
+# Run Frequency Sweep Function
+def run_frequency_sweep():
+    """
+    Validate inputs and run the frequency_sweep.py script.
+    """
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    freq_test_folder = f"Test_{frequency_test_name.get().replace(' ', '_')}_{timestamp}"
+   
+    os.makedirs(freq_test_folder, exist_ok=True)
+    try:
+        freq_list = [float(x.strip()) for x in frequency_list.get().split(",")]
+        volt_list = [float(x.strip()) for x in voltage_list_freq_test.get().split(",")]
+
+        # Prepare arguments for frequency_sweep.py
+        args = [
+            "python", "frequency_sweep.py",
+            f"--frequency_list={','.join(map(str, freq_list))}",
+            f"--voltage_list={','.join(map(str, volt_list))}",
+            f"--waveform={waveform.get()}",
+            f"--amplitude={amplitude.get()}",
+            f"--dcoffset={dcoffset.get()}",
+            f"--phase={phase.get()}",
+            f"--dwell_time={dwell_time.get()}",
+            f"--input_current_limit={frequency_test_current_limit.get()}",
+            f"--current={frequency_test_current.get()}",
+            f"--test_folder={freq_test_folder}",
+        ]
+
+
+        root.destroy()
+
+        webcam_image_path_1 = os.path.join(freq_test_folder, "webcam_image_1.png")
+        webcam_image_path_2 = os.path.join(freq_test_folder, "webcam_image_2.png")
+        capture_two_webcam_images(webcam_image_path_1, webcam_image_path_2)
+        # Run the script
+        subprocess.run(args, check=True)
+
+
+    except ValueError as e:
+        messagebox.showerror("Validation Error", f"Invalid input: {e}")
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to run frequency sweep test: {e}")
+
+    def run_frequency_dashboard(freq_test_folder):
+        args = [
+            "python", "frequency_dashboard.py",
+            freq_test_folder,
+            frequency_test_name.get().replace(" ", "_"),
+            frequency_test_save_folder.get(),
+        ]
+        subprocess.run(args, check=True)
+        
+    run_frequency_dashboard(freq_test_folder)
+
+
+# Add a button to trigger the frequency sweep
+tk.Button(freq_frame, text="Run Frequency Sweep", command=run_frequency_sweep, bg="green", fg="white").grid(row=11, column=0, columnspan=2, pady=10)
+
+root.mainloop()
+
 
 assets_folder = os.path.join(os.getcwd(), "assets")
 if os.path.exists(assets_folder) and os.path.isdir(assets_folder):

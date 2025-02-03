@@ -8,11 +8,13 @@ from dash import html, dash_table, dcc
 import pandas as pd
 import plotly.express as px
 import plotly.io as pio
+from plotly.io import write_image
 import time
 from multiprocessing import Process
 import webbrowser
 import time
 from fpdf import FPDF
+
 
 class PDF(FPDF):
     def header(self):
@@ -22,69 +24,113 @@ class PDF(FPDF):
 
     def add_section_title(self, title):
         self.set_font('Arial', 'B', 12)
-        self.cell(0, 10, title, border=False, ln=True, align='L')
+        self.cell(0, 10, title, border=False, ln=True, align='C')
         self.ln(5)
 
     def add_text(self, text):
         self.set_font('Arial', '', 10)
-        self.multi_cell(0, 10, text)
+        self.multi_cell(0, 10, text, align = 'C')
         self.ln(5)
 
-    def add_image(self, image_path, width=100):
-        self.image(image_path, x=None, y=None, w=width)
+    def add_image(self, image_path, x_start = None, y_start = None, width=100):
+        self.image(image_path, x=x_start, y=y_start, w=width)
         self.ln(10)
 
-def generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, oscilloscope3_screenshots, setup_pictures, osc1_notes, osc2_notes, osc3_notes):
+def generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, oscilloscope3_screenshots, oscilloscope_graphs_folder, setup_pictures, osc1_notes, osc2_notes, osc3_notes):
     pdf = PDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
+    
 
     # Add title and notes
     pdf.add_section_title(f"Test Setup: {test_setup_name}")
-    pdf.add_text(f"Notes: {notes}")
-
-    # Add efficiency graph
-    efficiency_graph_path = os.path.join("assets", "efficiency_graph.png")
-    if os.path.exists(efficiency_graph_path):
-        pdf.add_section_title("Efficiency Graph")
-        pdf.add_image(efficiency_graph_path, width=150)
+    pdf.add_text(f"{notes}")
 
     # Add data tables as images
     for voltage in data_by_voltage.keys():
         png_path = os.path.join(test_folder, f"table_{voltage}.png")
         if os.path.exists(png_path):
             pdf.add_section_title(f"Test Data Table for {voltage} V")
-            pdf.add_image(png_path, width=150)
+            pdf.add_image(png_path, None, None, width=150)
 
 
-    # Add oscilloscope screenshots
-    pdf.add_section_title("Oscilloscope 1 Screenshots")
-    pdf.add_text(f"{osc1_notes}")
-    for img in oscilloscope1_screenshots:
-        img_path = os.path.join(test_folder, img)
+    # Add efficiency graph
+    efficiency_graph_path = os.path.join("assets", "efficiency_graph.png")
+    if os.path.exists(efficiency_graph_path):
+        pdf.add_section_title("Efficiency Graph")
+        pdf.add_image(efficiency_graph_path, None, None, width=150)
+
+
+
+    pdf.add_section_title("Oscilloscope Screenshots")
+    pdf.add_text(f"{osc1_notes}\n{osc2_notes}\n{osc3_notes}")
+
+    # Define constants for grid layout
+    cell_width = 60
+    cell_height = 65  # Includes space for the image and caption
+    spacing = 10  # Spacing between cells
+    columns_per_row = 3  # Number of columns in each row
+    max_y = 250  # Maximum Y position before triggering a new page
+
+    # Flatten all screenshots into one grid
+    grid = []
+    for i in range(max(len(oscilloscope1_screenshots), len(oscilloscope2_screenshots), len(oscilloscope3_screenshots))):
+        grid.append(oscilloscope1_screenshots[i] if i < len(oscilloscope1_screenshots) else None)
+        grid.append(oscilloscope2_screenshots[i] if i < len(oscilloscope2_screenshots) else None)
+        grid.append(oscilloscope3_screenshots[i] if i < len(oscilloscope3_screenshots) else None)
+
+    # Starting Y position for the grid
+    start_y = pdf.get_y()
+    current_y = start_y  # Track the Y position for rows
+
+    # Iterate through the grid and place images
+    for idx, img_name in enumerate(grid):
+        col = idx % columns_per_row  # Current column (0, 1, 2 for each row)
+
+        # Calculate X and Y positions
+        x_pos = 10 + col * (cell_width + spacing)  # Start X at 10 with spacing between columns
+
+        # Check if the current row exceeds the page limit
+        if current_y + cell_height > max_y:
+            pdf.add_page()  # Add a new page
+            current_y = 20  # Reset Y position for the new page
+
+        # Add an empty cell if no image is present
+        if img_name is None:
+            continue
+
+        # Load the image path
+        img_path = os.path.join(test_folder, img_name)
+
+        # Add image and caption if the file exists
         if os.path.exists(img_path):
-            pdf.add_image(img_path, width=100)
+            pdf.image(img_path, x=x_pos, y=current_y, w=cell_width)
+            pdf.set_y(current_y + cell_width/2 + 6)  # Move below the image
+            pdf.set_x(x_pos)
+            pdf.cell(cell_width, 5, os.path.splitext(img_name)[0], align='C')
 
-    pdf.add_section_title("Oscilloscope 2 Screenshots")
-    pdf.add_text(f"{osc2_notes}")
-    for img in oscilloscope2_screenshots:
-        img_path = os.path.join(test_folder, img)
-        if os.path.exists(img_path):
-            pdf.add_image(img_path, width=100)
+        # Move to the next row after completing all columns in a row
+        if col == columns_per_row - 1:
+            current_y += cell_height  # Update Y position for the next row
 
-    pdf.add_section_title("Oscilloscope 3 Screenshots")
-    pdf.add_text(f"{osc3_notes}")
-    for img in oscilloscope3_screenshots:
-        img_path = os.path.join(test_folder, img)
-        if os.path.exists(img_path):
-            pdf.add_image(img_path, width=100)
+    # Move the cursor to the next section after the grid
+    pdf.ln(cell_height)
 
+
+    # Add oscilloscope graphs section
+    pdf.add_section_title("Oscilloscope Graphs")
+    for graph_file in sorted(os.listdir(oscilloscope_graphs_folder)):
+        graph_path = os.path.join(oscilloscope_graphs_folder, graph_file)
+        if os.path.exists(graph_path) and graph_file.endswith("V.png"):
+            pdf.add_image(graph_path, None, None, width=150)
+            
+            
     # Add setup pictures
     pdf.add_section_title("Setup Pictures")
     for img in setup_pictures:
         img_path = os.path.join(test_folder, img)
         if os.path.exists(img_path):
-            pdf.add_image(img_path, width=100)
+            pdf.add_image(img_path, None, None, width=100)
             caption = os.path.basename(img).split(".png")[0]
             pdf.add_text(f"{caption}")
             
@@ -128,7 +174,9 @@ def load_all_csv_data(test_folder):
 import plotly.graph_objects as go
 
 def save_table_as_png(data, voltage, output_file):
-    num_columns = len(data.columns)
+    filtered_data = data.loc[:, : "Efficiency (%)"]
+    num_columns = len(filtered_data.columns)
+    
 
     # Determine the green header styling based on the number of columns
     header_fill_colors = []
@@ -149,13 +197,13 @@ def save_table_as_png(data, voltage, output_file):
         data=[
             go.Table(
                 header=dict(
-                    values=list(data.columns),
+                    values=list(filtered_data.columns),
                     fill_color=header_fill_colors,
                     align="center",
                     font=dict(size=10, color=["white" if color == "green" else "black" for color in header_fill_colors]),
                 ),
                 cells=dict(
-                    values=[data[col] for col in data.columns],
+                    values=[filtered_data[col] for col in filtered_data.columns],
                     fill_color="white",
                     align="center",
                     font=dict(size=9, color="black"),
@@ -221,7 +269,7 @@ def load_setup_pictures(assets_folder):
 def generate_table_columns(data):
     return [{"name": col, "id": col} for col in data.columns]
 
-def generate_oscilloscope_graphs(data_by_voltage):
+def generate_oscilloscope_graphs(data_by_voltage, save_path):
     oscilloscope_graphs = []
 
     # Trace colors for specific channels
@@ -273,6 +321,11 @@ def generate_oscilloscope_graphs(data_by_voltage):
                 margin={"l": 40, "r": 40, "t": 40, "b": 40},
             )
 
+            # Save the graph as a PNG file
+            png_filename = f"{osc_name}_{voltage}V.png"
+            png_path = os.path.join(save_path, png_filename)
+            write_image(fig, png_path)
+
             # Append to the layout
             oscilloscope_graphs.append(html.Div([
                 html.H3(f"{osc_name} Measurements for {voltage} V", className="text-center my-4"),
@@ -307,7 +360,7 @@ def generate_efficiency_graph(data_by_voltage, save_path):
             labels={"Current (A)": "Input Current (A)", "Efficiency (%)": "Efficiency (%)"},
         )
 
-        fig.update_yaxes(range=[0, 1])
+        fig.update_yaxes(range=[0, 100])
 
         fig.update_layout(
             margin={"l": 40, "r": 40, "t": 40, "b": 40},
@@ -555,51 +608,8 @@ def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_
         ], style={"textAlign": "center"})
     ])
 
-    oscilloscope_graphs = generate_oscilloscope_graphs(data_by_voltage)
+    oscilloscope_graphs = generate_oscilloscope_graphs(data_by_voltage, "assets/")
 
-    # vmax_graph_sections = []
-    # for voltage, data in data_by_voltage.items():
-    #     if "Load Current (A)" in data.columns:
-    #         fig = go.Figure()
-            
-    #         # Define colors for each VMax column
-    #         trace_colors = {
-    #             "CH 1 VMax": "yellow",
-    #             "CH 2 VMax": "cyan",
-    #             "CH 3 VMax": "magenta",
-    #             "CH 4 VMax": "blue"
-    #         }
-
-    #         # Add traces for each VMax column with specified colors
-    #         for vmax_column in ["CH 1 VMax", "CH 2 VMax", "CH 3 VMax", "CH 4 VMax"]:
-    #             if vmax_column in data.columns:
-    #                 fig.add_trace(go.Scatter(
-    #                     x=data["Load Current (A)"],
-    #                     y=data[vmax_column],
-    #                     mode="lines+markers",
-    #                     name=vmax_column,
-    #                     line=dict(color=trace_colors.get(vmax_column, "black"))  # Default to black if color is not found
-    #                 ))
-            
-    #         # Update figure layout
-    #         fig.update_layout(
-    #             title=f"VMax Channels vs Load Current for {voltage} V",
-    #             xaxis_title="Load Current (A)",
-    #             yaxis_title="Voltage (VMax)",
-    #             legend_title="Channels",
-    #             height=400,
-    #             width=800,
-    #             margin={"l": 40, "r": 40, "t": 40, "b": 40},
-    #         )
-
-    #         # Append the graph section to the layout
-    #         vmax_graph_sections.append(html.Div([
-    #             html.H3(f"VMax Channels for {voltage} V", className="text-center my-4"),
-    #             html.Div(
-    #                 dcc.Graph(figure=fig),
-    #                 style={"display": "flex", "justifyContent": "center"}  # Center the graph
-    #             )
-    #         ]))
     return dbc.Container([
         title_section,
         *table_sections,
@@ -652,7 +662,7 @@ def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes, osc3_notes
     oscilloscope1_screenshots, oscilloscope2_screenshots, oscilloscope3_screenshots = load_oscilloscope_screenshots(assets_folder)
     setup_pictures = load_setup_pictures(assets_folder)
 
-    generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, oscilloscope3_screenshots, setup_pictures, osc1_notes, osc2_notes, osc3_notes)
+    generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, oscilloscope3_screenshots, assets_folder, setup_pictures, osc1_notes, osc2_notes, osc3_notes)
 
     shared_drive_folder = save_folder
     copy_test_folder_to_shared_drive(test_folder, shared_drive_folder)
@@ -676,8 +686,13 @@ def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes, osc3_notes
     # Start the Dash server
     host = "127.0.0.1"
     port = 8050
-    print(f"\nDashboard is running! Open your browser and go to: http://{host}:{port}\n")
+    print(f"\nDashboard is running! Open your browser and go to: https://{host}:{port}\n")
     app.run_server(debug=True, host=host, port=port)
+  
+    
+
+
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 13:
