@@ -1,5 +1,5 @@
 import pyvisa
-
+#test
 class RigolFunctionGenerator:
     def __init__(self, address):
         """Initialize the connection to the Rigol DG1022Z."""
