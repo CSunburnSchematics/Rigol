@@ -191,7 +191,7 @@ def ramp_current_and_capture_with_power_supply(
         for voltage in voltage_list:
             print(f"Starting tests for voltage: {voltage:.2f} V")
 
-            power_supply.configure_voltage_current(voltage, input_current_limit)
+            
 
             # Create a new CSV file for this voltage
             csv_filename = os.path.join(test_folder, f"test_results_{voltage:.2f}V.csv")
@@ -253,7 +253,11 @@ def ramp_current_and_capture_with_power_supply(
 
                 # Iterate through the current list
                 for current in current_list:
+                    #set voltage
+                    power_supply.configure_voltage_current(voltage, input_current_limit)
+
                     # Adjust current range on the load
+
                     if current > 4:
                         load.turn_off()
 
@@ -393,9 +397,14 @@ def ramp_current_and_capture_with_power_supply(
                     print("Switching osciloscope 2 to run mode")
                     oscilloscope_3.trigger_run()
                     print("Switching oscilloscope 3 to run mode")
+                                #set load current and supply voltage to zero, 30 second cool down before next run
+                    load.set_current(0)
+                    print("setting power supply voltage to zero")
+                    power_supply.configure_voltage_current(0, input_current_limit)
+                    print("sleep 15 seconds")
+                    time.sleep(15)
             
-            #set current to zero before running through again
-            load.set_current(0)
+
 
 
         # Turn off load and power supply after the tests

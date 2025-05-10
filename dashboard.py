@@ -212,7 +212,7 @@ def save_table_as_png(data, voltage, output_file):
         ]
     )
 
-    fig.write_image(output_file)
+    # fig.write_image(output_file)
 
 
     # Update layout for better visual output
@@ -282,8 +282,8 @@ def generate_oscilloscope_graphs(data_by_voltage, save_path):
 
     # Loop through each voltage dataset
     for voltage, data in data_by_voltage.items():
-        if "Load Current (A)" not in data.columns:
-            continue
+        # if "Load Current (A)" not in data.columns:
+        #     continue
 
         # Identify oscilloscope columns dynamically
         osc_measurements = {}
@@ -324,18 +324,18 @@ def generate_oscilloscope_graphs(data_by_voltage, save_path):
             # Save the graph as a PNG file
             png_filename = f"{osc_name}_{voltage}V.png"
             png_path = os.path.join(save_path, png_filename)
-            write_image(fig, png_path)
-
+            
+            
+            pio.write_image(fig, png_path)
+         
             # Append to the layout
             oscilloscope_graphs.append(html.Div([
                 html.H3(f"{osc_name} Measurements for {voltage} V", className="text-center my-4"),
-                html.Div(
-                    dcc.Graph(figure=fig),
-                    style={"display": "flex", "justifyContent": "center"}  # Center the graph
-                )
-            ]))
+                html.Img(src=f"/assets/{png_path}", style={"display": "block", "margin": "auto", "width": "600px"})
+                    ]))
 
     return oscilloscope_graphs
+
 
 
 
@@ -608,7 +608,7 @@ def generate_dash_layout(test_setup_name, notes, data_by_voltage, oscilloscope1_
         ], style={"textAlign": "center"})
     ])
 
-    oscilloscope_graphs = generate_oscilloscope_graphs(data_by_voltage, "assets/")
+    oscilloscope_graphs = generate_oscilloscope_graphs(data_by_voltage, test_folder) #here
 
     return dbc.Container([
         title_section,
@@ -636,6 +636,15 @@ def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes, osc3_notes
     if not os.path.exists(assets_folder):
         os.makedirs(assets_folder)
 
+    # Define the save path for the efficiency graph
+    efficiency_graph_path = os.path.join(test_folder, "efficiency_graph.png")
+
+    # Load CSV data
+    data_by_voltage = load_all_csv_data(test_folder)
+
+    # Generate the efficiency graph and save it
+    generate_efficiency_graph(data_by_voltage, efficiency_graph_path)
+
     # Copy images from test_folder to the assets folder
     for file in os.listdir(test_folder):
         if file.endswith((".png", ".jpg")):
@@ -643,14 +652,7 @@ def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes, osc3_notes
             dest_path = os.path.join(assets_folder, file)
             shutil.copy(src_path, dest_path)
 
-    # Define the save path for the efficiency graph
-    efficiency_graph_path = os.path.join(assets_folder, "efficiency_graph.png")
-
-    # Load CSV data
-    data_by_voltage = load_all_csv_data(test_folder)
-
-    # Generate the efficiency graph and save it
-    generate_efficiency_graph(data_by_voltage, efficiency_graph_path)
+   
 
     #generate tables as png
     for voltage, data in data_by_voltage.items():
@@ -663,6 +665,8 @@ def main(test_folder, test_setup_name, notes, osc1_notes, osc2_notes, osc3_notes
     setup_pictures = load_setup_pictures(assets_folder)
 
     generate_pdf(test_folder, test_setup_name, notes, data_by_voltage, oscilloscope1_screenshots, oscilloscope2_screenshots, oscilloscope3_screenshots, assets_folder, setup_pictures, osc1_notes, osc2_notes, osc3_notes)
+    # load efficiency graph into test folder:
+    #efficiency_graph_path 
 
     shared_drive_folder = save_folder
     copy_test_folder_to_shared_drive(test_folder, shared_drive_folder)
