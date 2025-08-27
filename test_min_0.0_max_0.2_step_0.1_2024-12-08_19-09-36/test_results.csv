@@ -1,4 +1,0 @@
-Current (A),Load Voltage (V),Load Power (W),Load Resistance (Ohms),CH1 Voltage (V),CH1 Current (A),CH1 Power (W),CH2 Voltage (V),CH2 Current (A),CH2 Power (W),Total Input Power (W),Efficiency (%)
-0.00,12.07,0.00,0.00,30.00,0.06,1.67,9.99,0.06,0.56,2.23,0.00
-0.10,12.06,1.21,119.90,30.00,0.09,2.65,9.99,0.09,0.89,3.54,0.34
-0.20,12.06,2.41,60.19,30.00,0.12,3.57,9.99,0.12,1.20,4.76,0.51

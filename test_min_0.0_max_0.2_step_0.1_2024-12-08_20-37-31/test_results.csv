@@ -1,5 +1,0 @@
-Current (A),Load Voltage (V),Load Power (W),Load Resistance (Ohms),Input Voltage (V),Input Current (A),Input Power (W),Efficiency (%)
-0.00,12.07,0.00,0.00,30.00,0.06,1.67,0.00
-0.10,12.06,1.21,119.84,30.00,0.09,2.65,0.46
-0.20,12.06,2.42,60.22,30.00,0.12,3.57,0.68
-0.30,12.06,3.63,40.06,30.00,0.15,4.50,0.81
