@@ -244,7 +244,7 @@ class RigolOscilloscope:
     def capture_window_on_demand(scope,
                                 channel=1,
                                 window_s=500e-6,
-                                memory_depth="AUTO",
+                                memory_depth=1200000,
                                 fmt="BYTE",
                                 timeout_s=8.0):
         """

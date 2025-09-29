@@ -20,6 +20,11 @@ oscilloscope = RigolOscilloscope(OSCILLOSCOPE_ADDRESS)
 
 oscilloscope.check_connection()
 
+oscilloscope.instrument.write(":ACQ:MDEP 1200000")   # 1.2 Mpts
+print("Memory depth:", oscilloscope.instrument.query(":ACQ:MDEP?"))
+print("Sample rate:", oscilloscope.instrument.query(":ACQ:SRAT?"))
+
+# or
 
 
 #oscilloscope.trigger_single()
@@ -56,7 +61,7 @@ def save_png(png_path: str, t: np.ndarray, v: np.ndarray, title: str):
 def capture_csv_and_plot(scope,
                          channel=1,
                          window_s=500e-6,
-                         shots=20,
+                         shots=1,
                          out_dir="captures_500us",
                          prefix="shot",
                          zero_time_at_start=True):
@@ -92,6 +97,6 @@ def capture_csv_and_plot(scope,
 capture_csv_and_plot(oscilloscope, 
                      channel=1,
                      window_s=500e-6,
-                     shots=20,
+                     shots=1,
                      out_dir="captures_500us",
                      prefix="win")
