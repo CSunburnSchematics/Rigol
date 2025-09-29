@@ -1,6 +1,13 @@
+import numpy as np
 import pyvisa
 import time
 import os
+import os, csv
+import numpy as np
+import matplotlib
+matplotlib.use("Agg")  # safe even on headless machines; remove if you want a window
+import matplotlib.pyplot as plt
+
 
 class RigolOscilloscope:
     def __init__(self, address):
@@ -33,6 +40,59 @@ class RigolOscilloscope:
                 return False
         return False
     
+
+    def system_reboot(self, save_and_restore_setup: bool = True,
+                      reconnect_timeout_s: int = 120, probe_interval_s: float = 2.0):
+        if not self.instrument:
+            raise RuntimeError("Instrument not connected.")
+        address = self.instrument.resource_name
+        self.instrument.timeout = 10000
+
+        setup_blob = None
+        if save_and_restore_setup:
+            try:
+                setup_blob = bytes(self.instrument.query_binary_values(':SYSTem:SETup?', datatype='B',
+                                                                       container=bytearray))
+            except Exception as e:
+                print(f"[reboot] Warning: could not save setup: {e}")
+
+        try:
+            self.instrument.write(':SYSTem:REBoot')
+        except Exception as e:
+            print(f"[reboot] Note: write error during reboot (likely expected): {e}")
+        try:
+            self.instrument.close()
+        except Exception:
+            pass
+        self.instrument = None
+
+        deadline = time.time() + reconnect_timeout_s
+        last_err = None
+        while time.time() < deadline:
+            try:
+                cand = self.rm.open_resource(address)
+                cand.timeout = 10000
+                idn = cand.query('*IDN?').strip()
+                self.instrument = cand
+                print(f"[reboot] Reconnected: {idn}")
+                break
+            except Exception as e:
+                last_err = e
+                time.sleep(probe_interval_s)
+
+        if self.instrument is None:
+            raise TimeoutError(f"Could not reconnect within {reconnect_timeout_s}s. Last error: {last_err}")
+
+        if save_and_restore_setup and setup_blob:
+            try:
+                self.instrument.write_binary_values(':SYSTem:SETup ', list(setup_blob), datatype='B')
+                time.sleep(0.5)
+            except Exception as e:
+                print(f"[reboot] Warning: failed to restore setup: {e}")
+
+        return self.instrument.query('*IDN?').strip()
+    
+
     def get_vmax(self, channel: int) -> float:
         """
         Query the Vmax for a specified channel.
@@ -142,9 +202,6 @@ class RigolOscilloscope:
         self.instrument.write(":RUN")
         
 
-   
-
-
     def trigger_single(self, max_retries=3, delay_between_retries=.1):
         """
         Trigger oscilloscope for a single acquisition and retry if waveform data is not available.
@@ -178,4 +235,98 @@ class RigolOscilloscope:
 
         print(f"Failed to capture waveform after {max_retries} attempts.")
         return False
+    
+
+
+
+## CHECK
+
+    def capture_window_on_demand(scope,
+                                channel=1,
+                                window_s=500e-6,
+                                memory_depth="AUTO",
+                                fmt="BYTE",
+                                timeout_s=8.0):
+        """
+        One-shot capture of the current window. Returns (time_s, volts, preamble_dict).
+
+        - Forces AUTO sweep and HOLD=0 so the shot completes immediately (no real-edge wait).
+        - Arms :SINGle, waits for STOP/TD, reads RAW data in chunks, returns arrays.
+        """
+        inst = scope.instrument
+        if inst is None:
+            raise RuntimeError("Instrument not connected.")
+        if not (1 <= channel <= 4):
+            raise ValueError("Channel must be 1..4.")
+
+        # Ensure we're not running
+        inst.write(":STOP")
+
+        # Timebase for requested total window (screen = 12 divisions)
+        inst.write(f":TIM:SCAL {window_s/12:g}")
+        inst.write(":TIM:OFFS 0")
+
+        # Memory depth
+        if isinstance(memory_depth, str) and memory_depth.upper() == "AUTO":
+            inst.write(":ACQ:MDEP AUTO")
+        else:
+            inst.write(f":ACQ:MDEP {int(memory_depth)}")
+
+        # Make sure source channel is on
+        inst.write(f":CHAN{channel}:DISP ON")
+
+        # Force a single capture without waiting for an edge
+        inst.write(":TRIG:SWEEP AUTO")
+        inst.write(":TRIG:HOLD 0")
+
+        # Arm single-shot and wait for completion
+        inst.write(":SINGle")
+        t0 = time.time()
+        while True:
+            stat = inst.query(":TRIG:STAT?").strip().upper()
+            if "STOP" in stat or "TD" in stat:
+                break
+            if time.time() - t0 > timeout_s:
+                raise TimeoutError(f"Single-shot did not complete in time (status={stat}).")
+            time.sleep(0.02)
+
+        # Read RAW waveform (full record)
+        inst.write(f":WAV:SOUR CHAN{channel}")
+        inst.write(":WAV:MODE RAW")
+        inst.write(f":WAV:FORM {fmt}")    # BYTE fastest; WORD = 16-bit codes
+
+        pre = inst.query(":WAV:PRE?").strip().split(",")
+        npts = int(float(pre[2]))
+        xinc, xorg, xref = float(pre[4]), float(pre[5]), float(pre[6])
+        yinc, yorg, yref = float(pre[7]), float(pre[8]), float(pre[9])
+
+        if npts <= 0:
+            raise RuntimeError("Scope returned 0 points; try increasing memory_depth or check window.")
+
+        max_per = 250000 if fmt.upper() == "BYTE" else 125000
+        data = bytearray()
+        start = 1
+        while start <= npts:
+            stop = min(start + max_per - 1, npts)
+            inst.write(f":WAV:STAR {start}")
+            inst.write(f":WAV:STOP {stop}")
+            chunk = inst.query_binary_values(":WAV:DATA?", datatype='B', container=bytearray)
+            data += chunk
+            start = stop + 1
+
+        # Convert to arrays
+        if fmt.upper() == "BYTE":
+            codes = np.frombuffer(bytes(data), dtype=np.uint8)
+        else:
+            codes = np.frombuffer(bytes(data), dtype=np.uint16)
+
+        volts = (codes.astype(np.float64) - yorg - yref) * yinc
+        time_s = xorg + (np.arange(npts, dtype=np.float64) - xref) * xinc
+
+        preamble = {
+            "points": npts, "xinc": xinc, "xorig": xorg, "xref": xref,
+            "yinc": yinc, "yorig": yorg, "yref": yref
+        }
+        return time_s, volts, preamble
+
 
