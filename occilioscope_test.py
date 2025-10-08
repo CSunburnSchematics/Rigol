@@ -1,3 +1,4 @@
+import gzip
 import shutil
 import pyvisa
 import datetime
@@ -20,7 +21,7 @@ oscilloscope = RigolOscilloscope(OSCILLOSCOPE_ADDRESS)
 
 oscilloscope.check_connection()
 
-oscilloscope.instrument.write(":ACQ:MDEP 1200000")   # 1.2 Mpts
+oscilloscope.instrument.write(":ACQ:MDEP 24000000")  
 print("Memory depth:", oscilloscope.instrument.query(":ACQ:MDEP?"))
 print("Sample rate:", oscilloscope.instrument.query(":ACQ:SRAT?"))
 
@@ -29,12 +30,22 @@ print("Sample rate:", oscilloscope.instrument.query(":ACQ:SRAT?"))
 
 #oscilloscope.trigger_single()
 time.sleep(1)
+t0 = time.time()  
 #oscilloscope.capture_screenshot("osc_3_test_pic.png")
 #put this in a file outside of repo!
 #oscilloscope.trigger_run()
 
 #oscilloscope.close()
 # #oscilloscope. #... turn off function?
+
+# def save_csv(path, t, v, gzip_csv=False):
+#     os.makedirs(os.path.dirname(path), exist_ok=True) if os.path.dirname(path) else None
+#     data = np.column_stack((t, v))
+#     if gzip_csv:
+#         with gzip.open(path + ".gz", "wt") as f:
+#             np.savetxt(f, data, delimiter=",", header="time_s,volts", comments="")
+#     else:
+#         np.savetxt(path, data, delimiter=",", header="time_s,volts", comments="")
 
 
 def save_csv(csv_path: str, t: np.ndarray, v: np.ndarray):
@@ -73,7 +84,7 @@ def capture_csv_and_plot(scope,
     """
     for i in range(1, shots + 1):
         # 1) capture from scope (all points, already scaled)
-        t, v, pre = scope.capture_window_on_demand(channel=channel, window_s=window_s)
+        t, v = scope.capture_window_on_demand(channel=channel, window_s=window_s)
         
         # Optional: shift time axis to start at 0 for nicer plots/CSVs
         if zero_time_at_start:
@@ -83,12 +94,12 @@ def capture_csv_and_plot(scope,
         csv_path = os.path.join(out_dir, f"{prefix}_{i:03d}.csv")
         save_csv(csv_path, t, v)
 
-        # 3) save PNG (static)
-        title = f"Capture {i}/{shots} — points={pre['points']}, Δt={pre['xinc']:.3e}s"
-        png_path = os.path.join(out_dir, f"{prefix}_{i:03d}.png")
-        save_png(png_path, t, v, title)
+        # # 3) save PNG (static)
+        # title = f"Capture {i}/{shots} — points={pre['points']}, Δt={pre['xinc']:.3e}s"
+        # png_path = os.path.join(out_dir, f"{prefix}_{i:03d}.png")
+        # save_png(png_path, t, v, title)
 
-        print(f"[OK] {csv_path}  |  {png_path}") 
+        print(f"[OK] {csv_path}") #  |  {png_path}") 
 
 
 # Example usage after you’ve created/connected your scope instance:
@@ -96,7 +107,14 @@ def capture_csv_and_plot(scope,
 
 capture_csv_and_plot(oscilloscope, 
                      channel=1,
-                     window_s=500e-6,
+                     window_s=.5,
                      shots=1,
                      out_dir="captures_500us",
                      prefix="win")
+
+
+t1 = time.time()                  # end timestamp
+
+elapsed = t1 - t0
+
+print(elapsed)

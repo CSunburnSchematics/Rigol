@@ -244,7 +244,7 @@ class RigolOscilloscope:
     def capture_window_on_demand(scope,
                                 channel=1,
                                 window_s=500e-6,
-                                memory_depth=1200000,
+                                memory_depth=24000000,
                                 fmt="BYTE",
                                 timeout_s=8.0):
         """
@@ -262,7 +262,7 @@ class RigolOscilloscope:
         # Ensure we're not running
         inst.write(":STOP")
 
-        # Timebase for requested total window (screen = 12 divisions)
+        # Timebase for requested total window (screen = 12 divisions) scope requires setting x axis tick thickness do decide time window on screen
         inst.write(f":TIM:SCAL {window_s/12:g}")
         inst.write(":TIM:OFFS 0")
 
@@ -323,10 +323,10 @@ class RigolOscilloscope:
         volts = (codes.astype(np.float64) - yorg - yref) * yinc
         time_s = xorg + (np.arange(npts, dtype=np.float64) - xref) * xinc
 
-        preamble = {
-            "points": npts, "xinc": xinc, "xorig": xorg, "xref": xref,
-            "yinc": yinc, "yorig": yorg, "yref": yref
-        }
-        return time_s, volts, preamble
+        # preamble = {
+        #     "points": npts, "xinc": xinc, "xorig": xorg, "xref": xref,
+        #     "yinc": yinc, "yorig": yorg, "yref": yref
+        # }
+        return time_s, volts #preamble
 
 
