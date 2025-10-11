@@ -39,7 +39,7 @@ def main():
     # pre = i.query(':WAV:PRE?').strip().split(',')
     # YMULT = float(pre[7]); YORIG = float(pre[8]); YOFF = float(pre[9])
 
-    with open(FILE_PATH, "ab", buffering=1024*1024) as f:
+    with open(FILE_PATH, "wb", buffering=1024*1024) as f:
         for CHUNK_SIZE in CHUNK_SIZES:            
             i.write(":SING")
             # i.write(":TFOR")

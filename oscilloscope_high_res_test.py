@@ -74,7 +74,7 @@ def main():
     i.write(":ACQ:TYPE NORM")
     # i.write(f":TIM:SCAL {TIME_SCALE}") # 1 sample per nanosecond is the upper limit of the instrument
 
-    with open(FILE_PATH, "ab", buffering=1024*1024) as f:
+    with open(FILE_PATH, "wb", buffering=1024*1024) as f:
         for MEMORY_DEPTH in MEMORY_DEPTHS_TO_TEST:
             i.write(":RUN") # setting memory depth is only reliable in run mode
             i.write(f":ACQ:MDEP {MEMORY_DEPTH}")

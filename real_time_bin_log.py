@@ -1,9 +1,10 @@
 # tail_plot.py
-import os, time, struct, numpy as np, matplotlib.pyplot as plt, matplotlib.dates as mdates
+import sys, os, time, struct, numpy as np, matplotlib.pyplot as plt, matplotlib.dates as mdates
 from datetime import datetime, timezone
 from oscilloscope_high_res_test import HDR_FMT, MAGIC
 
-PATH = os.path.join("Tests", "oscilloscope_binary_capture.bin")
+PATH = sys.argv[1] if sys.argv[1] else os.path.join("Tests", "oscilloscope_binary_capture.bin")
+print(PATH)
 HDR_SZ = struct.calcsize(HDR_FMT)
 BINS, WIN = 2048, 2_000_000
 
