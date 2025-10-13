@@ -60,7 +60,6 @@ if __name__ == "__main__":
             print(f"ERROR: Voltage {voltage}V exceeds {VOLTAGE_LIMIT}V limit!")
             # Set to 0V and turn off
             send_command(ser, '<01000000000>')
-            send_command(ser, '<07200000000>')  # Output OFF
             # Disconnect
             send_command(ser, '<09200000000>')
             ser.close()
@@ -69,7 +68,6 @@ if __name__ == "__main__":
         # If 0V, set to 0 and turn off
         if voltage == 0:
             send_command(ser, '<01000000000>')
-            send_command(ser, '<07200000000>')  # Output OFF
             print(f"Nice Power supply on {com_port} (addr {device_addr}) set to 0V and turned OFF")
         else:
             # Set voltage and turn on
