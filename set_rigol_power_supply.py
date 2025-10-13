@@ -10,30 +10,27 @@ if __name__ == "__main__":
 
     psu = RigolPowerSupply(psu_address)
 
-    if not psu:
+    if not psu.instrument:
         print("No power supply found")
         sys.exit(1)
 
-    i = psu.instrument
-    i.write(":INST:SEL CH3")
-
     # Set current limit to 0.001A (1mA)
-    i.write(":SOUR3:CURR 0.001")
+    psu.set_current_limit(3, 0.1)
 
-    # Safety check: voltage over 10V
+    # Safety check: voltage over limit
     if voltage > VOLTAGE_LIMIT:
-        print(f"ERROR: Voltage {voltage}V exceeds 10V limit!")
-        i.write(":SOUR3:VOLT 0")
-        i.write(":OUTP OFF")
-        raise ValueError(f"Voltage {voltage}V exceeds 10V safety limit")
+        print(f"ERROR: Voltage {voltage}V exceeds {VOLTAGE_LIMIT}V limit!")
+        psu.set_voltage(3, 0)
+        psu.turn_channel_off(3)
+        raise ValueError(f"Voltage {voltage}V exceeds {VOLTAGE_LIMIT}V safety limit")
 
     # If 0V, set to 0 and turn off
     if voltage == 0:
-        i.write(":SOUR3:VOLT 0")
-        i.write(":OUTP OFF")
+        psu.set_voltage(3, 0)
+        psu.turn_channel_off(3)
         print("Power supply CH3 set to 0V and turned OFF")
     else:
         # Set voltage and turn on
-        i.write(f":SOUR3:VOLT {voltage}")
-        i.write(":OUTP ON")
+        psu.set_voltage(3, voltage)
+        psu.turn_channel_on(3)
         print(f"Power supply CH3 set to {voltage}V and turned ON")
