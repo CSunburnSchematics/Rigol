@@ -179,12 +179,17 @@ class NicePowerSupply:
 # ---------------- Example usage ----------------
 if __name__ == "__main__":
     # Windows: port like "COM5"; Linux: "/dev/ttyUSB0"
-    ps = NicePowerSupply(port="/dev/ttyUSB0", slave_addr=1, baudrate=9600, parity="N")
+    ps = NicePowerSupply(port="COM5", slave_addr=1, baudrate=9600, parity="N")
 
     try:
+        print("DEBUG: 1")
+        # print(ps.inst.read_register(0, 0, functioncode=3))
         ps.set_remote(True)
+        print("DEBUG: 2")
         ps.set_current_limit(1, 1)         # 100 mA limit — SAFE default
+        print("DEBUG: 3")
         ps.turn_on()
+        print("DEBUG: 4")
 
         # Sweep 0 → 20 V in 1 V steps, ~100 ms dwell per step
         data = ps.sweep_voltage(start_v=0.0, stop_v=5.0, step_v=1.0, delay_s=1.0)
@@ -192,5 +197,6 @@ if __name__ == "__main__":
         for idx, (vm, im) in enumerate(data):
             print(f"Step {idx:02d}: {vm:.3f} V, {im:.3f} A")
     finally:
+        ps.set_remote(False)
         ps.turn_off()
         ps.close()

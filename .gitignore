@@ -2,6 +2,7 @@
 Tests/
 **/Test*/
 **/Test*.zip
+.claude/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

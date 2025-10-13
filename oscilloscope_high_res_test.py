@@ -3,8 +3,7 @@ from datetime import datetime, timezone
 from rigol_usb_locator import RigolUsbLocator
 
 OUT_DIR = "Tests"
-FILE_PATH = os.path.join(OUT_DIR, 'oscilloscope_binary_capture.bin')
-RUNS = 10
+RUNS = 1
 PROGRESS_BAR_CHAR_LENGTH = 25
 CHUNK = 250_000
 # MEMORY_DEPTH = 12_000_000
@@ -60,8 +59,28 @@ def write_header(f, i, pre):
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
 
-    loc = RigolUsbLocator(verbose=False); loc.refresh()
-    osc = loc.get_oscilloscope()
+    # Get device address from command line, or use auto-detect
+    osc_address = sys.argv[1] if len(sys.argv) > 1 else None
+
+    if osc_address:
+        from Rigol_DS1054z import RigolOscilloscope
+        osc = RigolOscilloscope(osc_address)
+        # Extract serial from address: USB0::0x1AB1::0x04CE::DS1A123456::INSTR
+        serial = osc_address.split("::")[3] if "::" in osc_address else "unknown"
+    else:
+        loc = RigolUsbLocator(verbose=False); loc.refresh()
+        osc = loc.get_oscilloscope()
+        serial = "auto"
+
+    # Create filename
+    if serial == "auto":
+        filename = "osc_auto.bin"
+    else:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
+        filename = f"osc_{serial}_{timestamp}.bin"
+    FILE_PATH = os.path.join(OUT_DIR, filename)
+    print(f"Output file: {FILE_PATH}")
+
     i = osc.instrument
     i.timeout = 60000           # 60 s
     i.chunk_size = 1024*1024    # 1 MiB
@@ -78,7 +97,7 @@ def main():
         for MEMORY_DEPTH in MEMORY_DEPTHS_TO_TEST:
             i.write(":RUN") # setting memory depth is only reliable in run mode
             i.write(f":ACQ:MDEP {MEMORY_DEPTH}")
-            TIME_SCALE = MEMORY_DEPTH / (POINTS_PER_SECOND * 12 * 2)
+            TIME_SCALE = MEMORY_DEPTH / (POINTS_PER_SECOND * 24 * 2)
             i.write(f":TIM:SCAL {TIME_SCALE}") # 1 sample per nanosecond is the upper limit of the instrument
 
             for idx in range(RUNS):

@@ -1,15 +1,13 @@
 import os, time, sys, struct
 from datetime import datetime, timezone
 from rigol_usb_locator import RigolUsbLocator
+from Rigol_DS1054z import RigolOscilloscope
 
 OUT_DIR = "Tests"
-FILE_PATH = os.path.join(OUT_DIR, 'trigger_capture.bin')
-RUNS = 10
-PROGRESS_BAR_CHAR_LENGTH = 25
 CHUNK = 250_000
 MEMORY_DEPTH = 24_000_000
 POINTS_PER_SECOND = 1_000_000_000
-TIME_SCALE = MEMORY_DEPTH / (POINTS_PER_SECOND * 12 * 2)
+TIME_SCALE = MEMORY_DEPTH / (POINTS_PER_SECOND * 12 * 2 * 2)
 HDR_FMT = "<4sH I Q I f f f f f f B B 6x"   # 4+2+4+8+4+4*6+1+1+6 = 48 B
 # fields: MAGIC,VER,N, t0_ns, dt_ps, XINC,XOR,XREF, YINC,YOR,YREF, chan, flags, pad
 MAGIC, VER = b"RGOL", 1
@@ -49,8 +47,27 @@ def write_header(f, i, pre):
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
 
-    loc = RigolUsbLocator(verbose=False); loc.refresh()
-    osc = loc.get_oscilloscope()
+    # Get device address from command line, or use auto-detect
+    osc_address = sys.argv[1] if len(sys.argv) > 1 else None
+
+    if osc_address:
+        osc = RigolOscilloscope(osc_address)
+        # Extract serial from address: USB0::0x1AB1::0x04CE::DS1A123456::INSTR
+        serial = osc_address.split("::")[3] if "::" in osc_address else "unknown"
+    else:
+        loc = RigolUsbLocator(verbose=False); loc.refresh()
+        osc = loc.get_oscilloscope()
+        serial = "auto"
+
+    # Create filename
+    if serial == "auto":
+        filename = "trigger_auto.bin"
+    else:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
+        filename = f"trigger_{serial}_{timestamp}.bin"
+    FILE_PATH = os.path.join(OUT_DIR, filename)
+    print(f"Output file: {FILE_PATH}")
+
     i = osc.instrument
 
     i.timeout = 60000           # 60 s
