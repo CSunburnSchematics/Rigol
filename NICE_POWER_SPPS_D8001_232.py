@@ -93,16 +93,25 @@ class NicePowerSupply:
     def turn_off(self):
         self._write_u16(self.REG_OUT, 0)
 
-    def set_voltage(self, channel_ignored, voltage):
+    def set_voltage(self, voltage):
+        """
+        Set output voltage
+        Note: Setting voltage to 0 automatically turns off output and disables remote mode
+        """
         self._write_float(self.REG_VSET, float(voltage))
 
-    def set_current_limit(self, channel_ignored, current):
+        # If setting to 0V, turn off output and disable remote mode
+        if voltage == 0:
+            self.turn_off()
+            self.set_remote(False)
+
+    def set_current_limit(self, current):
         self._write_float(self.REG_ISET, float(current))
 
-    def measure_voltage(self, channel_ignored=1):
+    def measure_voltage(self):
         return self._read_float(self.REG_VOUT)
 
-    def measure_current(self, channel_ignored=1):
+    def measure_current(self):
         return self._read_float(self.REG_IOUT)
 
     def read_set_voltage(self):
@@ -113,7 +122,7 @@ class NicePowerSupply:
 
     def reset(self):
         try:
-            self.set_voltage(1, 0.0)
+            self.set_voltage(0.0)
         finally:
             self.turn_off()
 
@@ -130,8 +139,8 @@ class NicePowerSupply:
         self.set_remote(True)
 
         # Set points
-        self.set_voltage(1, voltage)
-        self.set_current_limit(1, current)
+        self.set_voltage(voltage)
+        self.set_current_limit(current)
 
         # Optional verification against set registers (stable, load-agnostic)
         if verify:
@@ -144,9 +153,9 @@ class NicePowerSupply:
                     break
                 # retry writes
                 if dv > tol:
-                    self.set_voltage(1, voltage)
+                    self.set_voltage(voltage)
                 if di > tol:
-                    self.set_current_limit(1, current)
+                    self.set_current_limit(current)
             else:
                 raise RuntimeError(f"Failed to verify setpoints: Vset={vset:.3f} (want {voltage}), Iset={iset:.3f} (want {current})")
 
@@ -160,13 +169,13 @@ class NicePowerSupply:
         Simple ramp/sweep (monotonic). Returns a list of (v_meas, i_meas).
         """
         if current_limit is not None:
-            self.set_current_limit(1, current_limit)
+            self.set_current_limit(current_limit)
         self.set_remote(True)
         seq = []
         direction = 1 if stop_v >= start_v else -1
         v = start_v
         while True:
-            self.set_voltage(1, v)
+            self.set_voltage(v)
             time.sleep(delay_s)
             vm = self.measure_voltage()
             im = self.measure_current()
@@ -186,7 +195,7 @@ if __name__ == "__main__":
         # print(ps.inst.read_register(0, 0, functioncode=3))
         ps.set_remote(True)
         print("DEBUG: 2")
-        ps.set_current_limit(1, 1)         # 100 mA limit — SAFE default
+        ps.set_current_limit(1)         # 1A limit — SAFE default
         print("DEBUG: 3")
         ps.turn_on()
         print("DEBUG: 4")
