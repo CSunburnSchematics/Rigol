@@ -5,29 +5,42 @@ from rigol_usb_locator import RigolUsbLocator
 OUT_DIR = "Tests"
 RUNS = float("inf")
 HDR_FMT = "<4sH I Q I f f f f f f B B 6x"   # 4+2+4+8+4+4*6+1+1+6 = 48 B
-# fields: MAGIC,VER,N, t0_ns, dt_ps, XINC,XOR,XREF, YINC,YOR,YREF, chan, flags, pad
+"""
+Header fields:
+  MAGIC (4s): b"RGOL" - file format identifier
+  VER (H): format version number (currently 1)
+  N (I): number of samples for this channel
+  t0_ns (Q): absolute trigger timestamp in nanoseconds (Unix epoch)
+  dt_ps (I): time between samples in picoseconds (from XINC)
+  XINC (f): seconds per sample (e.g., 4e-9 = 4ns)
+  XOR (f): X-axis origin offset (usually 0)
+  XREF (f): X-axis reference point (usually 0)
+  YINC (f): volts per ADC count - voltage conversion factor
+  YOR (f): Y-axis origin offset
+  YREF (f): Y-axis reference point
+  chan (B): channel number (1-4)
+  flags (B): reserved for future use
+  pad (6x): 6 bytes padding for alignment
+Voltage formula: voltage = (raw_byte - YREF - YOR) * YINC
+"""
 MAGIC, VER = b"RGOL", 1
 
-def wait_for_trigger_stop(i, wait_treshold = 10, query_cooldown = 0.005):
-    start = time.time()
-    deadline = time.monotonic() + wait_treshold
-    while time.monotonic() < deadline:
+def wait_for_trigger_stop(i, max_attempts=2000, query_cooldown=0.005):
+    """Wait until trigger fires and acquisition completes. Returns timestamp when ready."""
+    for _ in range(max_attempts):
         state = i.query(":TRIG:STAT?").strip().upper()
         if state == "STOP":
-            # print("DEBUG: waited for trigger stop for ", time.time() - start, " seconds")
-            return
+            return time.time_ns()
         elif state == "WAIT":
             i.write(":TFOR")
-            # print("DEBUG: force triggered after ", time.time() - start, " seconds")
-            return
+            return time.time_ns()
         time.sleep(query_cooldown)
-    raise TimeoutError(f"Waiting for Trigger STOP. timed out after {wait_treshold} seconds.") 
+    raise TimeoutError(f"Trigger timed out after {max_attempts} attempts") 
 
-def write_header(f, pre, chan):
+def write_header(f, pre, chan, t0_ns):
     XINC = float(pre[4]); XOR = float(pre[5]); XREF = float(pre[6])
     YINC = float(pre[7]); YOR = float(pre[8]); YREF = float(pre[9])
     dt_ps = int(round(XINC * 1e12))
-    t0_ns = time.time_ns()
     acquired_points = int(pre[2])
     hdr = struct.pack(HDR_FMT, MAGIC, VER, acquired_points, t0_ns, dt_ps,
                     XINC, XOR, XREF, YINC, YOR, YREF, chan, 0)
@@ -95,7 +108,7 @@ def main():
     with open(FILE_PATH, "ab", buffering=1024*1024) as f:
         while idx < RUNS:
             i.write(":SING")
-            wait_for_trigger_stop(i)
+            trigger_time_ns = wait_for_trigger_stop(i)
             i.write(":STOP")
 
             i.write(":WAV:MODE RAW")
@@ -109,7 +122,7 @@ def main():
                 pre = i.query(":WAV:PRE?").split(",")
                 acquired_points = int(pre[2])
 
-                write_header(f, pre, chan)
+                write_header(f, pre, chan, trigger_time_ns)
 
                 start = 1
                 while start <= acquired_points:
