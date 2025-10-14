@@ -1,4 +1,4 @@
-import os, time, sys, struct, json
+import os, time, sys, struct, json, signal
 from datetime import datetime, timezone
 from rigol_usb_locator import RigolUsbLocator
 
@@ -84,6 +84,15 @@ def main():
     i.chunk_size = 1024*1024    # 1 MiB
     i.read_termination = ''     # binary
     i.write_termination = '\n'
+
+    def signal_handler(sig, frame):
+        print("\nStopping oscilloscope...")
+        i.write(":STOP")
+        osc.close()
+        print("Oscilloscope stopped.")
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, signal_handler)
 
     i.write(":RUN") # setting memory depth is only reliable in run mode
 
