@@ -1,14 +1,9 @@
-import os, time, sys, struct
+import os, time, sys, struct, json
 from datetime import datetime, timezone
 from rigol_usb_locator import RigolUsbLocator
 
 OUT_DIR = "Tests"
 RUNS = float("inf")
-PROGRESS_BAR_CHAR_LENGTH = 25
-CHUNK = 250_000
-MEMORY_DEPTH = 6_000_000
-POINTS_PER_SECOND = 1_000_000_000
-TIME_SCALE = MEMORY_DEPTH / (POINTS_PER_SECOND * 24 * 2)
 HDR_FMT = "<4sH I Q I f f f f f f B B 6x"   # 4+2+4+8+4+4*6+1+1+6 = 48 B
 # fields: MAGIC,VER,N, t0_ns, dt_ps, XINC,XOR,XREF, YINC,YOR,YREF, chan, flags, pad
 MAGIC, VER = b"RGOL", 1
@@ -41,8 +36,14 @@ def write_header(f, pre, chan):
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
 
-    # Get device address from command line, or use auto-detect
+    # Get device address and config file from command line
     osc_address = sys.argv[1] if len(sys.argv) > 1 else None
+    config_file = sys.argv[2] if len(sys.argv) > 2 else "default_config.json"
+    config_path = os.path.join("Configs", config_file)
+
+    # Load config
+    with open(config_path, 'r') as f:
+        config = json.load(f)
 
     if osc_address:
         from Rigol_DS1054z import RigolOscilloscope
@@ -54,6 +55,17 @@ def main():
         osc = loc.get_oscilloscope()
         serial = "auto"
 
+    # Get oscilloscope config by serial
+    osc_config = config["oscilloscopes"]["rigol"].get(serial)
+    if not osc_config:
+        print(f"ERROR: No config found for oscilloscope {serial}")
+        return
+
+    # Get settings from config
+    MEMORY_DEPTH = osc_config["memory_depth"]
+    TIME_SCALE = osc_config["time_scale"]
+    CHUNK = config["test_settings"]["chunk_size"]
+
     i = osc.instrument
     i.timeout = 60000           # 60 s
     i.chunk_size = 1024*1024    # 1 MiB
@@ -61,12 +73,18 @@ def main():
     i.write_termination = '\n'
 
     i.write(":RUN") # setting memory depth is only reliable in run mode
-    i.write(f":ACQ:MDEP {MEMORY_DEPTH}")
+
+    # Configure channels from config
+    ch_scales = [osc_config["channels"][str(ch)]["scale"] for ch in range(1, 5)]
+    ch_probes = [osc_config["channels"][str(ch)]["probe"] for ch in range(1, 5)]
     i.write(":CHAN1:DISP ON; :CHAN2:DISP ON; :CHAN3:DISP ON; :CHAN4:DISP ON")
-    i.write(":CHAN1:SCAL 0.1; :CHAN2:SCAL 0.1; :CHAN3:SCAL 0.1; :CHAN4:SCAL 0.1")
-    i.write(":CHAN1:PROB 100; :CHAN2:PROB 100; :CHAN3:PROB 100; :CHAN4:PROB 100")
+    i.write(f":CHAN1:SCAL {ch_scales[0]}; :CHAN2:SCAL {ch_scales[1]}; :CHAN3:SCAL {ch_scales[2]}; :CHAN4:SCAL {ch_scales[3]}")
+    i.write(f":CHAN1:PROB {ch_probes[0]}; :CHAN2:PROB {ch_probes[1]}; :CHAN3:PROB {ch_probes[2]}; :CHAN4:PROB {ch_probes[3]}")
     i.write(":ACQ:TYPE NORM")
-    i.write(f":TIM:SCAL {TIME_SCALE}") # 1 sample per nanosecond is the upper limit of the instrument
+
+    # Set time scale FIRST, then memory depth (scope may auto-adjust based on memory)
+    i.write(f":TIM:SCAL {TIME_SCALE}")
+    i.write(f":ACQ:MDEP {MEMORY_DEPTH}")
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"osc_{serial}_{timestamp}.bin"
