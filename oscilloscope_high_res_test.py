@@ -64,26 +64,28 @@ def main():
     i.write(f":ACQ:MDEP {MEMORY_DEPTH}")
     i.write(":CHAN1:DISP ON; :CHAN2:DISP ON; :CHAN3:DISP ON; :CHAN4:DISP ON")
     i.write(":CHAN1:SCAL 0.1; :CHAN2:SCAL 0.1; :CHAN3:SCAL 0.1; :CHAN4:SCAL 0.1")
+    i.write(":CHAN1:PROB 100; :CHAN2:PROB 100; :CHAN3:PROB 100; :CHAN4:PROB 100")
     i.write(":ACQ:TYPE NORM")
     i.write(f":TIM:SCAL {TIME_SCALE}") # 1 sample per nanosecond is the upper limit of the instrument
 
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"osc_{serial}_{timestamp}.bin"
+    FILE_PATH = os.path.join(OUT_DIR, filename)
+    print(f"Output file: {FILE_PATH}")
+
     idx = 0
-    while idx < RUNS:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
-        filename = f"osc_{serial}_{timestamp}.bin"
-        FILE_PATH = os.path.join(OUT_DIR, filename)
+    with open(FILE_PATH, "ab", buffering=1024*1024) as f:
+        while idx < RUNS:
+            i.write(":SING")
+            wait_for_trigger_stop(i)
+            i.write(":STOP")
 
-        i.write(":SING")
-        wait_for_trigger_stop(i)
-        i.write(":STOP")
+            i.write(":WAV:MODE RAW")
+            i.write(":WAV:POIN:MODE RAW")
+            i.write(":WAV:FORM BYTE")
+            i.write(":WAV:BYTE LSBF")
 
-        i.write(":WAV:MODE RAW")
-        i.write(":WAV:POIN:MODE RAW")
-        i.write(":WAV:FORM BYTE")
-        i.write(":WAV:BYTE LSBF")
-
-        start_time = time.perf_counter()
-        with open(FILE_PATH, "wb", buffering=1024*1024) as f:
+            start_time = time.perf_counter()
             for chan in range(1, 5):
                 i.write(f":WAV:SOUR CHAN{chan}")
                 pre = i.query(":WAV:PRE?").split(",")
@@ -98,9 +100,10 @@ def main():
                     block = i.query_binary_values(":WAV:DATA?", datatype="B", container=bytearray)
                     f.write(block)
                     start = stop + 1
-        elapsed_time = time.perf_counter() - start_time
-        print(f"RUN {idx}: {FILE_PATH} - {elapsed_time:.6f}s")
-        idx += 1
+                f.flush()
+            elapsed_time = time.perf_counter() - start_time
+            print(f"RUN {idx}: {elapsed_time:.6f}s")
+            idx += 1
     osc.close()
 
 if __name__ == "__main__":
