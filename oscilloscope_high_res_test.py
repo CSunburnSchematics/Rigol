@@ -93,6 +93,7 @@ def main():
     i.write(":CHAN1:DISP ON; :CHAN2:DISP ON; :CHAN3:DISP ON; :CHAN4:DISP ON")
     i.write(f":CHAN1:SCAL {ch_scales[0]}; :CHAN2:SCAL {ch_scales[1]}; :CHAN3:SCAL {ch_scales[2]}; :CHAN4:SCAL {ch_scales[3]}")
     i.write(f":CHAN1:PROB {ch_probes[0]}; :CHAN2:PROB {ch_probes[1]}; :CHAN3:PROB {ch_probes[2]}; :CHAN4:PROB {ch_probes[3]}")
+    i.write(":CHAN1:OFFS 0; :CHAN2:OFFS 0; :CHAN3:OFFS 0; :CHAN4:OFFS 0")
     i.write(":ACQ:TYPE NORM")
 
     # Set time scale FIRST, then memory depth (scope may auto-adjust based on memory)

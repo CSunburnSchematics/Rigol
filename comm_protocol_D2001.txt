@@ -1,0 +1,116 @@
+
+Communication protocol of programmable regulated power supply
+
+This series of instruments adopts RS232 or USB or RS485 transmission standard to communicate with the computer. The details are as follows:
+
+Baud rate：1200，2400，4800，9600,19200  Default Value :9600
+Start bit：1
+Data bits：8
+Check bit：none
+Stop bit：1
+
+Frame structure
+Message sending should start with a pause interval of at least 3.5 characters; The whole message frame must be a continuous data transmission stream. If there is a pause time of more than 3.5 characters before the frame is completed, the receiving device will refresh the incomplete message and assume that the next byte is the address field of a new message. Similarly, if a new message starts with the previous message in less than 3.5 characters, the receiving device will consider it as the continuation of the previous message.
+
+The standard structure of a frame of information is as follows：
+Start
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+end
+<
+0
+2
+0
+0
+4
+5
+8
+0
+0
+0
+0
+>
+Start 
+bit
+Address 
+bit
+Function
+bit
+Data bits 1
+Data bits 2
+Device address
+End bit
+
+
+Function
+1. Set voltage
+2. Read voltage
+3.Set current
+4.Read current
+
+Read voltage return data format:<12012000000> return 12V
+Read current return data format:<14009300000> < The first digit in the back represents the CV CC state, 1 is the CV state, C is the CC state, and the following value is the current value 9.3A
+<12000000000>   The return voltage is 0  CV
+<C4000000000>   The return current is 0  CC
+
+
+
+ASCII sending<01012100001>indicates setting the power supply voltage of device address: 1 to 12.10V (RS4
+Hexadecimal transmission 3C 30 31 30 31 32 31 30 30 30 30 31 3E
+
+ASCII sending<01012100100>indicates setting the power supply voltage of device address: 100 to 12.10V (R
+Hexadecimal transmission 3C 30 31 30 31 32 31 30 30 31 30 30 3E
+(Note:<01012100001>Convert to ASCII and send)
+
+The data format is fixed in length, and if there is not enough length, use 0 to fill in
+
+PC terminal reading voltage
+Example:<12004580000>
+Indicates reading 4.58V voltage on the dial
+Example:<12004580001>
+Indicates the reading device address: 1. The voltage on the power dial is 4.58V
+
+PC end reading current
+Example:<14000183000>
+Indicates reading 0.183A current on the dial
+Example:<14000183001>
+Indicates the reading device address: 1. The current on the power dial is 0.183A
+
+PC connection (sent by PC)
+
+<09100000000>      
+<01004580000>
+<03006920000>
+
+PC disconnected (PC sent to MCU)
+<09200000000>
+
+PC query voltage and current
+<04003300000> Query current  MCU return <14000183000>
+<02012200000> Query voltage  MCU return <12004580000>
+
+PC set voltage
+<01004580000> Set voltage  MCU return<11OK0000000>
+
+PC set current
+<03006920000> Set current  MCU return <13OK0000000>
+
+PC startup power   <07000000000>
+
+PC power off   <08000000000>
+
+
+
+
+                                                   
+                                                                   VER:02
+                                                                  2023.8.11

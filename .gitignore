@@ -1,5 +1,6 @@
 # Folders and files from test runs
 Tests/
+CSV/
 **/Test*/
 **/Test*.zip
 .claude/
