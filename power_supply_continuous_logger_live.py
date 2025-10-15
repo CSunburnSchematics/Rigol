@@ -112,25 +112,24 @@ class PowerSupplyMonitorLive:
             self.currents_nice.append(deque(maxlen=10000))
 
     def setup_csv_files(self):
-        """Setup CSV files for each power supply"""
+        """Setup single unified CSV file for all power supplies"""
         timestamp_str = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S_UTC')
         log_dir = "power_supply_logs"
         os.makedirs(log_dir, exist_ok=True)
 
-        print("\n=== Setting up CSV log files ===")
+        print("\n=== Setting up CSV log file ===")
 
+        # Build column headers
+        headers = ['UTC_Timestamp', 'Elapsed_s', 'Sample_Num']
+
+        # Add Rigol columns if present
         if self.rigol_psu:
-            filename = os.path.join(log_dir, f"rigol_dp832a_{timestamp_str}.csv")
-            csv_file = open(filename, 'w', newline='')
-            csv_writer = csv.writer(csv_file)
-            csv_writer.writerow(['UTC_Timestamp', 'Elapsed_s', 'Sample_Num',
-                                'CH1_V', 'CH1_A', 'CH1_W',
-                                'CH2_V', 'CH2_A', 'CH2_W',
-                                'CH3_V', 'CH3_A', 'CH3_W'])
-            self.csv_files['rigol'] = csv_file
-            self.csv_writers['rigol'] = csv_writer
-            print(f"[OK] Rigol log: {filename}")
+            headers.extend(['Rigol_CH1_V', 'Rigol_CH1_A', 'Rigol_CH1_W',
+                           'Rigol_CH2_V', 'Rigol_CH2_A', 'Rigol_CH2_W',
+                           'Rigol_CH3_V', 'Rigol_CH3_A', 'Rigol_CH3_W'])
 
+        # Add Nice Power columns
+        self.nice_psu_ids = []  # Store IDs for later use
         for idx, (com_port, device_type, addr, psu) in enumerate(self.nice_psu_list):
             psu_id = None
             if device_type == "d2001":
@@ -142,14 +141,22 @@ class PowerSupplyMonitorLive:
                         break
 
             if psu_id:
-                filename = os.path.join(log_dir, f"nice_{psu_id}_{com_port}_{timestamp_str}.csv")
-                csv_file = open(filename, 'w', newline='')
-                csv_writer = csv.writer(csv_file)
-                csv_writer.writerow(['UTC_Timestamp', 'Elapsed_s', 'Sample_Num',
-                                    'Voltage_V', 'Current_A', 'Power_W'])
-                self.csv_files[f'nice_{idx}'] = csv_file
-                self.csv_writers[f'nice_{idx}'] = csv_writer
-                print(f"[OK] {psu_id} log: {filename}")
+                self.nice_psu_ids.append(psu_id)
+                # Use short names: D2001, D6001, D8001
+                short_name = psu_id.split('_')[1]
+                headers.extend([f'{short_name}_V', f'{short_name}_A', f'{short_name}_W'])
+            else:
+                self.nice_psu_ids.append(None)
+
+        # Create single CSV file
+        filename = os.path.join(log_dir, f"all_power_supplies_{timestamp_str}.csv")
+        csv_file = open(filename, 'w', newline='')
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(headers)
+
+        self.csv_files['unified'] = csv_file
+        self.csv_writers['unified'] = csv_writer
+        print(f"[OK] Unified log: {filename}")
 
     def configure_supplies(self):
         """Configure all power supplies to initial setpoints"""
@@ -253,8 +260,11 @@ class PowerSupplyMonitorLive:
                 'nice': []
             }
 
+            # Build unified CSV row
+            row = [timestamp.isoformat(), f'{elapsed:.3f}', self.sample_count]
+
             # Sample Rigol
-            if self.rigol_psu and 'rigol' in self.csv_writers:
+            if self.rigol_psu:
                 try:
                     ch_data = []
                     all_valid = True
@@ -267,40 +277,42 @@ class PowerSupplyMonitorLive:
 
                     if all_valid and len(ch_data) == 3:
                         data_point['rigol'] = ch_data
-
-                        # Write to CSV
-                        row = [timestamp.isoformat(), f'{elapsed:.3f}', self.sample_count]
+                        # Add to CSV row
                         for ch in ch_data:
                             row.extend([f'{ch["v"]:.6f}', f'{ch["i"]:.6f}', f'{ch["p"]:.6f}'])
-                        self.csv_writers['rigol'].writerow(row)
-
-                        if self.sample_count % 10 == 0:
-                            self.csv_files['rigol'].flush()
+                    else:
+                        # Add empty columns if read failed
+                        row.extend([''] * 9)
 
                 except Exception as e:
                     print(f"[ERROR] Rigol sampling: {e}")
+                    row.extend([''] * 9)
 
             # Sample Nice Power
             for idx, (com_port, device_type, addr, psu) in enumerate(self.nice_psu_list):
-                csv_key = f'nice_{idx}'
-                if csv_key in self.csv_writers:
-                    try:
-                        v = psu.measure_voltage()
-                        i = psu.measure_current()
-                        p = v * i
+                try:
+                    v = psu.measure_voltage()
+                    i = psu.measure_current()
+                    p = v * i
 
-                        data_point['nice'].append({'v': v, 'i': i, 'p': p})
+                    data_point['nice'].append({'v': v, 'i': i, 'p': p})
 
-                        # Write to CSV
-                        row = [timestamp.isoformat(), f'{elapsed:.3f}', self.sample_count,
-                               f'{v:.6f}', f'{i:.6f}', f'{p:.6f}']
-                        self.csv_writers[csv_key].writerow(row)
+                    # Add to CSV row
+                    row.extend([f'{v:.6f}', f'{i:.6f}', f'{p:.6f}'])
 
-                        if self.sample_count % 10 == 0:
-                            self.csv_files[csv_key].flush()
+                except Exception as e:
+                    print(f"[ERROR] Nice {com_port} sampling: {e}")
+                    row.extend(['', '', ''])
 
-                    except Exception as e:
-                        print(f"[ERROR] Nice {com_port} sampling: {e}")
+            # Write unified CSV row
+            if 'unified' in self.csv_writers:
+                try:
+                    self.csv_writers['unified'].writerow(row)
+
+                    if self.sample_count % 10 == 0:
+                        self.csv_files['unified'].flush()
+                except Exception as e:
+                    print(f"[ERROR] CSV write: {e}")
 
             # Queue for plotting
             try:
@@ -656,7 +668,7 @@ class PowerSupplyMonitorLive:
             print(f"Duration:         {elapsed:.1f} seconds")
             print(f"Average rate:     {rate:.2f} Hz")
             print(f"Sample interval:  {self.sample_interval*1000:.0f} ms")
-            print("\nCSV files saved in: power_supply_logs/")
+            print("\nUnified CSV file saved in: power_supply_logs/")
             print("="*70)
 
 
