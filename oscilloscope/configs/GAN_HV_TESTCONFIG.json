@@ -211,9 +211,9 @@
     "rigol": {
       "DP8B261601128": {
         "channels": {
-          "1": { "vout": 0.0, "iout_max": 0.1 },
-          "2": { "vout": 0.0, "iout_max": 0.1 },
-          "3": { "vout": 0.0, "iout_max": 0.1 }
+          "1": { "vout": 0.0, "iout_max": 0.1, "enabled": false },
+          "2": { "vout": 0.0, "iout_max": 0.1, "enabled": false },
+          "3": { "vout": 0.0, "iout_max": 0.1, "enabled": false }
         }
       }
     }

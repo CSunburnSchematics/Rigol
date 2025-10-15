@@ -64,6 +64,14 @@ def set_power_supplies(config_file="default_config.json"):
                     psu_config = config["power_supplies"]["rigol"]["DP8B261601128"]["channels"][str(ch)]
                     voltage = psu_config["vout"]
                     current = psu_config["iout_max"]
+                    enabled = psu_config.get("enabled", True)  # Default to enabled if not specified
+
+                    if not enabled:
+                        # Turn off the channel
+                        rigol_psu.turn_channel_off(ch)
+                        rigol_psu.set_voltage(ch, 0.0)
+                        print(f"  CH{ch}: [OFF] Disabled (set to 0V)")
+                        continue
 
                     # Set values
                     rigol_psu.turn_channel_on(ch)
@@ -120,6 +128,15 @@ def set_power_supplies(config_file="default_config.json"):
 
                 voltage = psu_config["vout"]
                 current = psu_config["iout_max"]
+                enabled = psu_config.get("enabled", True)  # Default to enabled if not specified
+
+                if not enabled:
+                    # Turn off the supply
+                    psu.set_voltage(0.0)
+                    if hasattr(psu, 'turn_off'):
+                        psu.turn_off()
+                    print(f"  {psu_id} ({com_port}): [OFF] Disabled (set to 0V)")
+                    continue
 
                 # Set values using reliable configure method with verification
                 # This is especially important for Modbus supplies (SPPS_D8001/D6001)

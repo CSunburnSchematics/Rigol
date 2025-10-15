@@ -192,28 +192,31 @@
     "nice_power": {
       "SPPS_D2001_232": {
         "baudrate": 9600,
-        "vout": 20.0,
-        "iout_max": 0.1
+        "vout": 0.0,
+        "iout_max": 0.1,
+        "enabled": false
       },
       "SPPS_D6001_232": {
         "com_port": "COM4",
         "baudrate": 9600,
-        "vout": 60.0,
-        "iout_max": 0.1
+        "vout": 0.0,
+        "iout_max": 0.1,
+        "enabled": false
       },
       "SPPS_D8001_232": {
         "com_port": "COM9",
         "baudrate": 9600,
-        "vout": 80.0,
-        "iout_max": 0.1
+        "vout": 0.0,
+        "iout_max": 0.1,
+        "enabled": false
       }
     },
     "rigol": {
       "DP8B261601128": {
         "channels": {
-          "1": { "vout": 0.0, "iout_max": 0.1 },
-          "2": { "vout": 0.0, "iout_max": 0.1 },
-          "3": { "vout": 0.0, "iout_max": 0.1 }
+          "1": { "vout": 12.0, "iout_max": 0.1 },
+          "2": { "vout": 5.0, "iout_max": 0.1 },
+          "3": { "vout": 2.5, "iout_max": 0.1 }
         }
       }
     }
