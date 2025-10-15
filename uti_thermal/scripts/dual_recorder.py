@@ -86,31 +86,10 @@ class DualCameraRecorder:
         webcams = [cam for cam in cameras_found if cam['type'] == 'webcam']
         if webcams:
             if preferred_webcam_index is not None and preferred_webcam_index in [w['index'] for w in webcams]:
-                # Verify this camera actually supports high resolution
-                test_cap = cv2.VideoCapture(preferred_webcam_index, cv2.CAP_DSHOW)
-                if test_cap.isOpened():
-                    # Try to set 4K
-                    test_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
-                    test_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2160)
-                    actual_w = int(test_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                    actual_h = int(test_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                    test_cap.release()
-
-                    if actual_w >= 1920 and actual_h >= 1080:
-                        # This is indeed a high-res camera
-                        self.webcam_index = preferred_webcam_index
-                        print(f"\nUsing specified webcam: Camera {self.webcam_index} (verified {actual_w}x{actual_h})")
-                    else:
-                        print(f"\nWARNING: Camera {preferred_webcam_index} doesn't support high resolution")
-                        print(f"  Max detected: {actual_w}x{actual_h}")
-                        print(f"  Falling back to auto-select")
-                        preferred_webcam_index = None
-                else:
-                    print(f"\nWARNING: Cannot open Camera {preferred_webcam_index}")
-                    preferred_webcam_index = None
-
-            if preferred_webcam_index is None or self.webcam_index is None:
-                # Auto-select by testing actual 4K capability
+                self.webcam_index = preferred_webcam_index
+                print(f"\nUsing specified webcam: Camera {self.webcam_index}")
+            else:
+                # Auto-select by testing for highest resolution
                 print(f"\nTesting webcams for highest resolution...")
                 best_cam = None
                 best_pixels = 0
@@ -118,11 +97,19 @@ class DualCameraRecorder:
                 for cam in webcams:
                     test_cap = cv2.VideoCapture(cam['index'], cv2.CAP_DSHOW)
                     if test_cap.isOpened():
-                        # Try 4K
+                        # Try 4K first
                         test_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
                         test_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2160)
                         w = int(test_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
                         h = int(test_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+                        # If 4K didn't work, try 1080p
+                        if w < 1920:
+                            test_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+                            test_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+                            w = int(test_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                            h = int(test_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
                         pixels = w * h
                         print(f"  Camera {cam['index']}: Max {w}x{h}")
                         test_cap.release()
@@ -136,10 +123,10 @@ class DualCameraRecorder:
                     self.webcam_index = best_cam['index']
                     print(f"\nAuto-selected: Camera {self.webcam_index} ({best_cam.get('actual_max', 'Unknown')})")
                 else:
-                    # Fallback
+                    # Fallback - just use the first webcam found
                     webcams.sort(key=lambda x: x['width'] * x['height'], reverse=True)
                     self.webcam_index = webcams[0]['index']
-                    print(f"\nFallback: Camera {self.webcam_index}")
+                    print(f"\nFallback: Using Camera {self.webcam_index} (any resolution)")
 
         if self.thermal_camera_index is not None:
             print(f"\nSelected thermal: Camera {self.thermal_camera_index} (240x321)")
@@ -152,23 +139,42 @@ class DualCameraRecorder:
         """
         print("\nValidating camera configuration...")
 
-        # Open thermal camera
-        self.thermal_cap = cv2.VideoCapture(self.thermal_camera_index, cv2.CAP_DSHOW)
+        # Open thermal camera with retry
+        print(f"Opening thermal camera (index {self.thermal_camera_index})...")
+        max_retries = 3
+        for attempt in range(max_retries):
+            if attempt > 0:
+                print(f"  Retry {attempt}/{max_retries}...")
+                time.sleep(1)  # Wait before retry
+
+            self.thermal_cap = cv2.VideoCapture(self.thermal_camera_index, cv2.CAP_DSHOW)
+            if self.thermal_cap.isOpened():
+                break
+
         if not self.thermal_cap.isOpened():
-            print("ERROR: Cannot open thermal camera")
+            print("ERROR: Cannot open thermal camera after retries")
             return False
 
         thermal_width = int(self.thermal_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         thermal_height = int(self.thermal_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         print(f"  Thermal: {thermal_width}x{thermal_height}")
 
-        # Open webcam
-        self.webcam_cap = cv2.VideoCapture(self.webcam_index, cv2.CAP_DSHOW)
+        # Open webcam with retry
+        print(f"Opening webcam (index {self.webcam_index})...")
+        for attempt in range(max_retries):
+            if attempt > 0:
+                print(f"  Retry {attempt}/{max_retries}...")
+                time.sleep(1)
+
+            self.webcam_cap = cv2.VideoCapture(self.webcam_index, cv2.CAP_DSHOW)
+            if self.webcam_cap.isOpened():
+                break
+
         if not self.webcam_cap.isOpened():
-            print("ERROR: Cannot open webcam")
+            print("ERROR: Cannot open webcam after retries")
             return False
 
-        # Force webcam to 4K resolution
+        # Try to set highest resolution (4K first, then 1080p)
         self.webcam_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
         self.webcam_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2160)
 
@@ -488,6 +494,10 @@ def main():
         print("  3. Close Uti-Live Screen software if running")
         print("  4. Set UTi 260B to 'USB Camera' mode (not USB Disk)")
         return 1
+
+    # Wait for cameras to fully release after detection
+    print("\nWaiting for cameras to initialize...")
+    time.sleep(2)
 
     # Step 2: Validate configuration
     if not recorder.validate_configuration():
