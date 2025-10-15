@@ -509,7 +509,7 @@ def main():
         stats_ax.axis('off')
         stats_axes.append(stats_ax)
 
-    colors = ['blue', 'orange', 'green', 'red']
+    colors = ['red', 'yellow', 'green', 'blue']  # CH1=red (top), CH2=yellow, CH3=green, CH4=blue (bottom)
 
     # Initialize main timeline plots (16 channels stacked vertically)
     main_scatters = []
