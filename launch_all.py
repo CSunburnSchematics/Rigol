@@ -1,4 +1,5 @@
 import subprocess, sys, json, os
+import time
 from rigol_usb_locator import RigolUsbLocator
 from nice_power_usb_locator import NicePowerLocator
 
@@ -30,7 +31,11 @@ if rigol_psu:
             rigol_psu.turn_channel_on(ch)
             rigol_psu.set_voltage(ch, voltage)
             rigol_psu.set_current_limit(ch, current)
-        print(f"  ✓ Set to {voltage}V, {current}A")
+            rigol_ch_read = rigol_psu.read_power_supply_channel(ch)
+            time.sleep(1)
+            
+
+        print(f"  ✓ Set to {voltage}V, {current}A, read is {rigol_ch_read}")
     except Exception as e:
         print(f"  ✗ Failed to configure: {e}")
 else:
@@ -38,6 +43,7 @@ else:
 
 # Configure Nice power supplies from config
 nice_psu_list = nice_loc.get_power_supplies()
+print(nice_psu_list)
 print(f"Found {len(nice_psu_list)} Nice Power supply(s)")
 
 for com_port, device_type, addr, psu in nice_psu_list:
@@ -67,13 +73,21 @@ for com_port, device_type, addr, psu in nice_psu_list:
         if voltage > 0:
             psu.turn_on()
 
-        print(f"  ✓ Set to {voltage}V, {current}A")
+        v_out = None
+        for _ in range(3):        # check 3 times, 1-second apart
+            time.sleep(1)
+            
+        v_out = psu.measure_voltage()    
+
+        
+
+        print(f"  ✓ Set to {voltage}V, {current}A, voltage read is: {v_out}V")
     except Exception as e:
         print(f"  ✗ Failed to configure: {e}")
 
 # Find all oscilloscopes
-osc_addrs = [addr for addr in rigol_loc._list_usb_resources()
-             if rigol_loc._classify(rigol_loc._query_idn(addr)) == "oscilloscope"]
+osc_addrs = [addr for addr in rigol_loc._list_usb_resources()]
+            #  if rigol_loc._classify(rigol_loc._query_idn(addr)) == "oscilloscope"]
 print(f"Found {len(osc_addrs)} oscilloscope(s)")
 
 # Get oscilloscope script from config

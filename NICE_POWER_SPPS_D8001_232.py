@@ -94,16 +94,13 @@ class NicePowerSupply:
         self._write_u16(self.REG_OUT, 0)
 
     def set_voltage(self, voltage):
-        """
-        Set output voltage
-        Note: Setting voltage to 0 automatically turns off output and disables remote mode
-        """
+     
         self._write_float(self.REG_VSET, float(voltage))
 
         # If setting to 0V, turn off output and disable remote mode
-        if voltage == 0:
-            self.turn_off()
-            self.set_remote(False)
+        # if voltage == 0:
+        #     self.turn_off()
+        #     self.set_remote(False)
 
     def set_current_limit(self, current):
         self._write_float(self.REG_ISET, float(current))

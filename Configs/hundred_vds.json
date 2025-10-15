@@ -1,0 +1,80 @@
+{
+  "test_settings": {
+    "chunk_size": 250000,
+    "oscilloscope_script": "oscilloscope_high_res_test.py"
+  },
+  "oscilloscopes": {
+    "rigol": {
+      "DS1ZA269M00375": {
+        "memory_depth": 3000,
+        "time_scale": 0.000125,
+        "channels": {
+          "1": { "scale": 200.0, "probe": 100 },
+          "2": { "scale": 200.0, "probe": 100 },
+          "3": { "scale": 200.0, "probe": 100 },
+          "4": { "scale": 200.0, "probe": 100 }
+        }
+      },
+      "DS1ZA273M00260": {
+        "memory_depth": 3000,
+        "time_scale": 0.000125,
+        "channels": {
+          "1": { "scale": 50.0, "probe": 100 },
+          "2": { "scale": 50.0, "probe": 100 },
+          "3": { "scale": 50.0, "probe": 100 },
+          "4": { "scale": 50.0, "probe": 100 }
+        }
+      },
+      "DS1ZA172215665": {
+        "memory_depth": 3000,
+        "time_scale": 0.000125,
+        "channels": {
+          "1": { "scale": 200.0, "probe": 100 },
+          "2": { "scale": 200.0, "probe": 100 },
+          "3": { "scale": 200.0, "probe": 100 },
+          "4": { "scale": 200.0, "probe": 100 }
+        }
+      },
+      "DS1ZA276M00823": {
+        "memory_depth": 3000,
+        "time_scale": 0.000125,
+        "channels": {
+          "1": { "scale": 200.0, "probe": 100 },
+          "2": { "scale": 200.0, "probe": 100 },
+          "3": { "scale": 200.0, "probe": 100 },
+          "4": { "scale": 200.0, "probe": 100 }
+        }
+      }
+    }
+  },
+  "power_supplies": {
+    "nice_power": {
+      "SPPS_D2001_232": {
+        "baudrate": 9600,
+        "vout": 80.0,
+        "iout_max": 0.1
+      },
+      "SPPS_D6001_232": {
+        "com_port": "COM11",
+        "baudrate": 9600,
+        "vout": 650.0,
+        "iout_max": 0.1
+      },
+      "SPPS_D8001_232": {
+        "com_port": "COM10",
+        "baudrate": 9600,
+        "vout": 800.0,
+        "iout_max": 0.1
+      }
+    },
+    "rigol": {
+      "DP8B261601128": {
+        "channels": {
+          "1": { "vout": 0.0, "iout_max": 0.0 },
+          "2": { "vout": 0.0, "iout_max": 0.0 },
+          "3": { "vout": 0.0, "iout_max": 0.0 }
+        }
+      }
+    }
+  }
+}
