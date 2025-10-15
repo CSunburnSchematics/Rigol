@@ -17,9 +17,25 @@ def set_power_supplies(config_file="default_config.json"):
     Set all power supplies from config file
 
     Args:
-        config_file: Path to JSON config file (relative to Configs/ directory)
+        config_file: Path to JSON config file (can be absolute or relative to Configs/ or oscilloscope/configs/)
     """
-    config_path = os.path.join("Configs", config_file)
+    # Try multiple possible config locations
+    possible_paths = [
+        config_file,  # Absolute or relative to current dir
+        os.path.join("Configs", config_file),  # Main Configs/ directory
+        os.path.join("oscilloscope", "configs", config_file),  # Oscilloscope configs
+        os.path.join("..", "Configs", config_file),  # One level up
+        os.path.join("..", "oscilloscope", "configs", config_file),  # One level up oscilloscope
+    ]
+
+    config_path = None
+    for path in possible_paths:
+        if os.path.exists(path):
+            config_path = path
+            break
+
+    if not config_path:
+        raise FileNotFoundError(f"Config file '{config_file}' not found in any expected location")
 
     # Load config
     with open(config_path, 'r') as f:

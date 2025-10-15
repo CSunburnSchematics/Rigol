@@ -16,7 +16,23 @@ from nice_power_usb_locator import NicePowerLocator
 class PowerSupplyLogger:
     def __init__(self, config_file="default_config.json"):
         """Initialize logger with config file"""
-        config_path = os.path.join("Configs", config_file)
+        # Try multiple possible config locations
+        possible_paths = [
+            config_file,  # Absolute or relative to current dir
+            os.path.join("Configs", config_file),  # Main Configs/ directory
+            os.path.join("oscilloscope", "configs", config_file),  # Oscilloscope configs
+            os.path.join("..", "Configs", config_file),  # One level up
+            os.path.join("..", "oscilloscope", "configs", config_file),  # One level up oscilloscope
+        ]
+
+        config_path = None
+        for path in possible_paths:
+            if os.path.exists(path):
+                config_path = path
+                break
+
+        if not config_path:
+            raise FileNotFoundError(f"Config file '{config_file}' not found in any expected location")
 
         with open(config_path, 'r') as f:
             self.config = json.load(f)
