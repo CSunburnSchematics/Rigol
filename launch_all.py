@@ -16,16 +16,25 @@ print(f"Using config: {config_file}")
 rigol_loc = RigolUsbLocator(verbose=False)
 nice_loc = NicePowerLocator(verbose=False)
 nice_loc.refresh()
+rigol_loc.refresh()
 
-# # Find Rigol power supplies
-# psu_addrs = [addr for addr in rigol_loc._list_usb_resources()
-#              if rigol_loc._classify(rigol_loc._query_idn(addr)) == "power_supply"]
-# print(f"Found {len(psu_addrs)} Rigol power supply(s)")
-
-# # Launch Rigol power supply scripts
-# for addr in psu_addrs:
-#     print(f"Setting up Rigol power supply: {addr}")
-#     subprocess.Popen([sys.executable, "set_rigol_power_supply.py", addr, "1"])
+# Find Rigol power supply
+rigol_psu = rigol_loc.get_power_supply()
+if rigol_psu:
+    try:
+        print(f"Configuring Rigol Power supply")
+        for ch in [1, 2, 3]:
+            psu_config = config["power_supplies"]["rigol"]["DP8B261601128"]["channels"][str(ch)]
+            voltage = psu_config["vout"]
+            current = psu_config["iout_max"]
+            rigol_psu.turn_channel_on(ch)
+            rigol_psu.set_voltage(ch, voltage)
+            rigol_psu.set_current_limit(ch, current)
+        print(f"  ✓ Set to {voltage}V, {current}A")
+    except Exception as e:
+        print(f"  ✗ Failed to configure: {e}")
+else:
+    print("No Rigol Power supply found")
 
 # Configure Nice power supplies from config
 nice_psu_list = nice_loc.get_power_supplies()
