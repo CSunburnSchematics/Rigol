@@ -206,15 +206,21 @@ class RadiationTestLauncher:
         env['PYTHONUNBUFFERED'] = '1'
 
         try:
-            process = subprocess.Popen(
-                [sys.executable, str(webcam_script)],
-                cwd=str(webcam_script.parent),
-                env=env,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1,
-                universal_newlines=True
-            )
+            # Launch webcam with new console window on Windows
+            # Don't capture stdout/stderr so OpenCV window can display
+            if sys.platform == 'win32':
+                process = subprocess.Popen(
+                    [sys.executable, str(webcam_script)],
+                    cwd=str(webcam_script.parent),
+                    env=env,
+                    creationflags=subprocess.CREATE_NEW_CONSOLE
+                )
+            else:
+                process = subprocess.Popen(
+                    [sys.executable, str(webcam_script)],
+                    cwd=str(webcam_script.parent),
+                    env=env
+                )
 
             print(f"  [OK] Webcam recording started (PID: {process.pid})")
             print(f"  [OK] Output: {self.test_dir / 'webcam_videos'}\n")
@@ -431,12 +437,19 @@ def main():
     time.sleep(2)  # Give oscilloscope time to start
 
     launcher.webcam_process = launcher.launch_webcam_recording()
-    time.sleep(2)  # Give webcam time to start
+    time.sleep(3)  # Give webcam time to initialize cameras
 
-    if not launcher.oscilloscope_process or not launcher.webcam_process:
-        print("\nERROR: Failed to start one or more systems!")
+    # Check if at least oscilloscope started
+    if not launcher.oscilloscope_process:
+        print("\nERROR: Failed to start oscilloscope capture!")
         launcher.stop_all_processes()
         return 1
+
+    # Warn if webcam didn't start, but continue with oscilloscope only
+    if not launcher.webcam_process:
+        print("\nWARNING: Webcam recording did not start.")
+        print("Continuing with oscilloscope capture only...")
+        print("(Make sure cameras are connected and accessible)\n")
 
     # Monitor processes
     try:
