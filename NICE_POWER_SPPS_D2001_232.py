@@ -96,7 +96,8 @@ class NicePowerSupply:
 
     def turn_on(self):
         """Turn on output"""
-        self._send_command(f'<07100000{self._format_device_addr()}>')
+        self._send_command(f'<07000000{self._format_device_addr()}>')
+        time.sleep(1)
 
     def turn_off(self):
         """
@@ -107,17 +108,14 @@ class NicePowerSupply:
         self.set_voltage(0.0)
 
     def set_voltage(self, voltage):
-        """
-        Set output voltage
-        :param voltage: Voltage in volts (float)
-        Note: Setting voltage to 0 automatically turns off output and disables remote mode
-        """
+       
         voltage_str = self._format_voltage(voltage)
         self._send_command(f'<01{voltage_str}{self._format_device_addr()}>')
 
-        # If setting to 0V, disable remote mode (output is already off)
-        if voltage == 0:
-            self.set_remote(False)
+        # # If setting to 0V, disable remote mode (output is already off)
+        # if voltage == 0:
+        #     self.turn_off()
+        #     self.set_remote(False)
 
     def set_current_limit(self, current):
         """
@@ -126,6 +124,25 @@ class NicePowerSupply:
         """
         current_str = self._format_current(current)
         self._send_command(f'<03{current_str}{self._format_device_addr()}>')
+
+#     rep = self._send_command(f'<020122000{self._format_device_addr()}>')
+#     print(f"RAW reply: {rep!r}")
+
+#     import re
+# def measure_voltage(self):
+#         rep = self._send_command(f'<020122000{self._format_device_addr()}>')
+#         if not rep or not (rep.startswith('<') and rep.endswith('>')):
+#             return None
+#         m = re.match(r"<12(\d{5})\d{3}>", rep)  # 5 digits value, 3 digits addr
+#         if not m:
+#             # fallback: try any 5 consecutive digits after '12'
+#             m = re.search(r"^<12(\d{5})", rep)
+#             if not m: 
+#                 return None
+#         val = int(m.group(1))  # e.g., 04580
+#         # Most firmwares use hundredths of a volt; some use millivolts. Pick scale by magnitude.
+#         return val/100.0 if val >= 1000 else val/1000.0
+
 
     def measure_voltage(self):
         """
@@ -136,8 +153,19 @@ class NicePowerSupply:
         # Response format: <12VVVVVV000> where VVVVVV is voltage * 100
         if response.startswith('<12') and len(response) == 13:
             voltage_str = response[3:9]
-            return float(voltage_str) / 100.0
-        return 0.0
+            return float(voltage_str) / 1000.0
+        return 
+    
+    # def set_voltage(self):
+    #     rep = self._send_command(f'<020122000{self._format_device_addr()}>')  # e.g., "<12004580000>"
+    #     if not rep or rep[0] != '<' or rep[-1] != '>':
+    #         return None
+    #     core = rep[1:-1]              # "12004580000"
+    #     if not core.startswith('12'):
+    #         return None
+    #     digits = ''.join(ch for ch in core[2:] if ch.isdigit()).ljust(5, '0')[:5]
+    #     return int(digits) / 100.0     # -> volts
+
 
     def measure_current(self):
         """
