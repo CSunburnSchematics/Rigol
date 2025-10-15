@@ -352,18 +352,20 @@ class PowerSupplyMonitorLive:
 
         # Create axes for Nice Power supplies (top 3 rows) - dual y-axis
         nice_axes = []  # List of (voltage_ax, current_ax) tuples
+        nice_titles = ["DPPS-D8001", "DPPS-D6001", "DPPS-D2001"]  # Will be updated if supplies found
         for idx in range(3):
             ax_v = fig.add_subplot(gs[idx, 0])
             ax_i = ax_v.twinx()  # Create twin axis for current
             nice_axes.append((ax_v, ax_i))
 
-            ax_v.set_ylabel('Voltage (V)', fontsize=8, color='blue')
-            ax_v.tick_params(axis='y', labelsize=7, labelcolor='blue')
+            ax_v.set_ylabel('Voltage (V)', fontsize=8, color='black')
+            ax_v.tick_params(axis='y', labelsize=7, labelcolor='black')
             ax_v.grid(True, alpha=0.3)
             ax_v.tick_params(axis='x', labelsize=7)
 
-            ax_i.set_ylabel('Current (A)', fontsize=8, color='red')
-            ax_i.tick_params(axis='y', labelsize=7, labelcolor='red')
+            ax_i.set_ylabel('Current (A)', fontsize=8, color='black')
+            ax_i.tick_params(axis='y', labelsize=7, labelcolor='black')
+            ax_i.yaxis.set_label_position("right")
 
         # Create axes for Rigol channels (bottom 3 rows) - dual y-axis
         rigol_axes = []  # List of (voltage_ax, current_ax) tuples
@@ -372,13 +374,15 @@ class PowerSupplyMonitorLive:
             ax_i = ax_v.twinx()  # Create twin axis for current
             rigol_axes.append((ax_v, ax_i))
 
-            ax_v.set_ylabel('Voltage (V)', fontsize=8, color='blue')
-            ax_v.tick_params(axis='y', labelsize=7, labelcolor='blue')
+            ax_v.set_title(f'Rigol DP832A CH{ch+1}', fontsize=9, fontweight='bold', color='black')
+            ax_v.set_ylabel('Voltage (V)', fontsize=8, color='black')
+            ax_v.tick_params(axis='y', labelsize=7, labelcolor='black')
             ax_v.grid(True, alpha=0.3)
             ax_v.tick_params(axis='x', labelsize=7)
 
-            ax_i.set_ylabel('Current (A)', fontsize=8, color='red')
-            ax_i.tick_params(axis='y', labelsize=7, labelcolor='red')
+            ax_i.set_ylabel('Current (A)', fontsize=8, color='black')
+            ax_i.tick_params(axis='y', labelsize=7, labelcolor='black')
+            ax_i.yaxis.set_label_position("right")
 
             if ch == 2:
                 ax_v.set_xlabel('Time (s)', fontsize=8)
@@ -501,12 +505,16 @@ class PowerSupplyMonitorLive:
 
                                 ax_v, ax_i = nice_axes[idx]
 
+                                # Set title with supply name
+                                short_name = psu_id.split("_")[1]  # D2001, D6001, D8001
+                                ax_v.set_title(f'DPPS-{short_name}', fontsize=9, fontweight='bold', color='black')
+
                                 # Voltage plot (left y-axis)
                                 ax_v.plot(times[mask], voltages[mask], '-o', linewidth=1.5, markersize=4,
                                         color=color, markerfacecolor=color,
                                         markeredgecolor=edge_color, label='Voltage')
-                                ax_v.set_ylabel(f'{psu_id.split("_")[1]} Voltage (V)', fontsize=8, color=color)
-                                ax_v.tick_params(axis='y', labelcolor=color, labelsize=7)
+                                ax_v.set_ylabel('Voltage (V)', fontsize=8, color='black')
+                                ax_v.tick_params(axis='y', labelcolor='black', labelsize=7)
                                 ax_v.set_xlim(min_time, max_time if max_time > 0 else 1)
                                 ax_v.grid(True, alpha=0.3)
                                 ax_v.tick_params(axis='x', labelsize=7)
@@ -515,8 +523,9 @@ class PowerSupplyMonitorLive:
                                 ax_i.plot(times[mask], currents[mask], '-s', linewidth=1.5, markersize=4,
                                         color='red', markerfacecolor='red',
                                         markeredgecolor='darkred', label='Current')
-                                ax_i.set_ylabel(f'Current (A)', fontsize=8, color='red')
-                                ax_i.tick_params(axis='y', labelcolor='red', labelsize=7)
+                                ax_i.set_ylabel('Current (A)', fontsize=8, color='black')
+                                ax_i.tick_params(axis='y', labelcolor='black', labelsize=7)
+                                ax_i.yaxis.set_label_position("right")
 
                     # Plot Rigol channels (bottom 3 graphs)
                     for ch in range(3):
@@ -530,12 +539,15 @@ class PowerSupplyMonitorLive:
 
                             ax_v, ax_i = rigol_axes[ch]
 
+                            # Set title
+                            ax_v.set_title(f'Rigol DP832A CH{ch+1}', fontsize=9, fontweight='bold', color='black')
+
                             # Voltage plot (left y-axis)
                             ax_v.plot(times[mask], voltages[mask], '-o', linewidth=1.5, markersize=4,
                                     color=rigol_colors[ch], markerfacecolor=rigol_colors[ch],
                                     markeredgecolor=rigol_edge_colors[ch], label='Voltage')
-                            ax_v.set_ylabel(f'Rigol CH{ch+1} Voltage (V)', fontsize=8, color=rigol_colors[ch])
-                            ax_v.tick_params(axis='y', labelcolor=rigol_colors[ch], labelsize=7)
+                            ax_v.set_ylabel('Voltage (V)', fontsize=8, color='black')
+                            ax_v.tick_params(axis='y', labelcolor='black', labelsize=7)
                             ax_v.set_xlim(min_time, max_time if max_time > 0 else 1)
                             ax_v.grid(True, alpha=0.3)
                             ax_v.tick_params(axis='x', labelsize=7)
@@ -544,8 +556,9 @@ class PowerSupplyMonitorLive:
                             ax_i.plot(times[mask], currents[mask], '-s', linewidth=1.5, markersize=4,
                                     color='red', markerfacecolor='red',
                                     markeredgecolor='darkred', label='Current')
-                            ax_i.set_ylabel(f'Current (A)', fontsize=8, color='red')
-                            ax_i.tick_params(axis='y', labelcolor='red', labelsize=7)
+                            ax_i.set_ylabel('Current (A)', fontsize=8, color='black')
+                            ax_i.tick_params(axis='y', labelcolor='black', labelsize=7)
+                            ax_i.yaxis.set_label_position("right")
 
                             if ch == 2:
                                 ax_v.set_xlabel('Time (s)', fontsize=8)
