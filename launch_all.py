@@ -35,9 +35,9 @@ if rigol_psu:
             time.sleep(1)
             
 
-        print(f"  ✓ Set to {voltage}V, {current}A, read is {rigol_ch_read}")
+        print(f"  [OK] Set to {voltage}V, {current}A, read is {rigol_ch_read}")
     except Exception as e:
-        print(f"  ✗ Failed to configure: {e}")
+        print(f"  [FAIL] Failed to configure: {e}")
 else:
     print("No Rigol Power supply found")
 
@@ -61,33 +61,40 @@ for com_port, device_type, addr, psu in nice_psu_list:
                     break
 
         if not psu_config:
-            print(f"  ⚠ No config found, skipping")
+            print(f"  [WARN] No config found, skipping")
             continue
 
         voltage = psu_config["vout"]
         current = psu_config["iout_max"]
 
-        psu.set_remote(True)
-        psu.set_current_limit(current)
-        psu.set_voltage(voltage)
-        if voltage > 0:
-            psu.turn_on()
+        # Set values using reliable configure method with verification
+        # This is especially important for Modbus supplies (SPPS_D8001/D6001)
+        # which can have communication issues
+        if device_type == "modbus" and hasattr(psu, 'configure_voltage_current'):
+            # Use Claire's robust configure method with retry logic
+            psu.configure_voltage_current(voltage, current, verify=True, max_retries=3, tol=0.2)
+        else:
+            # Fallback for D2001 or older supplies
+            psu.set_remote(True)
+            psu.set_current_limit(current)
+            psu.set_voltage(voltage)
+            if voltage > 0:
+                psu.turn_on()
 
-        v_out = None
-        for _ in range(3):        # check 3 times, 1-second apart
-            time.sleep(1)
-            
+        # Wait for output to stabilize
+        time.sleep(1)
+
         v_out = psu.measure_voltage()    
 
         
 
-        print(f"  ✓ Set to {voltage}V, {current}A, voltage read is: {v_out}V")
+        print(f"  [OK] Set to {voltage}V, {current}A, voltage read is: {v_out}V")
     except Exception as e:
-        print(f"  ✗ Failed to configure: {e}")
+        print(f"  [FAIL] Failed to configure: {e}")
 
 # Find all oscilloscopes
-osc_addrs = [addr for addr in rigol_loc._list_usb_resources()]
-            #  if rigol_loc._classify(rigol_loc._query_idn(addr)) == "oscilloscope"]
+osc_addrs = [addr for addr in rigol_loc._list_usb_resources()
+             if rigol_loc._classify(rigol_loc._query_idn(addr)) == "oscilloscope"]
 print(f"Found {len(osc_addrs)} oscilloscope(s)")
 
 # Get oscilloscope script from config
