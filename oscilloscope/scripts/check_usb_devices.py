@@ -4,18 +4,29 @@ Script to check for USB devices and diagnose connection issues
 """
 
 import sys
+import os
 
 def check_pyusb():
     """Check PyUSB and list USB devices"""
     print("Checking PyUSB...")
+
+    # Setup libusb path
+    dll_path = os.path.join(os.path.dirname(__file__), "..", "lib", "libusb-1.0.dll")
+    os.environ['PATH'] = os.path.dirname(dll_path) + os.pathsep + os.environ.get('PATH', '')
+
     try:
         import usb.core
         import usb.util
+        import usb.backend.libusb1
+
+        # Get backend with explicit DLL path
+        backend = usb.backend.libusb1.get_backend(find_library=lambda x: dll_path)
 
         print("[OK] PyUSB is installed")
+        print(f"[OK] libusb backend loaded from {dll_path}")
 
         # Find all USB devices
-        devices = usb.core.find(find_all=True)
+        devices = usb.core.find(find_all=True, backend=backend)
         device_list = list(devices)
 
         if device_list:

@@ -4,19 +4,18 @@ Detect all connected Rigol DS1054Z oscilloscopes via USB
 
 import os
 import sys
-import pyvisa as visa
-
-# Add the lib directory to the DLL search path
-lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib'))
-if os.path.exists(lib_path):
-    os.add_dll_directory(lib_path)
-    print(f"Added DLL directory: {lib_path}")
 
 def detect_oscilloscopes():
     """Detect all connected Rigol oscilloscopes"""
 
-    # Create resource manager
-    rm = visa.ResourceManager()
+    # Setup libusb path
+    dll_path = os.path.join(os.path.dirname(__file__), "..", "lib", "libusb-1.0.dll")
+    os.environ['PATH'] = os.path.dirname(dll_path) + os.pathsep + os.environ.get('PATH', '')
+
+    import pyvisa
+
+    # Create resource manager with PyVISA-py backend
+    rm = pyvisa.ResourceManager('@py')
 
     # List all resources
     resources = rm.list_resources()

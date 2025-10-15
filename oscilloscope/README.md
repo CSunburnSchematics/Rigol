@@ -16,70 +16,75 @@ All required Python packages:
 pip install ds1054z pyvisa pyvisa-py pyusb numpy matplotlib pandas
 ```
 
-## Key Scripts
+## Available Scripts
 
-### Working Scripts (Recommended)
+The `scripts/` directory contains 5 essential scripts for oscilloscope control and debugging:
 
-**capture_waveform.py**
-- Single waveform capture from Channel 1
-- Saves CSV data and PNG plot
-- Shows voltage statistics
-- ~1,200 points per capture
+### Production Scripts
 
-**capture_10sec.py**
-- Continuous capture over 10 seconds
-- Custom timebase setting (currently 200μs/div)
-- Creates comprehensive 4-panel visualization
-- UTC timestamped data
-- Gap detection
+**live_16ch_multiscope_enhanced.py** - Multi-Scope 16-Channel Real-Time Capture
+- Primary production script for capturing from up to 4 oscilloscopes (16 channels total)
+- 4-column enhanced layout with timeline, detail waveforms, histograms, and stats
+- JSON configuration files for reproducible test setups
+- Real-time coverage calculation and statistics
+- Individual CSV logging per oscilloscope with UTC timestamps
+- Auto-save screenshot on exit
 
-**optimized_long_capture.py**
-- Long-term data logging (30 seconds default)
-- Real-time progress display
-- Timestamps on every sample
-- Gap analysis
-- Handles timeout errors gracefully
+Usage:
+```bash
+cd oscilloscope/scripts
+python live_16ch_multiscope_enhanced.py ../configs/LT_RAD_TESTCONFIG.json
+```
 
-**view_waveform.py**
-- View existing CSV waveform files
-- Add UTC timestamps to data
-- Create plots with statistics
+**layout_preview.py** - Visual Layout Preview
+- Test the 16-channel display layout without connected hardware
+- Generates mock data to preview the visual arrangement
+- Useful for UI development and layout adjustments
 
-### Utility Scripts
+Usage:
+```bash
+cd oscilloscope/scripts
+python layout_preview.py
+```
 
-**connect_scope.py**
-- Test basic connection to oscilloscope
-- Display scope information
-- Check channel status
+### Debugging & Diagnostic Scripts
 
-**check_usb_devices.py**
-- Diagnose USB connection issues
-- Verify PyUSB backend
-- List available devices
+**detect_scopes.py** - Oscilloscope Detection
+- Detects all connected Rigol DS1054Z oscilloscopes via USB
+- Lists all VISA resources (USB and TCPIP)
+- Queries identification from each detected scope
+- Essential for verifying multi-scope setups
 
-**live_monitor.py**
-- Real-time oscilloscope monitoring with live-updating plots
-- 4-panel vertical visualization:
-  - UTC timeline showing waveform data and capture gaps
-  - Transfer times for gap detection
-  - Sample waveforms (last 3 captures, scatter plot)
-  - Voltage distribution histogram
-- Auto-saves all raw data to CSV with UTC timestamps
-- Auto-saves final plot when complete
-- Interactive window updates as data is captured
+Usage:
+```bash
+cd oscilloscope/scripts
+python detect_scopes.py
+```
 
-**live_monitor_demo.py**
-- Non-interactive version of live_monitor.py
-- Auto-saves plot and exits (no window required)
-- Same CSV logging and 4-panel layout
-- Good for testing or running in headless environments
+**connect_scope.py** - Basic Connection Test
+- Tests connection to a single oscilloscope
+- Displays scope information and channel status
+- Tries multiple connection methods (ds1054z library and direct PyVISA)
+- Useful for troubleshooting connection issues
 
-### Experimental Scripts
+Usage:
+```bash
+cd oscilloscope/scripts
+python connect_scope.py
+```
 
-**deep_memory_capture.py**
-- Attempts to capture deep memory using RAW mode
-- Currently has timeout issues over USB
-- May require NI-VISA instead of PyVISA-py
+**check_usb_devices.py** - USB Device Diagnostics
+- Low-level USB device enumeration
+- Verifies PyUSB backend is working
+- Lists all USB devices with vendor/product IDs
+- Identifies Rigol devices (Vendor ID: 0x1AB1)
+- Checks PyVISA resource manager status
+
+Usage:
+```bash
+cd oscilloscope/scripts
+python check_usb_devices.py
+```
 
 ## Performance Characteristics
 
@@ -137,31 +142,6 @@ oscilloscope/
 └── lib/          # libusb libraries and dependencies
 ```
 
-## Usage Examples
-
-### Basic Capture
-```bash
-cd oscilloscope/scripts
-python capture_waveform.py
-```
-
-### 10-Second Continuous Capture
-```bash
-cd oscilloscope/scripts
-python capture_10sec.py
-```
-
-### Long-Term Logging
-```bash
-cd oscilloscope/scripts
-python optimized_long_capture.py
-```
-
-### View Existing Data
-```bash
-cd oscilloscope/scripts
-python view_waveform.py ../data/waveform_ch1.csv
-```
 
 ## Data Format
 
