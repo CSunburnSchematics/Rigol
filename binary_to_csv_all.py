@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 import sys, os, struct, numpy as np, csv
+from datetime import datetime, timezone
 from oscilloscope_high_res_test import HDR_FMT, MAGIC
 
 HDR_SZ = struct.calcsize(HDR_FMT)
@@ -8,92 +10,125 @@ def read_header_at(f, off):
     buf = f.read(HDR_SZ)
     if len(buf) < HDR_SZ:
         return None
-    magic, ver, N, t0_ns, dt_ps, XINC, XOR, XREF, YINC, YOR, YREF, chan, flags = struct.unpack(HDR_FMT, buf)
-    return (N, t0_ns, dt_ps, XINC, XOR, XREF, YINC, YOR, YREF, chan, flags) if magic == MAGIC else None
+    unpacked = struct.unpack(HDR_FMT, buf)
+    if unpacked[0] != MAGIC:
+        return None
+    (
+        _magic, ver, N, t0_ns, dt_ps, XINC, XOR, XREF,
+        YINC, YOR, YREF, chan, flags
+    ) = unpacked
+    return {
+        "ver": int(ver), "N": int(N), "t0_ns": int(t0_ns), "dt_ps": int(dt_ps),
+        "XINC": float(XINC), "XOR": float(XOR), "XREF": float(XREF),
+        "YINC": float(YINC), "YOR": float(YOR), "YREF": float(YREF),
+        "chan": int(chan), "flags": int(flags),
+    }
 
-def extract_run(f, run_offsets):
-    """Extract one complete run (all 4 channels) and return as dict."""
+def build_run_index(f, file_size):
+    """
+    Return list of runs: [(t0_ns, {chan: header_offset}), ...]
+    Only include channel segments whose header+data fully fit within the file.
+    """
+    runs = []
+    off = 0
+    while off + HDR_SZ <= file_size:
+        h = read_header_at(f, off)
+        if not h:
+            break
+        data_end = off + HDR_SZ + h["N"]
+        if data_end > file_size:
+            # Truncated tail; stop scanning
+            break
+        if not runs or runs[-1][0] != h["t0_ns"]:
+            runs.append((h["t0_ns"], {}))
+        runs[-1][1][h["chan"]] = off
+        off = data_end
+    return runs
+
+def extract_run_channels(f, run_offsets):
+    """
+    Read all present channels for a given run and return:
+      channels[ch] = { 'volts': np.float32[N], 'dt_ps': int }
+    Uses exact Rigol conversion: V = (raw - YREF)*YINC + YOR
+    """
     channels = {}
-    for chan in range(1, 5):
-        if chan not in run_offsets:
+    for ch in range(1, 5):
+        off = run_offsets.get(ch)
+        if off is None:
             continue
-        hdr = read_header_at(f, run_offsets[chan])
-        if not hdr:
+        h = read_header_at(f, off)
+        if not h:
             continue
-        N, t0_ns, dt_ps, XINC, XOR, XREF, YINC, YOR, YREF, _, _ = hdr
-        f.seek(run_offsets[chan] + HDR_SZ)
+        N = h["N"]
+        f.seek(off + HDR_SZ)
         raw = np.fromfile(f, dtype=np.uint8, count=N)
-        volts = (raw.astype(np.float32) - YREF - YOR) * YINC
-        time_seconds = np.arange(N) * (dt_ps * 1e-12)
-        channels[chan] = {'time': time_seconds, 'volts': volts, 't0_ns': t0_ns}
+        volts = (raw.astype(np.float32) - h["YREF"]) * h["YINC"] + h["YOR"]
+        channels[ch] = {"volts": volts, "dt_ps": h["dt_ps"]}
     return channels
+
+def pick_dt_ps(channels):
+    """Pick dt_ps from any present channel; warn if inconsistent."""
+    present = sorted(channels.keys())
+    if not present:
+        return None
+    dt = channels[present[0]]["dt_ps"]
+    for ch in present[1:]:
+        if channels[ch]["dt_ps"] != dt:
+            sys.stderr.write(
+                f"WARNING: dt_ps differs across channels in a run; using CH{present[0]}={dt} ps\n"
+            )
+            break
+    return dt
 
 def main():
     if len(sys.argv) < 2:
         print("Usage: python binary_to_csv_all.py <input.bin> [output.csv]")
-        print("  Exports ALL runs from binary file to CSV")
         return
 
     bin_file = sys.argv[1]
-    csv_file = sys.argv[2] if len(sys.argv) > 2 else bin_file.replace('.bin', '.csv')
-
-    print(f"Reading: {bin_file}")
+    csv_file = sys.argv[2] if len(sys.argv) > 2 else bin_file.replace(".bin", ".csv")
 
     with open(bin_file, "rb") as f:
-        sz = os.path.getsize(bin_file)
-        off = 0
-        runs = []
-
-        while off + HDR_SZ <= sz:
-            hdr = read_header_at(f, off)
-            if not hdr:
-                break
-            N, t0_ns = hdr[0], hdr[1]
-            chan = hdr[9]
-            data_end = off + HDR_SZ + N
-
-            if sz >= data_end:
-                if not runs or runs[-1][0] != t0_ns:
-                    runs.append((t0_ns, {}))
-                runs[-1][1][chan] = off
-                off = data_end
-            else:
-                break
-
-        print(f"Found {len(runs)} run(s)")
-
+        file_size = os.path.getsize(bin_file)
+        runs = build_run_index(f, file_size)
         if not runs:
             print("No complete runs found")
             return
 
-        print(f"Exporting ALL {len(runs)} runs to: {csv_file}")
+        print(f"Found {len(runs)} run(s)")
+        total = 0
 
-        total_samples = 0
-        with open(csv_file, 'w', newline='') as csvf:
-            writer = csv.writer(csvf)
-            writer.writerow(['Time_s', 'CH1_V', 'CH2_V', 'CH3_V', 'CH4_V'])
+        with open(csv_file, "w", newline="") as csvf:
+            w = csv.writer(csvf)
+            # Only UTC time + channel voltages
+            w.writerow(["DateTime_UTC", "CH1_V", "CH2_V", "CH3_V", "CH4_V"])
 
-            cumulative_time = 0.0
-            for run_idx, (t0_ns, run_offsets) in enumerate(runs):
-                channels = extract_run(f, run_offsets)
-                max_samples = max(len(channels[ch]['volts']) for ch in channels)
+            for (t0_ns, run_offsets) in runs:
+                channels = extract_run_channels(f, run_offsets)
+                if not channels:
+                    continue
 
+                dt_ps = pick_dt_ps(channels)
+                if not dt_ps or dt_ps <= 0:
+                    sys.stderr.write("WARNING: missing/invalid dt_ps; skipping run\n")
+                    continue
+
+                max_samples = max(len(channels[ch]["volts"]) for ch in channels)
                 for i in range(max_samples):
-                    row = []
-                    time_val = channels[1]['time'][i] if 1 in channels and i < len(channels[1]['time']) else i * 1e-9
-                    row.append(f"{(cumulative_time + time_val):.12e}")
+                    # Integer math for exactness: abs_time_ns = t0_ns + (i * dt_ps) // 1000
+                    abs_time_ns = t0_ns + (i * dt_ps) // 1000  # ps -> ns
+                    dt = datetime.fromtimestamp(abs_time_ns / 1e9, tz=timezone.utc)
+
+                    row = [dt.strftime("%Y-%m-%d %H:%M:%S.%f")]
                     for ch in range(1, 5):
-                        if ch in channels and i < len(channels[ch]['volts']):
+                        if ch in channels and i < len(channels[ch]["volts"]):
                             row.append(f"{channels[ch]['volts'][i]:.6f}")
                         else:
-                            row.append('')
-                    writer.writerow(row)
+                            row.append("")
+                    w.writerow(row)
+                    total += 1
 
-                dt = channels[1]['time'][1] if 1 in channels and len(channels[1]['time']) > 1 else 1e-9
-                cumulative_time += max_samples * dt
-                total_samples += max_samples
-
-        print(f"Wrote {total_samples:,} samples. Done!")
+    print(f"Wrote {total:,} rows to {csv_file}")
 
 if __name__ == "__main__":
     main()

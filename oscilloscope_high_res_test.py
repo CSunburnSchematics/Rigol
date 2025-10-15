@@ -1,4 +1,4 @@
-import os, time, sys, struct, json, signal
+import os, time, sys, struct, json
 from datetime import datetime, timezone
 from rigol_usb_locator import RigolUsbLocator
 
@@ -25,15 +25,12 @@ Voltage formula: voltage = (raw_byte - YREF - YOR) * YINC
 """
 MAGIC, VER = b"RGOL", 1
 
-def wait_for_trigger_stop(i, max_attempts=2000, query_cooldown=0.005):
+def wait_for_trigger_stop(i, max_attempts=200_000_000, query_cooldown=0.005):
     """Wait until trigger fires and acquisition completes. Returns timestamp when ready."""
     for _ in range(max_attempts):
         state = i.query(":TRIG:STAT?").strip().upper()
         if state == "STOP":
-            return time.time_ns()
-        elif state == "WAIT":
-            i.write(":TFOR")
-            return time.time_ns()
+            return 
         time.sleep(query_cooldown)
     raise TimeoutError(f"Trigger timed out after {max_attempts} attempts") 
 
@@ -85,15 +82,6 @@ def main():
     i.read_termination = ''     # binary
     i.write_termination = '\n'
 
-    def signal_handler(sig, frame):
-        print("\nStopping oscilloscope...")
-        i.write(":STOP")
-        osc.close()
-        print("Oscilloscope stopped.")
-        sys.exit(0)
-
-    signal.signal(signal.SIGINT, signal_handler)
-
     i.write(":RUN") # setting memory depth is only reliable in run mode
 
     # Configure channels from config
@@ -117,8 +105,11 @@ def main():
     idx = 0
     with open(FILE_PATH, "ab", buffering=1024*1024) as f:
         while idx < RUNS:
+            i.write(":CLEar")
             i.write(":SING")
-            trigger_time_ns = wait_for_trigger_stop(i)
+            i.write(":TFOR")
+            trigger_time_ns = time.time_ns()
+            wait_for_trigger_stop(i)
             i.write(":STOP")
 
             i.write(":WAV:MODE RAW")
