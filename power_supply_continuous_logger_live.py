@@ -334,31 +334,42 @@ class PowerSupplyMonitorLive:
         fig = plt.figure(figsize=(20, 12))
         fig.canvas.manager.set_window_title('Power Supply Monitor (Press Q to Quit)')
 
-        # Layout: 6 graphs on left, histograms and stats on right
+        # Layout: 6 graphs on left (3 Nice, 3 Rigol), histograms and stats on right
         gs = GridSpec(6, 3, figure=fig, hspace=0.4, wspace=0.3,
                       width_ratios=[3.0, 1.0, 0.4])
 
-        # Create axes - 6 graphs (3 voltage + 3 current)
-        v_axes = []  # Voltage axes
-        i_axes = []  # Current axes
+        # Create axes for Nice Power supplies (top 3 rows) - dual y-axis
+        nice_axes = []  # List of (voltage_ax, current_ax) tuples
+        for idx in range(3):
+            ax_v = fig.add_subplot(gs[idx, 0])
+            ax_i = ax_v.twinx()  # Create twin axis for current
+            nice_axes.append((ax_v, ax_i))
 
-        for ch in range(3):
-            # Voltage graph
-            ax_v = fig.add_subplot(gs[ch*2, 0])
-            v_axes.append(ax_v)
-            ax_v.set_ylabel(f'Rigol CH{ch+1}\nVoltage (V)', fontsize=8)
+            ax_v.set_ylabel('Voltage (V)', fontsize=8, color='blue')
+            ax_v.tick_params(axis='y', labelsize=7, labelcolor='blue')
             ax_v.grid(True, alpha=0.3)
-            ax_v.tick_params(labelsize=7)
+            ax_v.tick_params(axis='x', labelsize=7)
 
-            # Current graph (below voltage)
-            ax_i = fig.add_subplot(gs[ch*2+1, 0])
-            i_axes.append(ax_i)
-            ax_i.set_ylabel(f'Rigol CH{ch+1}\nCurrent (A)', fontsize=8)
-            ax_i.grid(True, alpha=0.3)
-            ax_i.tick_params(labelsize=7)
+            ax_i.set_ylabel('Current (A)', fontsize=8, color='red')
+            ax_i.tick_params(axis='y', labelsize=7, labelcolor='red')
+
+        # Create axes for Rigol channels (bottom 3 rows) - dual y-axis
+        rigol_axes = []  # List of (voltage_ax, current_ax) tuples
+        for ch in range(3):
+            ax_v = fig.add_subplot(gs[ch + 3, 0])
+            ax_i = ax_v.twinx()  # Create twin axis for current
+            rigol_axes.append((ax_v, ax_i))
+
+            ax_v.set_ylabel('Voltage (V)', fontsize=8, color='blue')
+            ax_v.tick_params(axis='y', labelsize=7, labelcolor='blue')
+            ax_v.grid(True, alpha=0.3)
+            ax_v.tick_params(axis='x', labelsize=7)
+
+            ax_i.set_ylabel('Current (A)', fontsize=8, color='red')
+            ax_i.tick_params(axis='y', labelsize=7, labelcolor='red')
 
             if ch == 2:
-                ax_i.set_xlabel('Time (s)', fontsize=8)
+                ax_v.set_xlabel('Time (s)', fontsize=8)
 
         # Histogram axes (column 1)
         hist_v_ax = fig.add_subplot(gs[0:3, 1])
@@ -439,8 +450,9 @@ class PowerSupplyMonitorLive:
                     }
 
                     # Clear all axes
-                    for ax in v_axes + i_axes:
-                        ax.clear()
+                    for ax_v, ax_i in nice_axes + rigol_axes:
+                        ax_v.clear()
+                        ax_i.clear()
 
                     # Determine overall time range from all data
                     max_time = 0
@@ -453,29 +465,9 @@ class PowerSupplyMonitorLive:
 
                     min_time = max(0, max_time - self.max_display_time)
 
-                    # Plot Rigol channels
-                    for ch in range(3):
-                        if len(self.times_rigol[ch]) > 0:
-                            times = np.array(self.times_rigol[ch])
-                            voltages = np.array(self.voltages_rigol[ch])
-                            currents = np.array(self.currents_rigol[ch])
-
-                            # Filter to max display time
-                            mask = times >= min_time
-
-                            # Voltage plot
-                            v_axes[ch].plot(times[mask], voltages[mask], '-o', linewidth=1, markersize=3,
-                                          color=rigol_colors[ch], markerfacecolor=rigol_colors[ch],
-                                          markeredgecolor=rigol_edge_colors[ch], label=f'Rigol CH{ch+1}')
-
-                            # Current plot
-                            i_axes[ch].plot(times[mask], currents[mask], '-o', linewidth=1, markersize=3,
-                                          color=rigol_colors[ch], markerfacecolor=rigol_colors[ch],
-                                          markeredgecolor=rigol_edge_colors[ch], label=f'Rigol CH{ch+1}')
-
-                    # Plot Nice Power supplies (overlay on graphs)
+                    # Plot Nice Power supplies (top 3 graphs)
                     for idx, (com_port, device_type, addr, psu) in enumerate(self.nice_psu_list):
-                        if idx < len(self.times_nice) and len(self.times_nice[idx]) > 0:
+                        if idx < len(self.times_nice) and len(self.times_nice[idx]) > 0 and idx < 3:
                             # Get supply ID and color
                             psu_id = None
                             if device_type == "d2001":
@@ -495,36 +487,56 @@ class PowerSupplyMonitorLive:
 
                                 mask = times >= min_time
 
-                                # Distribute Nice supplies across the 3 voltage/current pairs
-                                # D8001 on row 0, D6001 on row 1, D2001 on row 2
-                                row_idx = idx % 3
+                                ax_v, ax_i = nice_axes[idx]
 
-                                # Voltage plot
-                                v_axes[row_idx].plot(times[mask], voltages[mask], '-s', linewidth=1.5, markersize=4,
-                                                   color=color, markerfacecolor=color,
-                                                   markeredgecolor=edge_color, label=psu_id.split('_')[1])
+                                # Voltage plot (left y-axis)
+                                ax_v.plot(times[mask], voltages[mask], '-o', linewidth=1.5, markersize=4,
+                                        color=color, markerfacecolor=color,
+                                        markeredgecolor=edge_color, label='Voltage')
+                                ax_v.set_ylabel(f'{psu_id.split("_")[1]} Voltage (V)', fontsize=8, color=color)
+                                ax_v.tick_params(axis='y', labelcolor=color, labelsize=7)
+                                ax_v.set_xlim(min_time, max_time if max_time > 0 else 1)
+                                ax_v.grid(True, alpha=0.3)
+                                ax_v.tick_params(axis='x', labelsize=7)
 
-                                # Current plot
-                                i_axes[row_idx].plot(times[mask], currents[mask], '-s', linewidth=1.5, markersize=4,
-                                                   color=color, markerfacecolor=color,
-                                                   markeredgecolor=edge_color, label=psu_id.split('_')[1])
+                                # Current plot (right y-axis)
+                                ax_i.plot(times[mask], currents[mask], '-s', linewidth=1.5, markersize=4,
+                                        color='red', markerfacecolor='red',
+                                        markeredgecolor='darkred', label='Current')
+                                ax_i.set_ylabel(f'Current (A)', fontsize=8, color='red')
+                                ax_i.tick_params(axis='y', labelcolor='red', labelsize=7)
 
-                    # Format all axes
+                    # Plot Rigol channels (bottom 3 graphs)
                     for ch in range(3):
-                        v_axes[ch].set_ylabel(f'Voltage (V)', fontsize=8)
-                        v_axes[ch].set_xlim(min_time, max_time if max_time > 0 else 1)
-                        v_axes[ch].grid(True, alpha=0.3)
-                        v_axes[ch].tick_params(labelsize=7)
-                        v_axes[ch].legend(loc='upper right', fontsize=6)
+                        if len(self.times_rigol[ch]) > 0:
+                            times = np.array(self.times_rigol[ch])
+                            voltages = np.array(self.voltages_rigol[ch])
+                            currents = np.array(self.currents_rigol[ch])
 
-                        i_axes[ch].set_ylabel(f'Current (A)', fontsize=8)
-                        i_axes[ch].set_xlim(min_time, max_time if max_time > 0 else 1)
-                        i_axes[ch].grid(True, alpha=0.3)
-                        i_axes[ch].tick_params(labelsize=7)
-                        i_axes[ch].legend(loc='upper right', fontsize=6)
+                            # Filter to max display time
+                            mask = times >= min_time
 
-                        if ch == 2:
-                            i_axes[ch].set_xlabel('Time (s)', fontsize=8)
+                            ax_v, ax_i = rigol_axes[ch]
+
+                            # Voltage plot (left y-axis)
+                            ax_v.plot(times[mask], voltages[mask], '-o', linewidth=1.5, markersize=4,
+                                    color=rigol_colors[ch], markerfacecolor=rigol_colors[ch],
+                                    markeredgecolor=rigol_edge_colors[ch], label='Voltage')
+                            ax_v.set_ylabel(f'Rigol CH{ch+1} Voltage (V)', fontsize=8, color=rigol_colors[ch])
+                            ax_v.tick_params(axis='y', labelcolor=rigol_colors[ch], labelsize=7)
+                            ax_v.set_xlim(min_time, max_time if max_time > 0 else 1)
+                            ax_v.grid(True, alpha=0.3)
+                            ax_v.tick_params(axis='x', labelsize=7)
+
+                            # Current plot (right y-axis)
+                            ax_i.plot(times[mask], currents[mask], '-s', linewidth=1.5, markersize=4,
+                                    color='red', markerfacecolor='red',
+                                    markeredgecolor='darkred', label='Current')
+                            ax_i.set_ylabel(f'Current (A)', fontsize=8, color='red')
+                            ax_i.tick_params(axis='y', labelcolor='red', labelsize=7)
+
+                            if ch == 2:
+                                ax_v.set_xlabel('Time (s)', fontsize=8)
 
                     # Update histograms
                     hist_v_ax.clear()
