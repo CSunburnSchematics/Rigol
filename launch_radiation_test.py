@@ -75,8 +75,30 @@ def main():
     print("\nLaunching test systems...")
     print("-" * 70)
 
-    # Launch oscilloscope in new window
-    print("1. Launching oscilloscope capture...")
+    # Launch webcam FIRST (cameras need time to initialize)
+    if webcam_available:
+        print("1. Launching webcam recorder...")
+        if sys.platform == 'win32':
+            webcam_cmd = f'start "Webcam - {test_name or "Test"}" /D "{webcam_script.parent}" cmd /k "python {webcam_script.name}"'
+            subprocess.Popen(webcam_cmd, shell=True)
+        else:
+            subprocess.Popen(['python3', str(webcam_script)], cwd=str(webcam_script.parent))
+
+        print(f"   Output: {base_dir / 'recordings'}")
+        print("   IMPORTANT: Wait for camera window to appear before continuing!")
+        print("\n   Waiting 15 seconds for cameras to initialize...")
+
+        # Give cameras time to fully initialize and start recording
+        import time
+        for i in range(15, 0, -1):
+            print(f"   {i}...", end='\r')
+            time.sleep(1)
+        print("\n")
+    else:
+        print("\n1. Webcam script not found - skipping")
+
+    # Launch oscilloscope SECOND (after cameras are running)
+    print("2. Launching oscilloscope capture...")
     if sys.platform == 'win32':
         osc_cmd = f'start "Oscilloscope - {test_name or "Test"}" /D "{osc_script.parent}" cmd /k "python {osc_script.name} {osc_config}"'
         subprocess.Popen(osc_cmd, shell=True)
@@ -86,26 +108,18 @@ def main():
     print(f"   Config: {config_name}")
     print(f"   Output: {base_dir / 'data'} and {base_dir / 'plots'}")
 
-    # Launch webcam in new window
-    if webcam_available:
-        print("\n2. Launching webcam recorder...")
-        if sys.platform == 'win32':
-            webcam_cmd = f'start "Webcam - {test_name or "Test"}" /D "{webcam_script.parent}" cmd /k "python {webcam_script.name}"'
-            subprocess.Popen(webcam_cmd, shell=True)
-        else:
-            subprocess.Popen(['python3', str(webcam_script)], cwd=str(webcam_script.parent))
-
-        print(f"   Output: {base_dir / 'recordings'}")
-    else:
-        print("\n2. Webcam script not found - skipping")
-
     print("\n" + "="*70)
     print("BOTH SYSTEMS LAUNCHED")
     print("="*70)
     print("\nTwo new windows should have opened:")
-    print("  1. Oscilloscope capture window")
     if webcam_available:
-        print("  2. Webcam recorder window")
+        print("  1. Webcam recorder window (launched first)")
+        print("  2. Oscilloscope capture window (launched after cameras ready)")
+    else:
+        print("  1. Oscilloscope capture window")
+    print("\nLaunch Order:")
+    print("  - Cameras launched FIRST to avoid USB conflicts")
+    print("  - Oscilloscope launched SECOND after cameras are recording")
     print("\nPress 'q' in each window when done to stop recording.")
     print("\nIMPORTANT: After you stop both recordings, run:")
     print(f"  python organize_test.py {dir_name}")
