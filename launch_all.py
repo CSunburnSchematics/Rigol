@@ -31,8 +31,11 @@ if rigol_psu:
             rigol_psu.turn_channel_on(ch)
             rigol_psu.set_voltage(ch, voltage)
             rigol_psu.set_current_limit(ch, current)
+
+            # Wait for voltage to rise and stabilize (at least 1 second)
+            time.sleep(2)
+
             rigol_ch_read = rigol_psu.read_power_supply_channel(ch)
-            time.sleep(1)
             
 
         print(f"  [OK] Set to {voltage}V, {current}A, read is {rigol_ch_read}")
@@ -81,8 +84,8 @@ for com_port, device_type, addr, psu in nice_psu_list:
             if voltage > 0:
                 psu.turn_on()
 
-        # Wait for output to stabilize
-        time.sleep(1)
+        # Wait for voltage to rise and stabilize (at least 1 second)
+        time.sleep(2)
 
         v_out = psu.measure_voltage()    
 

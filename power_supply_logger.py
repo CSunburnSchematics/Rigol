@@ -69,7 +69,9 @@ class PowerSupplyLogger:
                     self.rigol_psu.turn_channel_on(ch)
                     self.rigol_psu.set_voltage(ch, voltage)
                     self.rigol_psu.set_current_limit(ch, current)
-                    time.sleep(0.5)
+
+                    # Wait for voltage to rise and stabilize (at least 1 second)
+                    time.sleep(2)
 
                     # Read back
                     v_meas, i_meas, p_meas = self.rigol_psu.read_power_supply_channel(ch)
@@ -130,7 +132,8 @@ class PowerSupplyLogger:
                     if voltage > 0:
                         psu.turn_on()
 
-                time.sleep(1)
+                # Wait for voltage to rise and stabilize (at least 1 second)
+                time.sleep(2)
 
                 # Read back
                 v_meas = psu.measure_voltage()
