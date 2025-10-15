@@ -24,7 +24,7 @@ from nice_power_usb_locator import NicePowerLocator
 
 
 class PowerSupplyMonitorLive:
-    def __init__(self, config_file, sample_interval_ms=1000, max_display_time_seconds=300):
+    def __init__(self, config_file, sample_interval_ms=1000, max_display_time_seconds=10):
         """
         Initialize live power supply monitor
 
@@ -427,6 +427,33 @@ class PowerSupplyMonitorLive:
                 current_time = time.time()
                 if data_processed and (current_time - last_update) > update_interval:
                     # Update time series graphs
+                    # Define colors for Rigol channels: CH1=yellow, CH2=blue, CH3=magenta
+                    rigol_colors = ['yellow', 'blue', 'magenta']
+                    rigol_edge_colors = ['orange', 'darkblue', 'purple']
+
+                    # Define colors for Nice Power supplies: D8001=red, D6001=yellow, D2001=green
+                    nice_color_map = {
+                        'SPPS_D8001_232': ('red', 'darkred'),
+                        'SPPS_D6001_232': ('yellow', 'orange'),
+                        'SPPS_D2001_232': ('green', 'darkgreen')
+                    }
+
+                    # Clear all axes
+                    for ax in v_axes + i_axes:
+                        ax.clear()
+
+                    # Determine overall time range from all data
+                    max_time = 0
+                    for ch in range(3):
+                        if len(self.times_rigol[ch]) > 0:
+                            max_time = max(max_time, self.times_rigol[ch][-1])
+                    for idx in range(len(self.nice_psu_list)):
+                        if len(self.times_nice[idx]) > 0:
+                            max_time = max(max_time, self.times_nice[idx][-1])
+
+                    min_time = max(0, max_time - self.max_display_time)
+
+                    # Plot Rigol channels
                     for ch in range(3):
                         if len(self.times_rigol[ch]) > 0:
                             times = np.array(self.times_rigol[ch])
@@ -434,28 +461,70 @@ class PowerSupplyMonitorLive:
                             currents = np.array(self.currents_rigol[ch])
 
                             # Filter to max display time
-                            max_time = times[-1]
-                            min_time = max(0, max_time - self.max_display_time)
                             mask = times >= min_time
 
                             # Voltage plot
-                            v_axes[ch].clear()
-                            v_axes[ch].plot(times[mask], voltages[mask], 'b-', linewidth=1)
-                            v_axes[ch].set_ylabel(f'Rigol CH{ch+1}\nVoltage (V)', fontsize=8)
-                            v_axes[ch].set_xlim(min_time, max_time)
-                            v_axes[ch].grid(True, alpha=0.3)
-                            v_axes[ch].tick_params(labelsize=7)
+                            v_axes[ch].plot(times[mask], voltages[mask], '-o', linewidth=1, markersize=3,
+                                          color=rigol_colors[ch], markerfacecolor=rigol_colors[ch],
+                                          markeredgecolor=rigol_edge_colors[ch], label=f'Rigol CH{ch+1}')
 
                             # Current plot
-                            i_axes[ch].clear()
-                            i_axes[ch].plot(times[mask], currents[mask], 'r-', linewidth=1)
-                            i_axes[ch].set_ylabel(f'Rigol CH{ch+1}\nCurrent (A)', fontsize=8)
-                            i_axes[ch].set_xlim(min_time, max_time)
-                            i_axes[ch].grid(True, alpha=0.3)
-                            i_axes[ch].tick_params(labelsize=7)
+                            i_axes[ch].plot(times[mask], currents[mask], '-o', linewidth=1, markersize=3,
+                                          color=rigol_colors[ch], markerfacecolor=rigol_colors[ch],
+                                          markeredgecolor=rigol_edge_colors[ch], label=f'Rigol CH{ch+1}')
 
-                            if ch == 2:
-                                i_axes[ch].set_xlabel('Time (s)', fontsize=8)
+                    # Plot Nice Power supplies (overlay on graphs)
+                    for idx, (com_port, device_type, addr, psu) in enumerate(self.nice_psu_list):
+                        if idx < len(self.times_nice) and len(self.times_nice[idx]) > 0:
+                            # Get supply ID and color
+                            psu_id = None
+                            if device_type == "d2001":
+                                psu_id = "SPPS_D2001_232"
+                            else:
+                                for psu_name in ["SPPS_D6001_232", "SPPS_D8001_232"]:
+                                    if psu_name in self.config["power_supplies"]["nice_power"]:
+                                        if self.config["power_supplies"]["nice_power"][psu_name].get("com_port") == com_port:
+                                            psu_id = psu_name
+                                            break
+
+                            if psu_id and psu_id in nice_color_map:
+                                color, edge_color = nice_color_map[psu_id]
+                                times = np.array(self.times_nice[idx])
+                                voltages = np.array(self.voltages_nice[idx])
+                                currents = np.array(self.currents_nice[idx])
+
+                                mask = times >= min_time
+
+                                # Distribute Nice supplies across the 3 voltage/current pairs
+                                # D8001 on row 0, D6001 on row 1, D2001 on row 2
+                                row_idx = idx % 3
+
+                                # Voltage plot
+                                v_axes[row_idx].plot(times[mask], voltages[mask], '-s', linewidth=1.5, markersize=4,
+                                                   color=color, markerfacecolor=color,
+                                                   markeredgecolor=edge_color, label=psu_id.split('_')[1])
+
+                                # Current plot
+                                i_axes[row_idx].plot(times[mask], currents[mask], '-s', linewidth=1.5, markersize=4,
+                                                   color=color, markerfacecolor=color,
+                                                   markeredgecolor=edge_color, label=psu_id.split('_')[1])
+
+                    # Format all axes
+                    for ch in range(3):
+                        v_axes[ch].set_ylabel(f'Voltage (V)', fontsize=8)
+                        v_axes[ch].set_xlim(min_time, max_time if max_time > 0 else 1)
+                        v_axes[ch].grid(True, alpha=0.3)
+                        v_axes[ch].tick_params(labelsize=7)
+                        v_axes[ch].legend(loc='upper right', fontsize=6)
+
+                        i_axes[ch].set_ylabel(f'Current (A)', fontsize=8)
+                        i_axes[ch].set_xlim(min_time, max_time if max_time > 0 else 1)
+                        i_axes[ch].grid(True, alpha=0.3)
+                        i_axes[ch].tick_params(labelsize=7)
+                        i_axes[ch].legend(loc='upper right', fontsize=6)
+
+                        if ch == 2:
+                            i_axes[ch].set_xlabel('Time (s)', fontsize=8)
 
                     # Update histograms
                     hist_v_ax.clear()
