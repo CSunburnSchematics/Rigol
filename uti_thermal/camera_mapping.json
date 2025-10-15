@@ -1,0 +1,36 @@
+[
+  {
+    "index": 0,
+    "type": "hd_webcam",
+    "name": "HD External Webcam",
+    "max_resolution": "1920x1080",
+    "max_pixels": 2073600,
+    "resolutions": [
+      "640x480",
+      "1280x720",
+      "1920x1080"
+    ]
+  },
+  {
+    "index": 1,
+    "type": "4k_webcam",
+    "name": "4K External Webcam",
+    "max_resolution": "3840x2160",
+    "max_pixels": 8294400,
+    "resolutions": [
+      "640x480",
+      "1280x720",
+      "1920x1080",
+      "2560x1440",
+      "3840x2160"
+    ]
+  },
+  {
+    "index": 2,
+    "type": "thermal",
+    "name": "UTi 260B Thermal Camera",
+    "default_resolution": "240x321",
+    "max_resolution": "1280x720",
+    "max_pixels": 921600
+  }
+]
