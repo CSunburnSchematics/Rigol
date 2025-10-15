@@ -272,7 +272,17 @@ def main():
     print("\nInitializing plot...")
     plt.ion()
 
+    # Set background color and text colors
+    plt.rcParams['figure.facecolor'] = '#f5f3ef'
+    plt.rcParams['axes.facecolor'] = '#f5f3ef'
+    plt.rcParams['text.color'] = 'black'
+    plt.rcParams['axes.labelcolor'] = 'black'
+    plt.rcParams['xtick.color'] = 'black'
+    plt.rcParams['ytick.color'] = 'black'
+
     fig = plt.figure(figsize=(20, 16))
+    fig.canvas.manager.set_window_title('16-Channel Multi-Scope Capture (Press Q to Quit)')
+
     gs = GridSpec(4, 4, figure=fig, hspace=0.4, wspace=0.3)
 
     axes = []

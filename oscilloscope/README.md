@@ -171,6 +171,79 @@ All CSV files include:
 - **Voltage_V**: Measured voltage value
 - **Capture_Num**: Which capture this sample belongs to (for continuous captures)
 
+## Multi-Scope 16-Channel Capture
+
+### live_16ch_multiscope_enhanced.py
+
+Advanced real-time capture system for up to 4 oscilloscopes (16 channels total):
+
+**Features:**
+- 4-column layout optimized for 16-channel display
+  - Column 0: Timeline plots (all 16 channels stacked)
+  - Column 1: Detail waveforms (last 10 captures overlaid per channel)
+  - Column 2: Voltage distribution histograms (per scope)
+  - Column 3: Stats panel (capture rate, coverage, errors)
+- JSON configuration files for reproducible test setups
+- Individual CSV logging per oscilloscope with UTC timestamps
+- Real-time coverage calculation showing temporal sampling percentage
+- Screenshot auto-save on exit
+
+**Usage:**
+```bash
+cd oscilloscope/scripts
+python live_16ch_multiscope_enhanced.py ../configs/LT_RAD_TESTCONFIG.json
+```
+
+**Configuration:**
+See `configs/LT_RAD_TESTCONFIG.json` for example config with:
+- Capture settings (points, timebase, display options)
+- Per-scope trigger configuration
+- Per-channel settings (scale, offset, probe attenuation, custom names)
+- Output paths for CSV and screenshots
+
+**Layout Preview:**
+Test the visual layout without hardware:
+```bash
+python layout_preview.py
+```
+
+### Coverage Calculation Fix (2025-10-15)
+
+**Problem:**
+The coverage percentage was showing incorrect values (e.g., 45% when actual coverage was ~4%). Visual inspection of detail waveforms confirmed low actual coverage despite high reported values.
+
+**Root Cause:**
+The formula incorrectly used `timebase_seconds / 10` to calculate time per waveform:
+```python
+# INCORRECT
+time_per_waveform = points_per_channel * (timebase_seconds / 10)
+```
+
+This is wrong because:
+- `timebase_seconds` is the oscilloscope display setting (seconds per division)
+- The actual sample interval is `x_increment` from the waveform preamble
+- `x_increment` depends on the oscilloscope's actual sample rate, not the timebase setting
+
+**Solution:**
+Use the actual `x_increment` value from captured waveform data:
+```python
+# CORRECT
+actual_time_increment = last_waveforms[scope_idx][-1]['time_increment']
+time_per_waveform = points_per_channel * actual_time_increment
+```
+
+**Example Calculation:**
+- Points per capture: 60,000
+- x_increment: 0.2 µs (from oscilloscope preamble)
+- Time per waveform: 60,000 × 0.2 µs = 12,000 µs = 12 ms
+- Capture rate: 3.6 cap/s
+- Coverage: (12 ms × 3.6) / 1000 ms = 4.3% ✓
+
+**Files Modified:**
+- `live_16ch_multiscope_enhanced.py` (lines 725-735, 814-823)
+
+This fix ensures accurate coverage reporting for all multi-scope capture sessions.
+
 ## Known Issues
 
 1. **Timeout errors**: Occur after 2-5 captures in continuous mode
@@ -182,6 +255,12 @@ All CSV files include:
 
 3. **Fast timebase issues**: Very fast timebases (< 200μs/div) cause more timeouts
    - Workaround: Use slower timebases
+
+4. **Low temporal coverage in multi-scope capture**: Even with 60,000 points, coverage is typically 4-5%
+   - Root cause: USB transfer time (~270ms per capture) limits capture rate to ~3.6 cap/s
+   - Each 60k-point waveform only captures ~12ms of signal
+   - This is a hardware limitation of USB transfer bandwidth
+   - Workaround: Adjust timebase to match expected event frequency
 
 ## Troubleshooting - Hardware Connection Issues
 

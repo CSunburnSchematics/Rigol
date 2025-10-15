@@ -454,7 +454,16 @@ def main():
     print("\nInitializing plot...")
     plt.ion()
 
+    # Set background color
+    plt.rcParams['figure.facecolor'] = '#f5f3ef'
+    plt.rcParams['axes.facecolor'] = '#f5f3ef'
+    plt.rcParams['text.color'] = 'black'
+    plt.rcParams['axes.labelcolor'] = 'black'
+    plt.rcParams['xtick.color'] = 'black'
+    plt.rcParams['ytick.color'] = 'black'
+
     fig = plt.figure(figsize=(28, 20))
+    fig.canvas.manager.set_window_title('16-Channel Multi-Scope Capture - Enhanced (Press Q to Quit)')
 
     # Layout:
     # Column 0: 16 main timeline plots (all channels stacked)
@@ -462,8 +471,8 @@ def main():
     # Column 2: 4 histograms (stacked)
     # Column 3: 4 stats panels (stacked)
 
-    gs = GridSpec(16, 4, figure=fig, hspace=0.8, wspace=0.4,
-                  width_ratios=[2.5, 2, 1.2, 0.8])
+    gs = GridSpec(16, 4, figure=fig, hspace=0.8, wspace=0.25,
+                  width_ratios=[3.5, 3.0, 1.0, 0.4])
 
     # Create axes
     main_axes = []  # [16] - all channels as single list
@@ -511,11 +520,12 @@ def main():
         scatter = ax.scatter([], [], c=colors[ch_idx], s=1)
         main_scatters.append(scatter)
 
-        # Labels - use custom channel names from config
+        # Labels - use custom channel names from config (max 8 chars per line)
         ch_name = scope_channel_names[scope_idx].get(ch_idx+1, f'CH{ch_idx+1}')
-        ax.set_ylabel(f'S{scope_idx+1}\n{ch_name}\n(V)', fontsize=7)
+        ch_name = ch_name[:8] if len(ch_name) > 8 else ch_name
+        ax.set_ylabel(f'S{scope_idx+1}\n{ch_name}\n(V)', fontsize=5, labelpad=8)
         if ch_global == 15:
-            ax.set_xlabel('Time (s)', fontsize=8)
+            ax.set_xlabel('Time (s)', fontsize=6)
         else:
             ax.set_xticklabels([])
 
@@ -527,9 +537,10 @@ def main():
         for ch_idx in range(4):
             ax = detail_axes[scope_idx][ch_idx]
 
-            # Y-label shows scope and channel with custom name
+            # Y-label shows scope and channel with custom name (max 8 chars)
             ch_name = scope_channel_names[scope_idx].get(ch_idx+1, f'CH{ch_idx+1}')
-            ax.set_ylabel(f'S{scope_idx+1} {ch_name}\n(V)', fontsize=6)
+            ch_name = ch_name[:8] if len(ch_name) > 8 else ch_name
+            ax.set_ylabel(f'S{scope_idx+1} {ch_name}\n(V)', fontsize=5, labelpad=8)
 
             # Only show x-label for bottom plot
             if scope_idx == num_scopes - 1 and ch_idx == 3:
@@ -539,19 +550,19 @@ def main():
 
             # Add title for the very top plot
             if scope_idx == 0 and ch_idx == 0:
-                ax.set_title('Last 10 Waveforms', fontsize=8, fontweight='bold')
+                ax.set_title('Last 10 Waveforms', fontsize=8, fontweight='bold', color='#fcb911')
 
             ax.grid(True, alpha=0.3)
-            ax.tick_params(labelsize=5)
+            ax.tick_params(labelsize=6)
 
     # Initialize histograms
     for scope_idx in range(num_scopes):
         ax = hist_axes[scope_idx]
-        ax.set_title(f'Scope {scope_idx+1}\nVoltage Dist', fontsize=7, fontweight='bold')
+        ax.set_title(f'Scope {scope_idx+1}\nVoltage Dist', fontsize=8, fontweight='bold', color='#fcb911')
 
         # Only show x-label for bottom histogram
         if scope_idx == num_scopes - 1:
-            ax.set_xlabel('Voltage (V)', fontsize=7)
+            ax.set_xlabel('Voltage (V)', fontsize=6)
         else:
             ax.set_xticklabels([])
 
@@ -563,18 +574,14 @@ def main():
     stats_texts = []
     for scope_idx in range(num_scopes):
         ax = stats_axes[scope_idx]
-        text = ax.text(0.05, 0.95, '', transform=ax.transAxes,
-                      fontsize=7, verticalalignment='top',
-                      fontfamily='monospace')
+        text = ax.text(0.02, 0.98, '', transform=ax.transAxes,
+                      fontsize=5, verticalalignment='top')
         stats_texts.append(text)
-
-    fig.suptitle('16-Channel Multi-Scope Capture - Enhanced (Press Q to Quit)',
-                 fontsize=14, fontweight='bold', y=0.998)
 
     # Connect key handler
     fig.canvas.mpl_connect('key_press_event', on_key)
 
-    plt.subplots_adjust(top=0.99, bottom=0.03, left=0.04, right=0.99)
+    plt.subplots_adjust(top=0.995, bottom=0.03, left=0.04, right=0.99)
     plt.show(block=False)
     plt.pause(0.1)
 
@@ -660,9 +667,10 @@ def main():
                         ax = detail_axes[scope_idx][ch_idx]
                         ax.clear()
 
-                        # Restore labels with custom channel names
+                        # Restore labels with custom channel names (max 8 chars)
                         ch_name = scope_channel_names[scope_idx].get(ch_idx+1, f'CH{ch_idx+1}')
-                        ax.set_ylabel(f'S{scope_idx+1} {ch_name}\n(V)', fontsize=6)
+                        ch_name = ch_name[:8] if len(ch_name) > 8 else ch_name
+                        ax.set_ylabel(f'S{scope_idx+1} {ch_name}\n(V)', fontsize=5, labelpad=8)
 
                         if scope_idx == num_scopes - 1 and ch_idx == 3:
                             ax.set_xlabel('Sample', fontsize=6)
@@ -670,10 +678,10 @@ def main():
                             ax.set_xticklabels([])
 
                         if scope_idx == 0 and ch_idx == 0:
-                            ax.set_title('Last 10 Waveforms', fontsize=8, fontweight='bold')
+                            ax.set_title('Last 10 Waveforms', fontsize=8, fontweight='bold', color='#fcb911')
 
                         ax.grid(True, alpha=0.3)
-                        ax.tick_params(labelsize=5)
+                        ax.tick_params(labelsize=6)
 
                         # Plot last 10 waveforms
                         for wf_idx, waveform in enumerate(last_waveforms[scope_idx]):
@@ -687,10 +695,10 @@ def main():
                     hist_ax.clear()
 
                     # Restore labels
-                    hist_ax.set_title(f'Scope {scope_idx+1}\nVoltage Dist', fontsize=7, fontweight='bold')
+                    hist_ax.set_title(f'Scope {scope_idx+1}\nVoltage Dist', fontsize=8, fontweight='bold', color='#fcb911')
 
                     if scope_idx == num_scopes - 1:
-                        hist_ax.set_xlabel('Voltage (V)', fontsize=7)
+                        hist_ax.set_xlabel('Voltage (V)', fontsize=6)
                     else:
                         hist_ax.set_xticklabels([])
 
@@ -714,17 +722,25 @@ def main():
                         rate = stats[scope_idx].get('rate', 0)
                         elapsed = stats[scope_idx].get('elapsed', 0)
 
-                        # Calculate coverage
-                        total_sample_time = caps * capture_config['points_per_channel'] * capture_config['timebase_seconds'] / 10
+                        # Calculate coverage - use actual time per waveform from x_increment
+                        # Get the actual time increment from the last waveform if available
+                        if len(last_waveforms[scope_idx]) > 0:
+                            actual_time_increment = last_waveforms[scope_idx][-1]['time_increment']
+                            time_per_waveform = capture_config['points_per_channel'] * actual_time_increment
+                        else:
+                            # Fallback to config estimate
+                            time_per_waveform = capture_config['points_per_channel'] * capture_config['timebase_seconds'] / 10
+
+                        total_sample_time = caps * time_per_waveform
                         coverage = (total_sample_time / elapsed * 100) if elapsed > 0 else 0
 
-                        stats_str = (f"Scope {scope_idx+1}\n"
-                                   f"{scope_infos[scope_idx]['serial'][:12]}\n\n"
-                                   f"Rate:\n{rate:.2f} cap/s\n\n"
-                                   f"Cov:\n{coverage:.2f}%\n\n"
-                                   f"Caps:\n{caps}\n\n"
-                                   f"Time:\n{elapsed:.1f}s\n\n"
-                                   f"Drop:\n{stats[scope_idx].get('dropped', 0)}\n\n"
+                        stats_str = (f"S{scope_idx+1}\n"
+                                   f"{scope_infos[scope_idx]['serial'][:10]}\n"
+                                   f"Rate:\n{rate:.1f}c/s\n"
+                                   f"Cov:\n{coverage:.1f}%\n"
+                                   f"Caps:\n{caps}\n"
+                                   f"Time:\n{elapsed:.0f}s\n"
+                                   f"Drop:\n{stats[scope_idx].get('dropped', 0)}\n"
                                    f"Err:\n{stats[scope_idx].get('errors', 0)}")
                         stats_texts[scope_idx].set_text(stats_str)
 
@@ -795,8 +811,14 @@ def main():
             rate = stats[scope_idx].get('rate', 0)
             elapsed = stats[scope_idx].get('elapsed', 0)
 
-            # Calculate time per capture and coverage
-            time_per_capture = capture_config['points_per_channel'] * capture_config['timebase_seconds'] / 10
+            # Calculate time per capture and coverage using actual x_increment
+            if len(last_waveforms[scope_idx]) > 0:
+                actual_time_increment = last_waveforms[scope_idx][-1]['time_increment']
+                time_per_capture = capture_config['points_per_channel'] * actual_time_increment
+            else:
+                # Fallback to config estimate
+                time_per_capture = capture_config['points_per_channel'] * capture_config['timebase_seconds'] / 10
+
             total_sample_time = caps * time_per_capture
             coverage = (total_sample_time / elapsed * 100) if elapsed > 0 else 0
 
