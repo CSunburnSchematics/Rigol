@@ -216,7 +216,8 @@ class DualCameraRecorder:
             os.makedirs(output_dir, exist_ok=True)
 
         thermal_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_thermal.avi")
-        webcam_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_webcam.avi")
+        # Skip standalone webcam - too large, just save thermal and combined
+        # webcam_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_webcam.avi")
         combined_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_combined.avi")
 
         # Get frame dimensions
@@ -239,8 +240,8 @@ class DualCameraRecorder:
 
         self.thermal_writer = cv2.VideoWriter(thermal_filename, fourcc, target_fps,
                                              (thermal_width, thermal_height))
-        self.webcam_writer = cv2.VideoWriter(webcam_filename, fourcc, target_fps,
-                                            (webcam_width, webcam_height))
+        # Skip standalone webcam writer - saves huge amount of disk space
+        self.webcam_writer = None
         self.combined_writer = cv2.VideoWriter(combined_filename, fourcc, target_fps,
                                               (combined_width, combined_height))
 
@@ -255,22 +256,22 @@ class DualCameraRecorder:
             'start_time_utc': start_time_utc.isoformat(),
             'start_timestamp_unix': start_time_utc.timestamp(),
             'thermal_file': thermal_filename,
-            'webcam_file': webcam_filename,
             'combined_file': combined_filename,
             'thermal_resolution': f"{thermal_width}x{thermal_height}",
             'webcam_resolution': f"{webcam_width}x{webcam_height}",
             'combined_resolution': f"{combined_width}x{combined_height}",
             'target_fps': target_fps,
             'thermal_camera_index': self.thermal_camera_index,
-            'webcam_camera_index': self.webcam_index
+            'webcam_camera_index': self.webcam_index,
+            'note': 'Standalone webcam video not saved to reduce disk usage'
         }
 
         print("\n" + "=" * 60)
         print("DUAL RECORDING STARTED")
         print("=" * 60)
         print(f"Thermal:  {thermal_filename}")
-        print(f"Webcam:   {webcam_filename}")
         print(f"Combined: {combined_filename}")
+        print(f"Note: Standalone webcam not saved (too large)")
         print(f"Start time (UTC): {start_time_utc.isoformat()}")
         print(f"Target FPS: {target_fps}")
         print("\nControls:")
@@ -297,9 +298,8 @@ class DualCameraRecorder:
                 capture_time_utc = datetime.now(timezone.utc)
                 capture_timestamp_unix = capture_time_utc.timestamp()
 
-                # Write original frames to individual videos
+                # Write thermal frame only (skip standalone webcam to save space)
                 self.thermal_writer.write(frame_thermal)
-                self.webcam_writer.write(frame_webcam)
                 self.frame_count += 1
                 fps_frame_count += 1
 
@@ -403,9 +403,10 @@ class DualCameraRecorder:
             f.write("Dual Camera Recording Summary\n")
             f.write("=" * 60 + "\n\n")
             f.write(f"Thermal Video:  {thermal_filename}\n")
-            f.write(f"Webcam Video:   {webcam_filename}\n")
             f.write(f"Combined Video: {combined_filename}\n")
             f.write(f"Timestamp Data: {timestamp_filename}\n\n")
+            f.write(f"Note: Standalone webcam video not saved to reduce disk usage.\n")
+            f.write(f"      Webcam footage is available in the combined video.\n\n")
             f.write(f"Recording Start (UTC): {recording_metadata['start_time_utc']}\n")
             f.write(f"Recording End (UTC):   {recording_metadata['end_time_utc']}\n")
             f.write(f"Duration: {total_duration:.2f} seconds\n\n")
@@ -419,7 +420,6 @@ class DualCameraRecorder:
         print("RECORDING STOPPED")
         print("=" * 60)
         print(f"Thermal video:  {thermal_filename}")
-        print(f"Webcam video:   {webcam_filename}")
         print(f"Combined video: {combined_filename}")
         print(f"Timestamps:     {timestamp_filename}")
         print(f"Summary:        {summary_filename}")
