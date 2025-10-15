@@ -1,0 +1,8 @@
+C:\Users\andre\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\pyvisa_py\tcpip.py:443: UserWarning: TCPIP:instr resource discovery is limited to the default interface.Install psutil: pip install psutil if you want to scan all interfaces.
+  warnings.warn(
+C:\Users\andre\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\pyvisa_py\tcpip.py:122: UserWarning: TCPIP::hislip resource discovery requires the zeroconf package to be installed... try 'pip install zeroconf'
+  warnings.warn(
+======================================================================
+MEMORY DEPTH BENCHMARK TEST
+======================================================================
+ERROR: No oscilloscopes found!

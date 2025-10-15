@@ -1,0 +1,271 @@
+USB Communication Setup for Remote Control
+The DS1054Z (part of the DS1000Z series) supports remote control over USB using SCPI commands. It acts as a USB-TMC (Test and Measurement Class) device. Below is the step-by-step guide extracted from the programming manual for setting up USB communication with a PC.
+Installation and Configuration Steps:
+
+Install Ultra Sigma Software:
+
+Download Ultra Sigma from the RIGOL website (www.rigol.com) and install it following the instructions. This software includes NI-VISA drivers and tools for SCPI communication.
+
+
+Connect the Device:
+
+Use a USB cable to connect the USB Device interface on the rear panel of the oscilloscope to the USB Host interface on your PC.
+Power on the oscilloscope. It will automatically configure to USB mode (ensure Utility → IO Setting → USB Device is set to "Computer").
+On first connection, the PC will detect new hardware. Install the "USB Test and Measurement Device (IVI)" driver via the Found New Hardware Wizard:
+
+Select "Install from a list or specific location (Advanced)".
+Choose "Don't search. I will choose the driver to install".
+Select "USB Test and Measurement Device (IVI)".
+Follow the prompts to complete installation.
+
+
+
+
+Search for Device Resources:
+
+Launch Ultra Sigma. It will automatically search for connected instruments, or click the search button.
+The device will appear under "RIGOL Online Resource" with a VISA descriptor like: MSO1104Z (USB0::0x1AB1::0x04CE::DS1ZD170800001::INSTR) (your serial number may vary; for DS1054Z, it will be similar but with DS prefix).
+
+
+Remote Control:
+
+Right-click the resource name in Ultra Sigma and select "SCPI Panel Control" to open a panel for sending commands and reading responses.
+For custom software, use the VISA descriptor (e.g., USB0::0x1AB1::0x04CE::DS1ZA160801111::INSTR) to open a session.
+
+
+
+VISA Library Usage (for Custom Software):
+
+Use NI-VISA or equivalent (installed with Ultra Sigma).
+Default installation path: C:\Program Files\IVI Foundation\VISA.
+In code, open a VISA session using the descriptor, send SCPI commands via viPrintf, and read responses via viScanf or similar.
+
+For LAN setup (alternative to USB), refer to the manual, but since you specified USB, I've focused on that.
+SCPI Command Overview
+SCPI commands are hierarchical (tree structure) and case-insensitive. They start with :, use : to separate levels, and end with ? for queries. Parameters are separated by spaces or commas.
+
+Syntax Example: :ACQuire:TYPE <type> (set) or :ACQuire:TYPE? (query).
+Symbols:
+
+{}: Optional parameters (choose one, separated by ).
+: Separates options.
+[]: Optional content.
+<>: Placeholder for a value.
+
+
+Parameter Types:
+
+Bool: ON, OFF, 1, or 0.
+Integer/Real: Numeric values (e.g., scientific notation for queries).
+Discrete: Specific strings (e.g., {NORMal|RAW}).
+ASCII: Strings.
+
+
+
+Commands are abbreviated to the shortest unique form (e.g., :ACQuire:TYPE can be :ACQ:TYP).
+Relevant SCPI Commands for Capturing Waveforms
+The key commands for capturing (reading) waveforms are in the :WAVeform subsystem. These allow you to read waveform data from the screen or deep memory over USB.
+Parameter Definitions:
+
+In NORMal/MAX mode (screen data):
+
+XINCrement = TimeScale / 100
+YINCrement = VerticalScale / 25
+
+
+In RAW mode (deep memory):
+
+XINCrement = 1 / SampleRate
+YINCrement depends on internal VerticalScale.
+
+
+
+Figures in the manual show X/Y origins, increments, and references (e.g., XORigin is the start time, YORigin is vertical offset).
+Command List:
+
+:WAVeform:SOURce <source>
+Set/query the channel for waveform data.
+
+<source>: {D0|D1|...|D15|CHANnel1|CHANnel2|CHANnel3|CHANnel4|MATH} (Default: CHANnel1)
+For MATH: Only NORMal mode.
+For digital (D0-D15): Always BYTE format; screen data is per-channel status (1 byte/point), deep memory is grouped (D7-D0 or D15-D8 per byte).
+Query returns: e.g., CHAN2.
+Example: :WAVeform:SOURce CHANnel2 → Query: :WAVeform:SOURce? returns CHAN2.
+
+
+:WAVeform:MODE <mode>
+Set/query reading mode.
+
+<mode>: {NORMal|MAXimum|RAW} (Default: NORMal)
+NORMal: Screen data.
+MAXimum: Screen (running) or deep memory (stopped).
+RAW: Deep memory (oscilloscope must be stopped; no operations during read).
+For MATH: Only NORMal.
+Query returns: NORM, MAX, or RAW.
+Example: :WAVeform:MODE RAW → Query returns RAW.
+
+
+:WAVeform:FORMat <format>
+Set/query data format.
+
+<format>: {WORD|BYTE|ASCii} (Default: BYTE)
+WORD: 2 bytes/point (lower 8 bits valid).
+BYTE: 1 byte/point.
+ASCii: Voltage values in scientific notation, comma-separated.
+Query returns: WORD, BYTE, or ASC.
+Example: :WAVeform:FORMat WORD → Query returns WORD.
+
+
+:WAVeform:DATA?
+Read waveform data.
+
+Returns: TMC header (#9XXXXXXX) + data + terminator (0x0A).
+
+TMC: #N + N digits for data length (e.g., #9000001200 for 1200 bytes).
+Data: BYTE/WORD (binary) or ASCii (text voltages).
+For digital channels: BYTE only; bits represent logic levels.
+
+
+Reading screen data (NORMal/MAX):
+
+Steps: Set source/mode/format → :WAV:DATA?.
+
+
+Reading deep memory (RAW):
+
+Oscilloscope must be in STOP state (:STOP).
+Max points per read: BYTE=250000, WORD=125000, ASCii=15625.
+If memory depth > max, read in batches: Set :WAV:STARt and :STOP for each chunk, combine data.
+Example (120kpts, BYTE): :STOP → Set source/mode/format → :WAV:STAR 1 → :WAV:STOP 120000 → :WAV:DATA?.
+Example (300kpts, WORD, 3 batches): Batch 1: 1-125000; Batch 2: 125001-250000; Batch 3: 250001-300000.
+
+
+Convert data to voltage: (data_value - YORigin - YREFerence) × YINCrement.
+Related: Must set mode/format/source first.
+
+
+:WAVeform:XINCrement?
+Query time/Hz increment in X (horizontal).
+
+Returns: Scientific notation (e.g., 1.000000e-08). Unit: s (analog/digital) or Hz (FFT).
+
+
+:WAVeform:XORigin?
+Query start time/Hz in X.
+
+Returns: Scientific notation (e.g., -6.000000e-06).
+
+
+:WAVeform:XREFerence?
+Query X reference (always 0).
+:WAVeform:YINCrement?
+Query voltage increment in Y.
+
+Returns: Scientific notation (e.g., 8.000000e-03).
+
+
+:WAVeform:YORigin?
+Query vertical offset.
+
+Returns: Integer (e.g., 25).
+
+
+:WAVeform:YREFerence?
+Query Y reference (usually 127 for NORMal/MAX).
+:WAVeform:STARt <sta>
+Set/query start point.
+
+<sta>: 1 to max (screen: 1200; deep: memory depth). Default: 1.
+
+
+:WAVeform:STOP <stop>
+Set/query stop point.
+
+<stop>: 1 to max. Default: 1200.
+
+
+:WAVeform:PREamble?
+Query all params: <format>,<type>,<points>,<count>,<xinc>,<xorig>,<xref>,<yinc>,<yorig>,<yref>.
+
+Example: Returns "0,2,6000000,1,1.000000e-09,-3.000000e-03,0,4.132813e-01,0,122".
+
+
+
+Tips for Waveform Capture:
+
+Stop acquisition first: :STOP (for deep memory).
+Max memory depth: Query with :ACQuire:MDEPth? (up to 24Mpts with option).
+For large data: Read in chunks to avoid timeouts.
+Digital channels: Data is binary logic states.
+
+Programming Examples
+Here are code snippets from the manual for reading waveform data over USB.
+MATLAB Example (Reads waveform, performs FFT):
+matlab% Create VISA object
+MSO1000Z = visa('ni', 'USB0::0x1AB1::0x04CE::DS1ZA160801111::INSTR');
+MSO1000Z.InputBufferSize = 2048;
+
+% Open the VISA object
+fopen(MSO1000Z);
+
+% Read the waveform data
+fprintf(MSO1000Z, ':wav:data?');
+[data, len] = fread(MSO1000Z, 2048);
+
+% Close the VISA object
+fclose(MSO1000Z);
+delete(MSO1000Z);
+clear MSO1000Z;
+
+% Data processing (skip TMC header: first 11 bytes)
+wave = data(12:len-1)';
+subplot(211);
+plot(wave);
+fftSpec = fft(wave', 2048);
+fftRms = abs(fftSpec');
+fftLg = 20 * log(fftRms);
+subplot(212);
+plot(fftLg);
+LabVIEW Example (Reads CH1 screen waveform):
+
+Create VI with VISA Resource Name and Waveform Graph.
+Block Diagram: VISA Open → VISA Write (":WAV:SOUR CHAN1") → VISA Write (":WAV:FORM BYTE") → VISA Write (":WAV:DATA?") → VISA Read (buffer size e.g., 2048) → Parse TMC header (String Subset + Decimal String To Number for data length) → String To Byte Array → Array Subset (remove header) → Waveform Graph → VISA Close.
+Handles TMC format (#N + length + data).
+
+Visual C++ Example (Send/Read Commands):
+cpp#include <visa.h>
+
+ViSession defaultRM, vi;
+char buf[256] = {0};
+CString s, strTemp;
+char* stringTemp;
+ViChar buffer[VI_FIND_BUFLEN];
+ViRsrc matches = buffer;
+ViUInt32 nmatches;
+ViFindList list;
+
+viOpenDefaultRM(&defaultRM);
+// Acquire USB resource
+viFindRsrc(defaultRM, "USB?*", &list, &nmatches, matches);
+viOpen(defaultRM, matches, VI_NULL, VI_NULL, &vi);
+
+// Send command (e.g., from combo box)
+m_combox.GetLBText(m_combox.GetCurSel(), strTemp);
+strTemp = strTemp + "\n";
+stringTemp = (char*)(LPCTSTR)strTemp;
+viPrintf(vi, stringTemp);
+
+// Read result
+viScanf(vi, "%t\n", &buf);
+
+// Display result
+UpdateData(TRUE);
+m_receive = buf;
+UpdateData(FALSE);
+
+viClose(vi);
+viClose(defaultRM);
+
+For waveform: Send ":WAV:DATA?" and parse response.
+
+This covers all key info for USB interfacing and waveform capture. If you need more (e.g., other commands like triggering), let me know!
