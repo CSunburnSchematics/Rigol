@@ -29,7 +29,7 @@ from nice_power_usb_locator import NicePowerLocator
 
 
 class PowerSupplyMonitorLive:
-    def __init__(self, config_file, sample_interval_ms=1000, max_display_time_seconds=10):
+    def __init__(self, config_file, sample_interval_ms=1000, max_display_time_seconds=10, output_base_dir=None):
         """
         Initialize live power supply monitor
 
@@ -37,10 +37,12 @@ class PowerSupplyMonitorLive:
             config_file: JSON configuration file
             sample_interval_ms: Sampling interval in milliseconds
             max_display_time_seconds: Maximum time to display on graphs (seconds)
+            output_base_dir: Base directory for output (creates timestamped subfolder)
         """
         self.config_file = config_file
         self.sample_interval = sample_interval_ms / 1000.0
         self.max_display_time = max_display_time_seconds
+        self.output_base_dir = output_base_dir
         self.config = self._load_config()
 
         # Initialize locators
@@ -119,10 +121,18 @@ class PowerSupplyMonitorLive:
     def setup_csv_files(self):
         """Setup single unified CSV file for all power supplies"""
         timestamp_str = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S_UTC')
-        log_dir = "power_supply_logs"
+
+        # Create timestamped output directory
+        if self.output_base_dir:
+            log_dir = os.path.join(os.path.abspath(self.output_base_dir), f'power_supply_log_{timestamp_str}')
+        else:
+            log_dir = os.path.join("power_supply_logs", f'power_supply_log_{timestamp_str}')
+
         os.makedirs(log_dir, exist_ok=True)
+        self.log_dir = log_dir
 
         print("\n=== Setting up CSV log file ===")
+        print(f"Output directory: {log_dir}")
 
         # Build column headers
         headers = ['UTC_Timestamp', 'Elapsed_s', 'Sample_Num']
@@ -686,7 +696,7 @@ class PowerSupplyMonitorLive:
             print(f"Duration:         {elapsed:.1f} seconds")
             print(f"Average rate:     {rate:.2f} Hz")
             print(f"Sample interval:  {self.sample_interval*1000:.0f} ms")
-            print("\nUnified CSV file saved in: power_supply_logs/")
+            print(f"\nUnified CSV file saved in: {self.log_dir}")
             print("="*70)
 
 
@@ -697,19 +707,22 @@ def main():
     print("="*70)
 
     if len(sys.argv) < 2:
-        print("\nUsage: python power_supply_continuous_logger_live.py <config_file> [sample_interval_ms]")
+        print("\nUsage: python power_supply_continuous_logger_live.py <config_file> <output_directory> [sample_interval_ms]")
         print("\nArguments:")
         print("  config_file         - JSON configuration file (required)")
+        print("  output_directory    - Output directory for timestamped logs (required)")
         print("  sample_interval_ms  - Sampling interval in ms (default: 1000ms = 1Hz)")
         print("\nExamples:")
-        print("  python power_supply_continuous_logger_live.py GAN_HV_TESTCONFIG.json")
-        print("  python power_supply_continuous_logger_live.py LT_RAD_TESTCONFIG.json 500")
+        print("  python power_supply_continuous_logger_live.py GAN_HV_TESTCONFIG.json C:/Users/andre/Claude/rad_test_data")
+        print("  python power_supply_continuous_logger_live.py LT_RAD_TESTCONFIG.json C:/Users/andre/Claude/rad_test_data 500")
+        print("\nCreates timestamped subfolder: output_directory/power_supply_log_YYYYMMDD_HHMMSS_UTC/")
         return 1
 
     config_file = sys.argv[1]
-    sample_interval_ms = int(sys.argv[2]) if len(sys.argv) > 2 else 1000
+    output_directory = sys.argv[2] if len(sys.argv) > 2 else None
+    sample_interval_ms = int(sys.argv[3]) if len(sys.argv) > 3 else 1000
 
-    monitor = PowerSupplyMonitorLive(config_file, sample_interval_ms)
+    monitor = PowerSupplyMonitorLive(config_file, sample_interval_ms, output_base_dir=output_directory)
 
     try:
         monitor.connect_supplies()

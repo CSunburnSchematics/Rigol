@@ -1,6 +1,6 @@
 {
   "capture_settings": {
-    "points_per_channel": 240,
+    "points_per_channel": 60,
     "timebase_seconds": 0.000012,
     "max_display_time_seconds": 5,
     "max_points_per_channel": 100000,
@@ -9,7 +9,7 @@
     "histogram_bins": 50
   },
   "acquisition": {
-    "memory_depth": 240,
+    "memory_depth": 60,
     "sample_rate_msa": 250
   },
   "scopes": {
@@ -191,6 +191,7 @@
   "power_supplies": {
     "nice_power": {
       "SPPS_D2001_232": {
+        "com_port": "COM11",
         "baudrate": 9600,
         "vout": 20.0,
         "iout_max": 0.1
@@ -202,7 +203,7 @@
         "iout_max": 0.1
       },
       "SPPS_D8001_232": {
-        "com_port": "COM9",
+        "com_port": "COM12",
         "baudrate": 9600,
         "vout": 80.0,
         "iout_max": 0.1

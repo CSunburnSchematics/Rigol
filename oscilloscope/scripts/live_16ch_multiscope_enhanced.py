@@ -765,8 +765,11 @@ def main():
                 print("\r" + " | ".join(status_lines), end="", flush=True)
                 last_stats_print = current_time
 
-            # Small sleep
-            time.sleep(0.01)
+            # Process GUI events to keep window responsive
+            plt.pause(0.001)
+
+            # Small sleep to prevent busy-waiting
+            time.sleep(0.005)
 
     except KeyboardInterrupt:
         print("\n\nInterrupted by user")

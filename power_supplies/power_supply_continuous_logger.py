@@ -20,16 +20,18 @@ from nice_power_usb_locator import NicePowerLocator
 
 
 class PowerSupplyMonitor:
-    def __init__(self, config_file, sample_interval_ms=1000):
+    def __init__(self, config_file, sample_interval_ms=1000, output_base_dir=None):
         """
         Initialize power supply monitor
 
         Args:
             config_file: JSON configuration file
             sample_interval_ms: Sampling interval in milliseconds (default 1000ms = 1Hz)
+            output_base_dir: Base directory for output (creates timestamped subfolder)
         """
         self.config_file = config_file
         self.sample_interval = sample_interval_ms / 1000.0
+        self.output_base_dir = output_base_dir
         self.config = self._load_config()
 
         # Initialize locators
@@ -87,17 +89,52 @@ class PowerSupplyMonitor:
         else:
             print("[WARN] No Rigol Power Supply found")
 
-        # Find Nice power supplies
+        # Find Nice power supplies with detailed output
         self.nice_psu_list = self.nice_loc.get_power_supplies()
-        print(f"[OK] Found {len(self.nice_psu_list)} Nice Power supply(s)")
+        print(f"\n[INFO] Found {len(self.nice_psu_list)} Nice Power supply(s)")
+
+        if len(self.nice_psu_list) > 0:
+            print("[INFO] Detected Nice Power supplies:")
+            for com_port, device_type, addr, psu in self.nice_psu_list:
+                print(f"  - COM port: {com_port}, Type: {device_type}, Address: {addr}")
+
+                # Try to match with config
+                matched = False
+                if device_type == "d2001":
+                    print(f"    -> Matches config: SPPS_D2001_232")
+                    matched = True
+                else:
+                    for psu_name, psu_cfg in self.config["power_supplies"]["nice_power"].items():
+                        config_com = psu_cfg.get("com_port")
+                        if config_com == com_port:
+                            print(f"    -> Matches config: {psu_name} (COM port matches)")
+                            matched = True
+                            break
+
+                if not matched:
+                    print(f"    -> WARNING: No matching config found for this COM port!")
+                    print(f"    -> Config expects COM ports:")
+                    for psu_name, psu_cfg in self.config["power_supplies"]["nice_power"].items():
+                        expected_com = psu_cfg.get("com_port", "N/A")
+                        print(f"       {psu_name}: {expected_com}")
+        else:
+            print("[WARN] No Nice Power supplies detected on any COM port")
 
     def setup_csv_files(self):
         """Setup CSV files for each power supply"""
         timestamp_str = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S_UTC')
-        log_dir = "power_supply_logs"
+
+        # Create timestamped output directory
+        if self.output_base_dir:
+            log_dir = os.path.join(os.path.abspath(self.output_base_dir), f'power_supply_log_{timestamp_str}')
+        else:
+            log_dir = os.path.join("power_supply_logs", f'power_supply_log_{timestamp_str}')
+
         os.makedirs(log_dir, exist_ok=True)
+        self.log_dir = log_dir
 
         print("\n=== Setting up CSV log files ===")
+        print(f"Output directory: {log_dir}")
 
         # Setup Rigol CSV file
         if self.rigol_psu:
@@ -133,6 +170,98 @@ class PowerSupplyMonitor:
                 self.csv_files[f'nice_{com_port}'] = csv_file
                 self.csv_writers[f'nice_{com_port}'] = csv_writer
                 print(f"[OK] {psu_id} log: {filename}")
+
+    def verify_nice_power_identification(self):
+        """
+        Verify Nice Power supply identification with user confirmation
+        Sets test voltages: D2001=2V, D6001=6V, D8001=8V
+        """
+        if len(self.nice_psu_list) == 0:
+            return True
+
+        print("\n" + "="*70)
+        print("NICE POWER SUPPLY IDENTIFICATION VERIFICATION")
+        print("="*70)
+        print("Setting test voltages to verify supply identification:")
+        print("  D2001 -> 2V")
+        print("  D6001 -> 6V")
+        print("  D8001 -> 8V")
+        print("\nPlease visually confirm the voltages on each supply.")
+        print("="*70)
+
+        # Set test voltages
+        for com_port, device_type, addr, psu in self.nice_psu_list:
+            try:
+                # Determine which supply this should be
+                psu_id = None
+                test_voltage = None
+
+                if device_type == "d2001":
+                    psu_id = "SPPS_D2001_232"
+                    test_voltage = 2.0
+                else:
+                    for psu_name, psu_cfg in self.config["power_supplies"]["nice_power"].items():
+                        if psu_cfg.get("com_port") == com_port:
+                            psu_id = psu_name
+                            if "D6001" in psu_name:
+                                test_voltage = 6.0
+                            elif "D8001" in psu_name:
+                                test_voltage = 8.0
+                            break
+
+                if psu_id and test_voltage:
+                    print(f"\nSetting {psu_id} ({com_port}) to {test_voltage}V...")
+
+                    if device_type == "modbus":
+                        psu.set_remote(True)
+                        psu.set_current_limit(0.1)  # Low current for safety
+                        psu.set_voltage(test_voltage)
+                        psu.turn_on()
+                    else:  # d2001
+                        psu.set_remote(True)
+                        psu.set_current_limit(0.1)
+                        psu.set_voltage(test_voltage)
+                        psu.turn_on()
+
+                    time.sleep(1)
+
+                    # Read back
+                    v_meas = psu.measure_voltage()
+                    i_meas = psu.measure_current()
+                    print(f"  Measured: {v_meas:.2f}V / {i_meas:.3f}A")
+
+            except Exception as e:
+                print(f"  [ERROR] Failed to set test voltage: {e}")
+
+        # Ask user to confirm
+        print("\n" + "="*70)
+        print("Please check the power supply displays:")
+        print("  - D2001 should show ~2V")
+        print("  - D6001 should show ~6V")
+        print("  - D8001 should show ~8V")
+        print("="*70)
+
+        response = input("Do the voltages match? (yes/no): ").strip().lower()
+
+        if response in ['yes', 'y']:
+            print("[OK] Supply identification confirmed!")
+            return True
+        else:
+            print("\n[ERROR] Supply identification mismatch!")
+            print("The COM port assignments in the config file may be incorrect.")
+            print("Please update the config file and try again.")
+            print("\nTurning off all supplies for safety...")
+
+            # Turn off all supplies
+            for com_port, device_type, addr, psu in self.nice_psu_list:
+                try:
+                    psu.set_voltage(0.0)
+                    psu.turn_off()
+                    psu.set_remote(False)
+                except:
+                    pass
+
+            return False
 
     def configure_supplies(self):
         """Configure all power supplies to initial setpoints"""
@@ -379,7 +508,7 @@ class PowerSupplyMonitor:
         print(f"Duration:         {elapsed:.1f} seconds")
         print(f"Average rate:     {rate:.2f} Hz")
         print(f"Sample interval:  {self.sample_interval*1000:.0f} ms")
-        print("\nCSV files saved in: power_supply_logs/")
+        print(f"\nCSV files saved in: {self.log_dir}")
         print("="*70)
 
 
@@ -390,24 +519,32 @@ def main():
     print("="*70)
 
     if len(sys.argv) < 2:
-        print("\nUsage: python power_supply_continuous_logger.py <config_file> [sample_interval_ms]")
+        print("\nUsage: python power_supply_continuous_logger.py <config_file> <output_directory> [sample_interval_ms]")
         print("\nArguments:")
         print("  config_file         - JSON configuration file (required)")
+        print("  output_directory    - Output directory for timestamped logs (required)")
         print("  sample_interval_ms  - Sampling interval in ms (default: 1000ms = 1Hz)")
         print("\nExamples:")
-        print("  python power_supply_continuous_logger.py GAN_HV_TESTCONFIG.json")
-        print("  python power_supply_continuous_logger.py LT_RAD_TESTCONFIG.json 500")
+        print("  python power_supply_continuous_logger.py GAN_HV_TESTCONFIG.json C:/Users/andre/Claude/rad_test_data")
+        print("  python power_supply_continuous_logger.py LT_RAD_TESTCONFIG.json C:/Users/andre/Claude/rad_test_data 500")
+        print("\nCreates timestamped subfolder: output_directory/power_supply_log_YYYYMMDD_HHMMSS_UTC/")
         return 1
 
     config_file = sys.argv[1]
-    sample_interval_ms = int(sys.argv[2]) if len(sys.argv) > 2 else 1000
+    output_directory = sys.argv[2] if len(sys.argv) > 2 else None
+    sample_interval_ms = int(sys.argv[3]) if len(sys.argv) > 3 else 1000
 
     # Create monitor
-    monitor = PowerSupplyMonitor(config_file, sample_interval_ms)
+    monitor = PowerSupplyMonitor(config_file, sample_interval_ms, output_directory)
 
     try:
         # Connect to supplies
         monitor.connect_supplies()
+
+        # Verify Nice Power supply identification
+        if not monitor.verify_nice_power_identification():
+            print("\n[ABORT] Supply identification failed - exiting for safety")
+            return 1
 
         # Setup CSV files
         monitor.setup_csv_files()

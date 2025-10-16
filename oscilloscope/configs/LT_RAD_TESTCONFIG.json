@@ -1,6 +1,6 @@
 {
   "capture_settings": {
-    "points_per_channel": 240,
+    "points_per_channel": 60,
     "timebase_seconds": 0.000012,
     "max_display_time_seconds": 5,
     "max_points_per_channel": 100000,
@@ -9,7 +9,7 @@
     "histogram_bins": 50
   },
   "acquisition": {
-    "memory_depth": 240,
+    "memory_depth": 60,
     "sample_rate_msa": 250
   },
   "scopes": {

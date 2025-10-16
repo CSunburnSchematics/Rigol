@@ -428,16 +428,23 @@ def main():
     manifest = launcher.create_test_manifest(config_path=config_path, notes=notes)
 
     print("Preparing to launch test systems...")
-    print("  - Oscilloscope: 16-channel multi-scope capture")
-    print("  - Webcam: Dual camera recording (thermal + 4K)")
+    print("  - Webcam: Dual camera recording (thermal + 4K) - LAUNCHING FIRST")
+    print("  - Oscilloscope: 16-channel multi-scope capture - LAUNCHING SECOND")
     print()
 
-    # Launch both systems
-    launcher.oscilloscope_process = launcher.launch_oscilloscope_capture(config_name)
-    time.sleep(2)  # Give oscilloscope time to start
-
+    # Launch webcam FIRST to avoid USB conflicts
     launcher.webcam_process = launcher.launch_webcam_recording()
-    time.sleep(3)  # Give webcam time to initialize cameras
+
+    # Wait 15 seconds for cameras to fully initialize
+    print("Waiting 15 seconds for cameras to initialize...")
+    for i in range(15, 0, -1):
+        print(f"  {i} seconds remaining...", end='\r', flush=True)
+        time.sleep(1)
+    print("\n")
+
+    # Launch oscilloscope SECOND
+    launcher.oscilloscope_process = launcher.launch_oscilloscope_capture(config_name)
+    time.sleep(2)  # Brief wait for oscilloscope to start
 
     # Check if at least oscilloscope started
     if not launcher.oscilloscope_process:
