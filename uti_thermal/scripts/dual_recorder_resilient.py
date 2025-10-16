@@ -1,8 +1,9 @@
 """
-Dual Camera Recorder - UTi 260B Thermal + 4K Webcam
+Dual Camera Recorder - RESILIENT VERSION
 - Auto-detects both cameras
 - Records synchronized videos
-- Same framerate for both cameras
+- Continues recording if one camera drops
+- Works even if only one camera is detected
 - UTC timestamps for frame-accurate sync
 """
 
@@ -11,9 +12,10 @@ import time
 import sys
 import json
 import os
+import numpy as np
 from datetime import datetime, timezone
 
-class DualCameraRecorder:
+class ResilientDualCameraRecorder:
     def __init__(self):
         self.thermal_camera_index = None
         self.webcam_index = None
@@ -25,12 +27,15 @@ class DualCameraRecorder:
         self.timestamp_log = []
         self.recording = False
         self.frame_count = 0
+        self.thermal_active = False
+        self.webcam_active = False
+        self.thermal_failures = 0
+        self.webcam_failures = 0
 
     def detect_cameras(self, preferred_webcam_index=None):
         """
-        Detect both thermal camera and regular webcam
-        UTi 260B: 240x321
-        4K Webcam: Higher resolution
+        Detect thermal camera and/or regular webcam
+        RESILIENT: Returns True if at least ONE camera is found
         """
         print("Searching for cameras...")
         print("-" * 60)
@@ -127,80 +132,102 @@ class DualCameraRecorder:
                     webcams.sort(key=lambda x: x['width'] * x['height'], reverse=True)
                     self.webcam_index = webcams[0]['index']
                     print(f"\nFallback: Using Camera {self.webcam_index} (any resolution)")
+        else:
+            print("\nWARNING: No webcam detected!")
 
         if self.thermal_camera_index is not None:
             print(f"\nSelected thermal: Camera {self.thermal_camera_index} (240x321)")
+        else:
+            print("\nWARNING: No thermal camera detected!")
 
-        return self.thermal_camera_index is not None and self.webcam_index is not None
+        # RESILIENT: Success if at least one camera found
+        has_camera = self.thermal_camera_index is not None or self.webcam_index is not None
+
+        if has_camera:
+            print("\n✓ At least one camera found - proceeding with recording")
+
+        return has_camera
 
     def validate_configuration(self):
         """
-        Validate both cameras are properly configured
+        Validate camera configuration
+        RESILIENT: Opens whatever cameras are available
         """
         print("\nValidating camera configuration...")
 
-        # Open thermal camera with retry
-        print(f"Opening thermal camera (index {self.thermal_camera_index})...")
         max_retries = 3
-        for attempt in range(max_retries):
-            if attempt > 0:
-                print(f"  Retry {attempt}/{max_retries}...")
-                time.sleep(1)  # Wait before retry
 
-            self.thermal_cap = cv2.VideoCapture(self.thermal_camera_index, cv2.CAP_DSHOW)
-            if self.thermal_cap.isOpened():
-                break
+        # Open thermal camera if available
+        if self.thermal_camera_index is not None:
+            print(f"Opening thermal camera (index {self.thermal_camera_index})...")
+            for attempt in range(max_retries):
+                if attempt > 0:
+                    print(f"  Retry {attempt}/{max_retries}...")
+                    time.sleep(1)
 
-        if not self.thermal_cap.isOpened():
-            print("ERROR: Cannot open thermal camera after retries")
+                self.thermal_cap = cv2.VideoCapture(self.thermal_camera_index, cv2.CAP_DSHOW)
+                if self.thermal_cap.isOpened():
+                    ret_t, frame_t = self.thermal_cap.read()
+                    if ret_t:
+                        thermal_width = int(self.thermal_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                        thermal_height = int(self.thermal_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                        print(f"  Thermal: {thermal_width}x{thermal_height} - READY")
+                        self.thermal_active = True
+                        break
+                    else:
+                        self.thermal_cap.release()
+                        self.thermal_cap = None
+
+            if not self.thermal_active:
+                print("  WARNING: Cannot open thermal camera - will record without it")
+        else:
+            print("  Thermal camera not detected - skipping")
+
+        # Open webcam if available
+        if self.webcam_index is not None:
+            print(f"Opening webcam (index {self.webcam_index})...")
+            for attempt in range(max_retries):
+                if attempt > 0:
+                    print(f"  Retry {attempt}/{max_retries}...")
+                    time.sleep(1)
+
+                self.webcam_cap = cv2.VideoCapture(self.webcam_index, cv2.CAP_DSHOW)
+                if self.webcam_cap.isOpened():
+                    # Try to set highest resolution
+                    self.webcam_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
+                    self.webcam_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2160)
+
+                    ret_w, frame_w = self.webcam_cap.read()
+                    if ret_w:
+                        webcam_width = int(self.webcam_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                        webcam_height = int(self.webcam_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                        print(f"  Webcam:  {webcam_width}x{webcam_height} - READY")
+                        self.webcam_active = True
+                        break
+                    else:
+                        self.webcam_cap.release()
+                        self.webcam_cap = None
+
+            if not self.webcam_active:
+                print("  WARNING: Cannot open webcam - will record without it")
+        else:
+            print("  Webcam not detected - skipping")
+
+        # RESILIENT: Success if at least one camera is active
+        if self.thermal_active or self.webcam_active:
+            print(f"\n  Status: READY ({self.thermal_active and 'Thermal' or ''}{' + ' if self.thermal_active and self.webcam_active else ''}{self.webcam_active and 'Webcam' or ''})")
+            return True
+        else:
+            print("\n  ERROR: No cameras available for recording!")
             return False
-
-        thermal_width = int(self.thermal_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        thermal_height = int(self.thermal_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        print(f"  Thermal: {thermal_width}x{thermal_height}")
-
-        # Open webcam with retry
-        print(f"Opening webcam (index {self.webcam_index})...")
-        for attempt in range(max_retries):
-            if attempt > 0:
-                print(f"  Retry {attempt}/{max_retries}...")
-                time.sleep(1)
-
-            self.webcam_cap = cv2.VideoCapture(self.webcam_index, cv2.CAP_DSHOW)
-            if self.webcam_cap.isOpened():
-                break
-
-        if not self.webcam_cap.isOpened():
-            print("ERROR: Cannot open webcam after retries")
-            return False
-
-        # Try to set highest resolution (4K first, then 1080p)
-        self.webcam_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
-        self.webcam_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2160)
-
-        webcam_width = int(self.webcam_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        webcam_height = int(self.webcam_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        print(f"  Webcam:  {webcam_width}x{webcam_height}")
-
-        # Test frame capture
-        ret_t, frame_t = self.thermal_cap.read()
-        ret_w, frame_w = self.webcam_cap.read()
-
-        if not ret_t or not ret_w:
-            print("ERROR: Cannot capture test frames")
-            return False
-
-        print("  Status: READY")
-        return True
 
     def start_recording(self, output_base_dir=None, output_prefix=None):
         """
-        Start synchronized recording from both cameras
+        Start recording from available cameras
+        RESILIENT: Continues even if one camera fails
         """
         # If no output directory specified, use default recordings folder
         if output_base_dir is None:
-            # Create recordings directory in Claude folder (two levels up from scripts)
-            # scripts -> uti_thermal -> Claude -> recordings
             recordings_base = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "recordings")
         else:
             recordings_base = os.path.abspath(output_base_dir)
@@ -211,8 +238,6 @@ class DualCameraRecorder:
             utc_now = datetime.now(timezone.utc)
             timestamp = utc_now.strftime("%Y%m%d_%H%M%S_UTC")
             output_prefix = f"recording_{timestamp}"
-
-            # Create timestamped output directory inside recordings folder
             output_dir = os.path.join(recordings_base, f"recording_{timestamp}")
             os.makedirs(output_dir, exist_ok=True)
             print(f"Created output directory: {output_dir}")
@@ -220,18 +245,26 @@ class DualCameraRecorder:
             output_dir = os.path.join(recordings_base, output_prefix)
             os.makedirs(output_dir, exist_ok=True)
 
-        thermal_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_thermal.avi")
-        # Skip standalone webcam - too large, just save thermal and combined
-        # webcam_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_webcam.avi")
-        combined_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_combined.avi")
+        # Setup video writers for active cameras
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        target_fps = 10
 
-        # Get frame dimensions
-        thermal_width = int(self.thermal_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        thermal_height = int(self.thermal_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        webcam_width = int(self.webcam_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        webcam_height = int(self.webcam_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        # Get dimensions
+        if self.thermal_active:
+            thermal_width = int(self.thermal_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            thermal_height = int(self.thermal_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            thermal_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_thermal.avi")
+            self.thermal_writer = cv2.VideoWriter(thermal_filename, fourcc, target_fps, (thermal_width, thermal_height))
+        else:
+            thermal_width, thermal_height = 240, 321  # Default thermal size for layout
 
-        # Calculate combined display dimensions (same as preview)
+        if self.webcam_active:
+            webcam_width = int(self.webcam_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            webcam_height = int(self.webcam_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        else:
+            webcam_width, webcam_height = 1920, 1080  # Default webcam size for layout
+
+        # Combined video dimensions
         display_thermal_width = 480
         display_thermal_height = 642
         display_webcam_width = 856
@@ -239,44 +272,37 @@ class DualCameraRecorder:
         combined_width = display_thermal_width + display_webcam_width
         combined_height = display_thermal_height
 
-        # Setup video writers with same FPS
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        target_fps = 10  # Use lower FPS that matches actual capture rate
+        combined_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_combined.avi")
+        self.combined_writer = cv2.VideoWriter(combined_filename, fourcc, target_fps, (combined_width, combined_height))
 
-        self.thermal_writer = cv2.VideoWriter(thermal_filename, fourcc, target_fps,
-                                             (thermal_width, thermal_height))
-        # Skip standalone webcam writer - saves huge amount of disk space
-        self.webcam_writer = None
-        self.combined_writer = cv2.VideoWriter(combined_filename, fourcc, target_fps,
-                                              (combined_width, combined_height))
-
-        # Initialize timestamp log
+        # Initialize recording
         self.timestamp_log = []
         self.frame_count = 0
         self.recording = True
 
-        # Recording metadata
         start_time_utc = datetime.now(timezone.utc)
         recording_metadata = {
             'start_time_utc': start_time_utc.isoformat(),
             'start_timestamp_unix': start_time_utc.timestamp(),
-            'thermal_file': thermal_filename,
+            'thermal_active': self.thermal_active,
+            'webcam_active': self.webcam_active,
+            'thermal_file': thermal_filename if self.thermal_active else None,
             'combined_file': combined_filename,
-            'thermal_resolution': f"{thermal_width}x{thermal_height}",
-            'webcam_resolution': f"{webcam_width}x{webcam_height}",
-            'combined_resolution': f"{combined_width}x{combined_height}",
             'target_fps': target_fps,
             'thermal_camera_index': self.thermal_camera_index,
             'webcam_camera_index': self.webcam_index,
-            'note': 'Standalone webcam video not saved to reduce disk usage'
         }
 
         print("\n" + "=" * 60)
-        print("DUAL RECORDING STARTED")
+        print("RESILIENT RECORDING STARTED")
         print("=" * 60)
-        print(f"Thermal:  {thermal_filename}")
+        if self.thermal_active:
+            print(f"Thermal:  {thermal_filename}")
+        else:
+            print("Thermal:  DISABLED (camera not available)")
         print(f"Combined: {combined_filename}")
-        print(f"Note: Standalone webcam not saved (too large)")
+        if not self.webcam_active:
+            print("Webcam:   DISABLED (camera not available)")
         print(f"Start time (UTC): {start_time_utc.isoformat()}")
         print(f"Target FPS: {target_fps}")
         print("\nControls:")
@@ -289,22 +315,53 @@ class DualCameraRecorder:
         fps_frame_count = 0
         current_fps = 0.0
 
+        # Create blank frames for missing cameras
+        blank_thermal = np.zeros((thermal_height, thermal_width, 3), dtype=np.uint8)
+        cv2.putText(blank_thermal, "THERMAL", (50, thermal_height // 2), cv2.FONT_HERSHEY_SIMPLEX, 1, (128, 128, 128), 2)
+        cv2.putText(blank_thermal, "OFFLINE", (50, thermal_height // 2 + 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (128, 128, 128), 2)
+
+        blank_webcam = np.zeros((webcam_height, webcam_width, 3), dtype=np.uint8)
+        cv2.putText(blank_webcam, "WEBCAM OFFLINE", (webcam_width // 2 - 200, webcam_height // 2), cv2.FONT_HERSHEY_SIMPLEX, 2, (128, 128, 128), 3)
+
         try:
             while self.recording:
-                # Capture from both cameras
-                ret_thermal, frame_thermal = self.thermal_cap.read()
-                ret_webcam, frame_webcam = self.webcam_cap.read()
-
-                if not ret_thermal or not ret_webcam:
-                    print("\nWarning: Failed to read frame from one or both cameras")
-                    continue
-
-                # Record exact capture timestamp
                 capture_time_utc = datetime.now(timezone.utc)
                 capture_timestamp_unix = capture_time_utc.timestamp()
 
-                # Write thermal frame only (skip standalone webcam to save space)
-                self.thermal_writer.write(frame_thermal)
+                # Capture from thermal (with resilience)
+                frame_thermal = None
+                if self.thermal_active:
+                    ret_thermal, frame_thermal = self.thermal_cap.read()
+                    if not ret_thermal:
+                        self.thermal_failures += 1
+                        if self.thermal_failures >= 10:
+                            print("\nWARNING: Thermal camera has failed multiple times - marking as offline")
+                            self.thermal_active = False
+                        frame_thermal = blank_thermal.copy()
+                    else:
+                        self.thermal_failures = 0  # Reset counter on success
+                else:
+                    frame_thermal = blank_thermal.copy()
+
+                # Capture from webcam (with resilience)
+                frame_webcam = None
+                if self.webcam_active:
+                    ret_webcam, frame_webcam = self.webcam_cap.read()
+                    if not ret_webcam:
+                        self.webcam_failures += 1
+                        if self.webcam_failures >= 10:
+                            print("\nWARNING: Webcam has failed multiple times - marking as offline")
+                            self.webcam_active = False
+                        frame_webcam = blank_webcam.copy()
+                    else:
+                        self.webcam_failures = 0  # Reset counter on success
+                else:
+                    frame_webcam = blank_webcam.copy()
+
+                # Write thermal frame if active
+                if self.thermal_writer and frame_thermal is not None:
+                    self.thermal_writer.write(frame_thermal)
+
                 self.frame_count += 1
                 fps_frame_count += 1
 
@@ -313,24 +370,21 @@ class DualCameraRecorder:
                     'frame_number': self.frame_count,
                     'utc_time': capture_time_utc.isoformat(),
                     'unix_timestamp': capture_timestamp_unix,
-                    'elapsed_seconds': capture_timestamp_unix - recording_metadata['start_timestamp_unix']
+                    'elapsed_seconds': capture_timestamp_unix - recording_metadata['start_timestamp_unix'],
+                    'thermal_active': self.thermal_active,
+                    'webcam_active': self.webcam_active
                 })
 
-                # Calculate actual FPS
+                # Calculate FPS
                 current_time = time.time()
                 if current_time - last_fps_update >= 1.0:
                     current_fps = fps_frame_count / (current_time - last_fps_update)
                     fps_frame_count = 0
                     last_fps_update = current_time
 
-                # Create combined display (side-by-side)
-                # Resize thermal to be larger for visibility
-                display_thermal = cv2.resize(frame_thermal, (480, 642))  # 2x scale
-
-                # Resize webcam to match height
-                display_webcam = cv2.resize(frame_webcam, (856, 642))  # Match height
-
-                # Combine side by side
+                # Create combined display
+                display_thermal = cv2.resize(frame_thermal, (display_thermal_width, display_thermal_height))
+                display_webcam = cv2.resize(frame_webcam, (display_webcam_width, display_webcam_height))
                 display_combined = cv2.hconcat([display_thermal, display_webcam])
 
                 # Overlay info
@@ -347,41 +401,47 @@ class DualCameraRecorder:
                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
                     y_pos += 35
 
-                # Add labels
-                cv2.putText(display_combined, "THERMAL", (200, 620),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-                cv2.putText(display_combined, "WEBCAM", (680, 620),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+                # Add status labels
+                thermal_label = "THERMAL" + ("" if self.thermal_active else " [OFF]")
+                webcam_label = "WEBCAM" + ("" if self.webcam_active else " [OFF]")
+                thermal_color = (255, 255, 255) if self.thermal_active else (128, 128, 128)
+                webcam_color = (255, 255, 255) if self.webcam_active else (128, 128, 128)
 
-                # Add recording indicator (red circle)
+                cv2.putText(display_combined, thermal_label, (170, 620),
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, thermal_color, 2)
+                cv2.putText(display_combined, webcam_label, (650, 620),
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, webcam_color, 2)
+
+                # Recording indicator
                 cv2.circle(display_combined, (display_combined.shape[1] - 30, 30), 12, (0, 0, 255), -1)
 
-                # Write combined view to video
+                # Write combined video
                 self.combined_writer.write(display_combined)
 
-                # Show live preview
-                cv2.imshow('Dual Camera Recorder - Thermal + Webcam (Press Q to Exit)', display_combined)
+                # Show preview
+                cv2.imshow('Resilient Dual Camera Recorder (Press Q to Exit)', display_combined)
 
-                # Handle key presses
+                # Handle keys
                 key = cv2.waitKey(1) & 0xFF
-
-                if key == ord('q') or key == 27:  # 'q' or ESC
+                if key == ord('q') or key == 27:
                     print("\n\nStopping recording...")
                     self.recording = False
-
-                elif key == ord('s'):  # Save snapshot
+                elif key == ord('s'):
                     snapshot_time = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_UTC")
-                    thermal_snap = os.path.join(output_dir, f"snapshot_thermal_frame{self.frame_count}_{snapshot_time}.png")
-                    webcam_snap = os.path.join(output_dir, f"snapshot_webcam_frame{self.frame_count}_{snapshot_time}.png")
-                    cv2.imwrite(thermal_snap, frame_thermal)
-                    cv2.imwrite(webcam_snap, frame_webcam)
-                    print(f"\nSnapshots saved: {os.path.basename(thermal_snap)}, {os.path.basename(webcam_snap)}")
+                    if self.thermal_active and frame_thermal is not None:
+                        thermal_snap = os.path.join(output_dir, f"snapshot_thermal_frame{self.frame_count}_{snapshot_time}.png")
+                        cv2.imwrite(thermal_snap, frame_thermal)
+                        print(f"\nSnapshot saved: {os.path.basename(thermal_snap)}")
+                    if self.webcam_active and frame_webcam is not None:
+                        webcam_snap = os.path.join(output_dir, f"snapshot_webcam_frame{self.frame_count}_{snapshot_time}.png")
+                        cv2.imwrite(webcam_snap, frame_webcam)
+                        print(f"Snapshot saved: {os.path.basename(webcam_snap)}")
 
         except KeyboardInterrupt:
             print("\n\nRecording interrupted by user")
             self.recording = False
 
-        # Calculate final statistics
+        # Finalize
         end_time_utc = datetime.now(timezone.utc)
         total_duration = end_time_utc.timestamp() - recording_metadata['start_timestamp_unix']
         actual_fps = self.frame_count / total_duration if total_duration > 0 else 0
@@ -391,40 +451,37 @@ class DualCameraRecorder:
             'end_timestamp_unix': end_time_utc.timestamp(),
             'total_frames': self.frame_count,
             'duration_seconds': total_duration,
-            'actual_fps': actual_fps
+            'actual_fps': actual_fps,
+            'thermal_failures': self.thermal_failures,
+            'webcam_failures': self.webcam_failures
         })
 
-        # Save timestamp log
+        # Save logs
         timestamp_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_timestamps.json")
         with open(timestamp_filename, 'w') as f:
-            json.dump({
-                'metadata': recording_metadata,
-                'frames': self.timestamp_log
-            }, f, indent=2)
+            json.dump({'metadata': recording_metadata, 'frames': self.timestamp_log}, f, indent=2)
 
-        # Save summary
         summary_filename = os.path.join(output_dir, f"{os.path.basename(output_prefix)}_summary.txt")
         with open(summary_filename, 'w') as f:
-            f.write("Dual Camera Recording Summary\n")
+            f.write("Resilient Dual Camera Recording Summary\n")
             f.write("=" * 60 + "\n\n")
-            f.write(f"Thermal Video:  {thermal_filename}\n")
+            if self.thermal_writer:
+                f.write(f"Thermal Video:  {thermal_filename}\n")
             f.write(f"Combined Video: {combined_filename}\n")
             f.write(f"Timestamp Data: {timestamp_filename}\n\n")
-            f.write(f"Note: Standalone webcam video not saved to reduce disk usage.\n")
-            f.write(f"      Webcam footage is available in the combined video.\n\n")
             f.write(f"Recording Start (UTC): {recording_metadata['start_time_utc']}\n")
             f.write(f"Recording End (UTC):   {recording_metadata['end_time_utc']}\n")
             f.write(f"Duration: {total_duration:.2f} seconds\n\n")
             f.write(f"Total Frames: {self.frame_count}\n")
-            f.write(f"Target FPS: {target_fps}\n")
             f.write(f"Actual FPS: {actual_fps:.2f}\n\n")
-            f.write(f"Thermal Resolution: {recording_metadata['thermal_resolution']}\n")
-            f.write(f"Webcam Resolution:  {recording_metadata['webcam_resolution']}\n")
+            f.write(f"Thermal Camera: {'Active' if self.thermal_active else 'Inactive'} (Failures: {self.thermal_failures})\n")
+            f.write(f"Webcam: {'Active' if self.webcam_active else 'Inactive'} (Failures: {self.webcam_failures})\n")
 
         print("\n" + "=" * 60)
         print("RECORDING STOPPED")
         print("=" * 60)
-        print(f"Thermal video:  {thermal_filename}")
+        if self.thermal_writer:
+            print(f"Thermal video:  {thermal_filename}")
         print(f"Combined video: {combined_filename}")
         print(f"Timestamps:     {timestamp_filename}")
         print(f"Summary:        {summary_filename}")
@@ -432,6 +489,8 @@ class DualCameraRecorder:
         print(f"  Duration: {total_duration:.2f} seconds")
         print(f"  Frames captured: {self.frame_count}")
         print(f"  Actual FPS: {actual_fps:.2f}")
+        print(f"  Thermal failures: {self.thermal_failures}")
+        print(f"  Webcam failures: {self.webcam_failures}")
         print("=" * 60)
 
     def cleanup(self):
@@ -455,27 +514,23 @@ def load_camera_mapping():
     if os.path.exists(mapping_file):
         try:
             with open(mapping_file, 'r') as f:
-                cameras = json.load(f)
-                return cameras
+                return json.load(f)
         except:
             return None
     return None
 
+
 def main():
-    recorder = DualCameraRecorder()
+    recorder = ResilientDualCameraRecorder()
 
     # Parse command line arguments
     preferred_webcam = None
     output_directory = None
 
     if len(sys.argv) > 1:
-        # First argument could be webcam index or output directory
         if sys.argv[1].replace('\\', '/').startswith(('C:/', '/', '.', 'rad_test')):
-            # It's a path
             output_directory = sys.argv[1]
             print(f"Output directory: {output_directory}")
-
-            # Check if second argument is webcam index
             if len(sys.argv) > 2:
                 try:
                     preferred_webcam = int(sys.argv[2])
@@ -484,57 +539,44 @@ def main():
                     print(f"Invalid camera index: {sys.argv[2]}")
                     return 1
         else:
-            # Try to parse as webcam index
             try:
                 preferred_webcam = int(sys.argv[1])
                 print(f"User specified webcam index: {preferred_webcam}")
-
-                # Check if second argument is output directory
                 if len(sys.argv) > 2:
                     output_directory = sys.argv[2]
                     print(f"Output directory: {output_directory}")
             except ValueError:
                 print(f"Invalid argument: {sys.argv[1]}")
-                print("Usage: python dual_recorder.py [output_directory] [webcam_index]")
-                print("   or: python dual_recorder.py [webcam_index] [output_directory]")
+                print("Usage: python dual_recorder_resilient.py [output_directory] [webcam_index]")
                 return 1
 
     if preferred_webcam is None:
-        # Try to load from camera mapping
         mapping = load_camera_mapping()
         if mapping:
-            # Find the best webcam from mapping (highest resolution, not thermal)
             webcams = [c for c in mapping if c['type'] != 'thermal']
             if webcams:
                 best_webcam = max(webcams, key=lambda x: x.get('max_pixels', 0))
                 preferred_webcam = best_webcam['index']
                 print(f"Auto-detected from mapping: Using Camera {preferred_webcam} ({best_webcam['name']})")
-                print(f"  Max Resolution: {best_webcam.get('max_resolution', 'Unknown')}")
 
-        if preferred_webcam is None:
-            print("No camera mapping found. Run 'python scripts/identify_cameras.py' to create one.")
-            print("Or specify a camera index: python dual_recorder.py [output_directory] [camera_index]")
-
-    # Step 1: Detect cameras
+    # RESILIENT: Detect cameras (at least one required)
     if not recorder.detect_cameras(preferred_webcam_index=preferred_webcam):
-        print("\nERROR: Could not detect both cameras!")
+        print("\nERROR: No cameras detected at all!")
         print("\nTroubleshooting:")
-        print("  1. Make sure UTi 260B is connected via USB-C")
-        print("  2. Make sure 4K webcam is connected")
-        print("  3. Close Uti-Live Screen software if running")
-        print("  4. Set UTi 260B to 'USB Camera' mode (not USB Disk)")
+        print("  1. Make sure at least one camera is connected")
+        print("  2. Close Uti-Live Screen software if using thermal camera")
+        print("  3. Set UTi 260B to 'USB Camera' mode (not USB Disk)")
         return 1
 
-    # Wait for cameras to fully release after detection
     print("\nWaiting for cameras to initialize...")
     time.sleep(2)
 
-    # Step 2: Validate configuration
+    # RESILIENT: Validate configuration (opens whatever is available)
     if not recorder.validate_configuration():
-        print("\nERROR: Camera configuration invalid!")
+        print("\nERROR: No cameras could be opened!")
         return 1
 
-    # Step 3: Start recording
+    # Start recording
     print("\n" + "=" * 60)
     print("Starting recording in 3 seconds...")
     for i in range(3, 0, -1):
