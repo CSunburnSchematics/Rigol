@@ -1,0 +1,222 @@
+{
+  "capture_settings": {
+    "points_per_channel": 60,
+    "timebase_seconds": 0.000012,
+    "max_display_time_seconds": 5,
+    "max_points_per_channel": 100000,
+    "update_interval_ms": 100,
+    "detail_waveform_count": 10,
+    "histogram_bins": 50
+  },
+  "acquisition": {
+    "memory_depth": 60,
+    "sample_rate_msa": 250
+  },
+  "scopes": {
+    "DS1ZA273M00260": {
+      "trigger": {
+        "source": "CH1",
+        "level_volts": 10.0,
+        "mode": "EDGE",
+        "sweep": "AUTO"
+      },
+      "channels": {
+        "1": {
+          "enabled": true,
+          "name": "EPC2206_4",
+          "scale_volts_per_div": 20.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "2": {
+          "enabled": true,
+          "name": "EPC2206_3",
+          "scale_volts_per_div": 20.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "3": {
+          "enabled": true,
+          "name": "EPC2206_2",
+          "scale_volts_per_div": 20.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "4": {
+          "enabled": true,
+          "name": "EPC2206_1",
+          "scale_volts_per_div": 20.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        }
+      }
+    },
+    "DS1ZA269M00375": {
+      "trigger": {
+        "source": "CH1",
+        "level_volts": 100.0,
+        "mode": "EDGE",
+        "sweep": "AUTO"
+      },
+      "channels": {
+        "1": {
+          "enabled": true,
+          "name": "IGT65_4",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "2": {
+          "enabled": true,
+          "name": "IGT65_3",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "3": {
+          "enabled": true,
+          "name": "IGT65_2",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "4": {
+          "enabled": true,
+          "name": "IGT65_1",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        }
+      }
+    },
+    "DS1ZA172215665": {
+      "trigger": {
+        "source": "CH1",
+        "level_volts": 100.0,
+        "mode": "EDGE",
+        "sweep": "AUTO"
+      },
+      "channels": {
+        "1": {
+          "enabled": true,
+          "name": "GPI900_4",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "2": {
+          "enabled": true,
+          "name": "GPI900_3",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "3": {
+          "enabled": true,
+          "name": "GPI900_2",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "4": {
+          "enabled": true,
+          "name": "GPI900_1",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        }
+      }
+    },
+    "DS1ZA276M00823": {
+      "trigger": {
+        "source": "CH1",
+        "level_volts": 100.0,
+        "mode": "EDGE",
+        "sweep": "AUTO"
+      },
+      "channels": {
+        "1": {
+          "enabled": true,
+          "name": "IGL65_4",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "2": {
+          "enabled": true,
+          "name": "IGL65_3",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "3": {
+          "enabled": true,
+          "name": "IGL65_2",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "4": {
+          "enabled": true,
+          "name": "IGL65_1",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        }
+      }
+    }
+  },
+  "output": {
+    "csv_enabled": true,
+    "csv_path": "../../data",
+    "screenshot_enabled": true,
+    "screenshot_path": "../../plots"
+  },
+  "power_supplies": {
+    "nice_power": {
+      "SPPS_D2001_232": {
+        "com_port": "COM11",
+        "baudrate": 9600,
+        "vout": 20.0,
+        "iout_max": 0.1
+      },
+      "SPPS_D6001_232": {
+        "com_port": "COM4",
+        "baudrate": 9600,
+        "vout": 60.0,
+        "iout_max": 0.1
+      },
+      "SPPS_D8001_232": {
+        "com_port": "COM12",
+        "baudrate": 9600,
+        "vout": 80.0,
+        "iout_max": 0.1
+      }
+    },
+    "rigol": {
+      "DP8B261601128": {
+        "channels": {
+          "1": { "vout": 1.0, "iout_max": 0.1, "enabled": true },
+          "2": { "vout": 2.0, "iout_max": 0.1, "enabled": true },
+          "3": { "vout": 3.0, "iout_max": 0.1, "enabled": true }
+        }
+      }
+    }
+  }
+}

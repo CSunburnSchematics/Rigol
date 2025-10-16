@@ -79,9 +79,12 @@ class PowerSupplyMonitorLive:
         possible_paths = [
             self.config_file,
             os.path.join("Configs", self.config_file),
+            os.path.join("configs", self.config_file),
             os.path.join("oscilloscope", "configs", self.config_file),
             os.path.join("..", "Configs", self.config_file),
+            os.path.join("..", "configs", self.config_file),
             os.path.join("..", "oscilloscope", "configs", self.config_file),
+            os.path.join("..", "..", "configs", self.config_file),
         ]
 
         config_path = None
@@ -96,7 +99,7 @@ class PowerSupplyMonitorLive:
         with open(config_path, 'r') as f:
             config = json.load(f)
 
-        print(f"Loaded config: {self.config_file}")
+        print(f"Loaded config: {config_path}")
         return config
 
     def connect_supplies(self):

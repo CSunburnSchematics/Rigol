@@ -58,9 +58,12 @@ class PowerSupplyMonitor:
         possible_paths = [
             self.config_file,
             os.path.join("Configs", self.config_file),
+            os.path.join("configs", self.config_file),
             os.path.join("oscilloscope", "configs", self.config_file),
             os.path.join("..", "Configs", self.config_file),
+            os.path.join("..", "configs", self.config_file),
             os.path.join("..", "oscilloscope", "configs", self.config_file),
+            os.path.join("..", "..", "configs", self.config_file),
         ]
 
         config_path = None
@@ -75,7 +78,7 @@ class PowerSupplyMonitor:
         with open(config_path, 'r') as f:
             config = json.load(f)
 
-        print(f"Loaded config: {self.config_file}")
+        print(f"Loaded config: {config_path}")
         return config
 
     def connect_supplies(self):
@@ -540,11 +543,6 @@ def main():
     try:
         # Connect to supplies
         monitor.connect_supplies()
-
-        # Verify Nice Power supply identification
-        if not monitor.verify_nice_power_identification():
-            print("\n[ABORT] Supply identification failed - exiting for safety")
-            return 1
 
         # Setup CSV files
         monitor.setup_csv_files()
