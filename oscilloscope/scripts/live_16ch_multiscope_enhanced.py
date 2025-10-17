@@ -265,14 +265,16 @@ def main():
     print("Press 'q' to quit | Close window to stop")
     print("="*70)
 
-    # Load configuration - config file is required
-    if len(sys.argv) < 2:
-        print("ERROR: Config file required!")
-        print("Usage: python live_16ch_multiscope_enhanced.py <config_file>")
-        print("Example: python live_16ch_multiscope_enhanced.py multiscope_config.json")
-        return 1
+    # Parse arguments
+    import argparse
+    parser = argparse.ArgumentParser(description='16-Channel Multi-Scope Capture')
+    parser.add_argument('config_file', help='Configuration JSON file')
+    parser.add_argument('--output-dir', default=None, help='Optional output directory')
+    args = parser.parse_args()
 
-    config_file = sys.argv[1]
+    config_file = args.config_file
+    output_dir_override = args.output_dir
+
     config = load_config(config_file)
 
     if config is None:
@@ -304,19 +306,25 @@ def main():
     csv_path_config = output_config.get('csv_path', '../../data')
     screenshot_path_config = output_config.get('screenshot_path', '../../plots')
 
-    # Get config directory for resolving relative paths
-    config_dir = os.path.dirname(os.path.abspath(config_file)) if os.path.isabs(config_file) else os.path.join(os.path.dirname(__file__), "..", "configs")
-
-    # Resolve paths relative to config directory
-    if not os.path.isabs(csv_path_config):
-        csv_path = os.path.abspath(os.path.join(config_dir, csv_path_config))
+    # Check if output directory is overridden
+    if output_dir_override:
+        # Use the override directory directly
+        csv_path = output_dir_override
+        screenshot_path = output_dir_override
     else:
-        csv_path = csv_path_config
+        # Get config directory for resolving relative paths
+        config_dir = os.path.dirname(os.path.abspath(config_file)) if os.path.isabs(config_file) else os.path.join(os.path.dirname(__file__), "..", "configs")
 
-    if not os.path.isabs(screenshot_path_config):
-        screenshot_path = os.path.abspath(os.path.join(config_dir, screenshot_path_config))
-    else:
-        screenshot_path = screenshot_path_config
+        # Resolve paths relative to config directory
+        if not os.path.isabs(csv_path_config):
+            csv_path = os.path.abspath(os.path.join(config_dir, csv_path_config))
+        else:
+            csv_path = csv_path_config
+
+        if not os.path.isabs(screenshot_path_config):
+            screenshot_path = os.path.abspath(os.path.join(config_dir, screenshot_path_config))
+        else:
+            screenshot_path = screenshot_path_config
 
     # Create timestamped session folder using UTC
     timestamp_str = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')
