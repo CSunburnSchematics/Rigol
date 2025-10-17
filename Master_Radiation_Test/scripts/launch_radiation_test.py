@@ -66,9 +66,10 @@ def main():
         print(f"ERROR: Oscilloscope config not found: {oscilloscope_config}")
         return 1
 
-    # Create timestamped folder
+    # Create timestamped folder in radiation_tests subdirectory
     timestamp_str = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')
-    session_folder = MASTER_RAD_TEST_DIR / f"radiation_test_{timestamp_str}"
+    radiation_tests_dir = MASTER_RAD_TEST_DIR / "radiation_tests"
+    session_folder = radiation_tests_dir / f"radiation_test_{timestamp_str}"
     session_folder.mkdir(parents=True, exist_ok=True)
 
     print(f"\nSession folder: {session_folder}")

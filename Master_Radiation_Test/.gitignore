@@ -1,0 +1,5 @@
+# Radiation test data folders
+radiation_tests/
+
+# Test data that may have been created in root before the change
+radiation_test_*/

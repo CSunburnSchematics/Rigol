@@ -24,14 +24,17 @@ The launcher script orchestrates three subsystems:
 
 ## Output Structure
 
-Each test run creates a timestamped folder:
+Each test run creates a timestamped folder in the `radiation_tests/` directory:
 ```
 Master_Radiation_Test/
-  radiation_test_YYYYMMDD_HHMMSS/
-    ├── thermal_YYYYMMDD_HHMMSS/          # Thermal camera data
-    ├── power_supply_recording_YYYYMMDD_HHMMSS/  # Power data + manifest
-    └── scope_capture_YYYYMMDD_HHMMSS/     # Oscilloscope data + manifest
+  radiation_tests/
+    radiation_test_YYYYMMDD_HHMMSS/
+      ├── recording_YYYYMMDD_HHMMSS_UTC/          # Thermal camera data
+      ├── power_supply_recording_YYYYMMDD_HHMMSS/  # Power data + manifest
+      └── scope_recording_YYYYMMDD_HHMMSS/         # Oscilloscope data + manifest
 ```
+
+**Note:** The `radiation_tests/` folder is ignored by git to prevent committing large test data files.
 
 ## Configuration Files
 
