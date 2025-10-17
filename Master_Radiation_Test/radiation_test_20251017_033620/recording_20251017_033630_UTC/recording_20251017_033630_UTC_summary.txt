@@ -1,0 +1,16 @@
+Resilient Dual Camera Recording Summary
+============================================================
+
+Thermal Video:  C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\radiation_test_20251017_033620\recording_20251017_033630_UTC\recording_20251017_033630_UTC_thermal.avi
+Combined Video: C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\radiation_test_20251017_033620\recording_20251017_033630_UTC\recording_20251017_033630_UTC_combined.avi
+Timestamp Data: C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\radiation_test_20251017_033620\recording_20251017_033630_UTC\recording_20251017_033630_UTC_timestamps.json
+
+Recording Start (UTC): 2025-10-17T03:36:30.465239+00:00
+Recording End (UTC):   2025-10-17T03:37:41.543569+00:00
+Duration: 71.08 seconds
+
+Total Frames: 729
+Actual FPS: 10.26
+
+Thermal Camera: Active (Failures: 0)
+Webcam: Active (Failures: 0)

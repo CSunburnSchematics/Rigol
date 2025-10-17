@@ -1,0 +1,27 @@
+Turn On Webcam:
+python "C:\Users\Sunburn\Sunburn code\uti_thermal\scripts\dual_recorder_resilient.py" "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test"
+
+Set Voltage:
+python "C:\Users\Sunburn\Sunburn code\Power_Supplies\scripts\power_supply_live_monitor.py" "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\config\POWER_SUPPLY_ltc_rad_test_board_config.json"
+
+
+Oscilloscope:
+python "C:\Users\Sunburn\Sunburn code\oscilloscope\scripts\live_16ch_multiscope_enhanced.py" "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\config\SCOPE_LT_RAD_TESTCONFIG.json"
+
+FULL TESTS
+##########
+
+run LTC RAD TEST;
+python "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\scripts\launch_radiation_test.py" config/POWER_SUPPLY_ltc_rad_test_board_config.json config/SCOPE_LT_RAD_TESTCONFIG.json
+
+run gan 40% VDS TEST;
+python "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\scripts\launch_radiation_test.py" config/POWER_SUPPLY_GAN_40percentVDS_rad_test_board_config.json config/SCOPE_LT_RAD_GAN_rad_test_board_config.json
+
+run gan 60% VDS TEST;
+python "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\scripts\launch_radiation_test.py" config/POWER_SUPPLY_GAN_60percentVDS_rad_test_board_config.json config/SCOPE_LT_RAD_GAN_rad_test_board_config.json
+
+run gan 80% VDS TEST;
+python "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\scripts\launch_radiation_test.py" config/POWER_SUPPLY_GAN_80percentVDS_rad_test_board_config.json config/SCOPE_LT_RAD_GAN_rad_test_board_config.json
+
+run gan 100% VDS TEST;
+python "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\scripts\launch_radiation_test.py" config/POWER_SUPPLY_GAN_100percentVDS_rad_test_board_config.json config/SCOPE_LT_RAD_GAN_rad_test_board_config.json

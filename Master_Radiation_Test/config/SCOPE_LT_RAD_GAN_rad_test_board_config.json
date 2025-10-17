@@ -1,0 +1,191 @@
+{
+  "capture_settings": {
+    "points_per_channel": 60,
+    "timebase_seconds": 0.000012,
+    "max_display_time_seconds": 5,
+    "max_points_per_channel": 100000,
+    "update_interval_ms": 100,
+    "detail_waveform_count": 10,
+    "histogram_bins": 50
+  },
+  "acquisition": {
+    "memory_depth": 60,
+    "sample_rate_msa": 250
+  },
+  "scopes": {
+    "DS1ZA273M00260": {
+      "trigger": {
+        "source": "CH1",
+        "level_volts": 10.0,
+        "mode": "EDGE",
+        "sweep": "AUTO"
+      },
+      "channels": {
+        "1": {
+          "enabled": true,
+          "name": "21_DRVB",
+          "scale_volts_per_div": 20.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "2": {
+          "enabled": true,
+          "name": "21_DRVA",
+          "scale_volts_per_div": 20.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "3": {
+          "enabled": true,
+          "name": "23_DRVB",
+          "scale_volts_per_div": 20.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "4": {
+          "enabled": true,
+          "name": "23_DRVA",
+          "scale_volts_per_div": 20.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        }
+      }
+    },
+    "DS1ZA172215665": {
+      "trigger": {
+        "source": "CH1",
+        "level_volts": 100.0,
+        "mode": "EDGE",
+        "sweep": "AUTO"
+      },
+      "channels": {
+        "1": {
+          "enabled": true,
+          "name": "AMC1311",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "2": {
+          "enabled": true,
+          "name": "ADUM4195",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "3": {
+          "enabled": true,
+          "name": "LT4430",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "4": {
+          "enabled": true,
+          "name": "LT1431",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        }
+      }
+    },
+    "DS1ZA269M00375": {
+      "trigger": {
+        "source": "CH1",
+        "level_volts": 100.0,
+        "mode": "EDGE",
+        "sweep": "AUTO"
+      },
+      "channels": {
+        "1": {
+          "enabled": true,
+          "name": "22_OUTD",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "2": {
+          "enabled": true,
+          "name": "22_OUTC",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "3": {
+          "enabled": true,
+          "name": "22_OUTB",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "4": {
+          "enabled": true,
+          "name": "22_OUTA",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        }
+      }
+    },
+    "DS1ZA276M00823": {
+      "trigger": {
+        "source": "CH1",
+        "level_volts": 100.0,
+        "mode": "EDGE",
+        "sweep": "AUTO"
+      },
+      "channels": {
+        "1": {
+          "enabled": true,
+          "name": "23_SDRA",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "2": {
+          "enabled": true,
+          "name": "23_SDRB",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "3": {
+          "enabled": true,
+          "name": "22_OUTF",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        },
+        "4": {
+          "enabled": true,
+          "name": "22_OUTE",
+          "scale_volts_per_div": 200.0,
+          "offset_volts": 0.0,
+          "probe_attenuation": 100,
+          "coupling": "DC"
+        }
+      }
+    }
+  },
+  "output": {
+    "csv_enabled": true,
+    "csv_path": "..",
+    "screenshot_enabled": true,
+    "screenshot_path": ".."
+  }
+}

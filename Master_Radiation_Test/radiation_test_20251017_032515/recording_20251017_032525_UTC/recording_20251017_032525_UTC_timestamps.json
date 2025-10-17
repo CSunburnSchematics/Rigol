@@ -1,0 +1,5486 @@
+{
+  "metadata": {
+    "start_time_utc": "2025-10-17T03:25:25.932714+00:00",
+    "start_timestamp_unix": 1760671525.932714,
+    "thermal_active": true,
+    "webcam_active": true,
+    "thermal_file": "C:\\Users\\Sunburn\\Sunburn code\\Master_Radiation_Test\\radiation_test_20251017_032515\\recording_20251017_032525_UTC\\recording_20251017_032525_UTC_thermal.avi",
+    "combined_file": "C:\\Users\\Sunburn\\Sunburn code\\Master_Radiation_Test\\radiation_test_20251017_032515\\recording_20251017_032525_UTC\\recording_20251017_032525_UTC_combined.avi",
+    "target_fps": 10,
+    "thermal_camera_index": 2,
+    "webcam_camera_index": 1,
+    "end_time_utc": "2025-10-17T03:26:33.441194+00:00",
+    "end_timestamp_unix": 1760671593.441194,
+    "total_frames": 683,
+    "duration_seconds": 67.50848007202148,
+    "actual_fps": 10.117247481669574,
+    "thermal_failures": 0,
+    "webcam_failures": 0
+  },
+  "frames": [
+    {
+      "frame_number": 1,
+      "utc_time": "2025-10-17T03:25:25.934732+00:00",
+      "unix_timestamp": 1760671525.934732,
+      "elapsed_seconds": 0.002017974853515625,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 2,
+      "utc_time": "2025-10-17T03:25:26.030960+00:00",
+      "unix_timestamp": 1760671526.03096,
+      "elapsed_seconds": 0.09824609756469727,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 3,
+      "utc_time": "2025-10-17T03:25:26.068084+00:00",
+      "unix_timestamp": 1760671526.068084,
+      "elapsed_seconds": 0.13537001609802246,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 4,
+      "utc_time": "2025-10-17T03:25:26.116333+00:00",
+      "unix_timestamp": 1760671526.116333,
+      "elapsed_seconds": 0.18361902236938477,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 5,
+      "utc_time": "2025-10-17T03:25:26.200332+00:00",
+      "unix_timestamp": 1760671526.200332,
+      "elapsed_seconds": 0.26761794090270996,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 6,
+      "utc_time": "2025-10-17T03:25:26.285646+00:00",
+      "unix_timestamp": 1760671526.285646,
+      "elapsed_seconds": 0.3529319763183594,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 7,
+      "utc_time": "2025-10-17T03:25:26.380181+00:00",
+      "unix_timestamp": 1760671526.380181,
+      "elapsed_seconds": 0.4474670886993408,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 8,
+      "utc_time": "2025-10-17T03:25:26.492694+00:00",
+      "unix_timestamp": 1760671526.492694,
+      "elapsed_seconds": 0.5599799156188965,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 9,
+      "utc_time": "2025-10-17T03:25:26.571019+00:00",
+      "unix_timestamp": 1760671526.571019,
+      "elapsed_seconds": 0.6383049488067627,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 10,
+      "utc_time": "2025-10-17T03:25:26.683349+00:00",
+      "unix_timestamp": 1760671526.683349,
+      "elapsed_seconds": 0.7506349086761475,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 11,
+      "utc_time": "2025-10-17T03:25:26.778695+00:00",
+      "unix_timestamp": 1760671526.778695,
+      "elapsed_seconds": 0.8459811210632324,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 12,
+      "utc_time": "2025-10-17T03:25:26.875040+00:00",
+      "unix_timestamp": 1760671526.87504,
+      "elapsed_seconds": 0.9423260688781738,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 13,
+      "utc_time": "2025-10-17T03:25:26.971081+00:00",
+      "unix_timestamp": 1760671526.971081,
+      "elapsed_seconds": 1.0383670330047607,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 14,
+      "utc_time": "2025-10-17T03:25:27.082428+00:00",
+      "unix_timestamp": 1760671527.082428,
+      "elapsed_seconds": 1.1497139930725098,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 15,
+      "utc_time": "2025-10-17T03:25:27.195145+00:00",
+      "unix_timestamp": 1760671527.195145,
+      "elapsed_seconds": 1.2624309062957764,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 16,
+      "utc_time": "2025-10-17T03:25:27.304971+00:00",
+      "unix_timestamp": 1760671527.304971,
+      "elapsed_seconds": 1.3722569942474365,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 17,
+      "utc_time": "2025-10-17T03:25:27.400125+00:00",
+      "unix_timestamp": 1760671527.400125,
+      "elapsed_seconds": 1.4674110412597656,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 18,
+      "utc_time": "2025-10-17T03:25:27.500541+00:00",
+      "unix_timestamp": 1760671527.500541,
+      "elapsed_seconds": 1.5678269863128662,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 19,
+      "utc_time": "2025-10-17T03:25:27.610474+00:00",
+      "unix_timestamp": 1760671527.610474,
+      "elapsed_seconds": 1.677760124206543,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 20,
+      "utc_time": "2025-10-17T03:25:27.705267+00:00",
+      "unix_timestamp": 1760671527.705267,
+      "elapsed_seconds": 1.7725529670715332,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 21,
+      "utc_time": "2025-10-17T03:25:27.800547+00:00",
+      "unix_timestamp": 1760671527.800547,
+      "elapsed_seconds": 1.867832899093628,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 22,
+      "utc_time": "2025-10-17T03:25:27.913611+00:00",
+      "unix_timestamp": 1760671527.913611,
+      "elapsed_seconds": 1.9808969497680664,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 23,
+      "utc_time": "2025-10-17T03:25:28.011087+00:00",
+      "unix_timestamp": 1760671528.011087,
+      "elapsed_seconds": 2.0783729553222656,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 24,
+      "utc_time": "2025-10-17T03:25:28.186466+00:00",
+      "unix_timestamp": 1760671528.186466,
+      "elapsed_seconds": 2.2537519931793213,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 25,
+      "utc_time": "2025-10-17T03:25:28.299081+00:00",
+      "unix_timestamp": 1760671528.299081,
+      "elapsed_seconds": 2.3663671016693115,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 26,
+      "utc_time": "2025-10-17T03:25:28.394923+00:00",
+      "unix_timestamp": 1760671528.394923,
+      "elapsed_seconds": 2.4622089862823486,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 27,
+      "utc_time": "2025-10-17T03:25:28.506590+00:00",
+      "unix_timestamp": 1760671528.50659,
+      "elapsed_seconds": 2.573875904083252,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 28,
+      "utc_time": "2025-10-17T03:25:28.585783+00:00",
+      "unix_timestamp": 1760671528.585783,
+      "elapsed_seconds": 2.653069019317627,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 29,
+      "utc_time": "2025-10-17T03:25:28.696944+00:00",
+      "unix_timestamp": 1760671528.696944,
+      "elapsed_seconds": 2.7642300128936768,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 30,
+      "utc_time": "2025-10-17T03:25:28.792810+00:00",
+      "unix_timestamp": 1760671528.79281,
+      "elapsed_seconds": 2.860095977783203,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 31,
+      "utc_time": "2025-10-17T03:25:28.905288+00:00",
+      "unix_timestamp": 1760671528.905288,
+      "elapsed_seconds": 2.97257399559021,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 32,
+      "utc_time": "2025-10-17T03:25:29.000815+00:00",
+      "unix_timestamp": 1760671529.000815,
+      "elapsed_seconds": 3.068100929260254,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 33,
+      "utc_time": "2025-10-17T03:25:29.097857+00:00",
+      "unix_timestamp": 1760671529.097857,
+      "elapsed_seconds": 3.1651430130004883,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 34,
+      "utc_time": "2025-10-17T03:25:29.193538+00:00",
+      "unix_timestamp": 1760671529.193538,
+      "elapsed_seconds": 3.260823965072632,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 35,
+      "utc_time": "2025-10-17T03:25:29.289437+00:00",
+      "unix_timestamp": 1760671529.289437,
+      "elapsed_seconds": 3.3567230701446533,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 36,
+      "utc_time": "2025-10-17T03:25:29.385849+00:00",
+      "unix_timestamp": 1760671529.385849,
+      "elapsed_seconds": 3.4531350135803223,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 37,
+      "utc_time": "2025-10-17T03:25:29.496665+00:00",
+      "unix_timestamp": 1760671529.496665,
+      "elapsed_seconds": 3.563951015472412,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 38,
+      "utc_time": "2025-10-17T03:25:29.578427+00:00",
+      "unix_timestamp": 1760671529.578427,
+      "elapsed_seconds": 3.6457130908966064,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 39,
+      "utc_time": "2025-10-17T03:25:29.673969+00:00",
+      "unix_timestamp": 1760671529.673969,
+      "elapsed_seconds": 3.741255044937134,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 40,
+      "utc_time": "2025-10-17T03:25:29.770166+00:00",
+      "unix_timestamp": 1760671529.770166,
+      "elapsed_seconds": 3.837451934814453,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 41,
+      "utc_time": "2025-10-17T03:25:29.864483+00:00",
+      "unix_timestamp": 1760671529.864483,
+      "elapsed_seconds": 3.9317691326141357,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 42,
+      "utc_time": "2025-10-17T03:25:29.960799+00:00",
+      "unix_timestamp": 1760671529.960799,
+      "elapsed_seconds": 4.028084993362427,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 43,
+      "utc_time": "2025-10-17T03:25:30.072484+00:00",
+      "unix_timestamp": 1760671530.072484,
+      "elapsed_seconds": 4.139770030975342,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 44,
+      "utc_time": "2025-10-17T03:25:30.169000+00:00",
+      "unix_timestamp": 1760671530.169,
+      "elapsed_seconds": 4.236285924911499,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 45,
+      "utc_time": "2025-10-17T03:25:30.265451+00:00",
+      "unix_timestamp": 1760671530.265451,
+      "elapsed_seconds": 4.332736968994141,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 46,
+      "utc_time": "2025-10-17T03:25:30.364492+00:00",
+      "unix_timestamp": 1760671530.364492,
+      "elapsed_seconds": 4.4317779541015625,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 47,
+      "utc_time": "2025-10-17T03:25:30.458577+00:00",
+      "unix_timestamp": 1760671530.458577,
+      "elapsed_seconds": 4.5258629322052,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 48,
+      "utc_time": "2025-10-17T03:25:30.552878+00:00",
+      "unix_timestamp": 1760671530.552878,
+      "elapsed_seconds": 4.620163917541504,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 49,
+      "utc_time": "2025-10-17T03:25:30.665407+00:00",
+      "unix_timestamp": 1760671530.665407,
+      "elapsed_seconds": 4.7326929569244385,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 50,
+      "utc_time": "2025-10-17T03:25:30.747331+00:00",
+      "unix_timestamp": 1760671530.747331,
+      "elapsed_seconds": 4.814616918563843,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 51,
+      "utc_time": "2025-10-17T03:25:30.841990+00:00",
+      "unix_timestamp": 1760671530.84199,
+      "elapsed_seconds": 4.909276008605957,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 52,
+      "utc_time": "2025-10-17T03:25:30.950579+00:00",
+      "unix_timestamp": 1760671530.950579,
+      "elapsed_seconds": 5.017864942550659,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 53,
+      "utc_time": "2025-10-17T03:25:31.052486+00:00",
+      "unix_timestamp": 1760671531.052486,
+      "elapsed_seconds": 5.119771957397461,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 54,
+      "utc_time": "2025-10-17T03:25:31.136019+00:00",
+      "unix_timestamp": 1760671531.136019,
+      "elapsed_seconds": 5.203305006027222,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 55,
+      "utc_time": "2025-10-17T03:25:31.248568+00:00",
+      "unix_timestamp": 1760671531.248568,
+      "elapsed_seconds": 5.315854072570801,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 56,
+      "utc_time": "2025-10-17T03:25:31.337310+00:00",
+      "unix_timestamp": 1760671531.33731,
+      "elapsed_seconds": 5.4045960903167725,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 57,
+      "utc_time": "2025-10-17T03:25:31.439992+00:00",
+      "unix_timestamp": 1760671531.439992,
+      "elapsed_seconds": 5.507277965545654,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 58,
+      "utc_time": "2025-10-17T03:25:31.531741+00:00",
+      "unix_timestamp": 1760671531.531741,
+      "elapsed_seconds": 5.599026918411255,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 59,
+      "utc_time": "2025-10-17T03:25:31.627114+00:00",
+      "unix_timestamp": 1760671531.627114,
+      "elapsed_seconds": 5.694400072097778,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 60,
+      "utc_time": "2025-10-17T03:25:31.726869+00:00",
+      "unix_timestamp": 1760671531.726869,
+      "elapsed_seconds": 5.794155120849609,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 61,
+      "utc_time": "2025-10-17T03:25:31.833815+00:00",
+      "unix_timestamp": 1760671531.833815,
+      "elapsed_seconds": 5.901101112365723,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 62,
+      "utc_time": "2025-10-17T03:25:31.929922+00:00",
+      "unix_timestamp": 1760671531.929922,
+      "elapsed_seconds": 5.997208118438721,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 63,
+      "utc_time": "2025-10-17T03:25:32.026837+00:00",
+      "unix_timestamp": 1760671532.026837,
+      "elapsed_seconds": 6.094123125076294,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 64,
+      "utc_time": "2025-10-17T03:25:32.121035+00:00",
+      "unix_timestamp": 1760671532.121035,
+      "elapsed_seconds": 6.188321113586426,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 65,
+      "utc_time": "2025-10-17T03:25:32.219188+00:00",
+      "unix_timestamp": 1760671532.219188,
+      "elapsed_seconds": 6.286473989486694,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 66,
+      "utc_time": "2025-10-17T03:25:32.312720+00:00",
+      "unix_timestamp": 1760671532.31272,
+      "elapsed_seconds": 6.3800060749053955,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 67,
+      "utc_time": "2025-10-17T03:25:32.424295+00:00",
+      "unix_timestamp": 1760671532.424295,
+      "elapsed_seconds": 6.491580963134766,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 68,
+      "utc_time": "2025-10-17T03:25:32.522128+00:00",
+      "unix_timestamp": 1760671532.522128,
+      "elapsed_seconds": 6.589414119720459,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 69,
+      "utc_time": "2025-10-17T03:25:32.618200+00:00",
+      "unix_timestamp": 1760671532.6182,
+      "elapsed_seconds": 6.685486078262329,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 70,
+      "utc_time": "2025-10-17T03:25:32.713434+00:00",
+      "unix_timestamp": 1760671532.713434,
+      "elapsed_seconds": 6.780719995498657,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 71,
+      "utc_time": "2025-10-17T03:25:32.811578+00:00",
+      "unix_timestamp": 1760671532.811578,
+      "elapsed_seconds": 6.878864049911499,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 72,
+      "utc_time": "2025-10-17T03:25:32.906001+00:00",
+      "unix_timestamp": 1760671532.906001,
+      "elapsed_seconds": 6.973287105560303,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 73,
+      "utc_time": "2025-10-17T03:25:33.005907+00:00",
+      "unix_timestamp": 1760671533.005907,
+      "elapsed_seconds": 7.073193073272705,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 74,
+      "utc_time": "2025-10-17T03:25:33.104874+00:00",
+      "unix_timestamp": 1760671533.104874,
+      "elapsed_seconds": 7.172159910202026,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 75,
+      "utc_time": "2025-10-17T03:25:33.196236+00:00",
+      "unix_timestamp": 1760671533.196236,
+      "elapsed_seconds": 7.263521909713745,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 76,
+      "utc_time": "2025-10-17T03:25:33.295843+00:00",
+      "unix_timestamp": 1760671533.295843,
+      "elapsed_seconds": 7.363128900527954,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 77,
+      "utc_time": "2025-10-17T03:25:33.401530+00:00",
+      "unix_timestamp": 1760671533.40153,
+      "elapsed_seconds": 7.468816041946411,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 78,
+      "utc_time": "2025-10-17T03:25:33.486329+00:00",
+      "unix_timestamp": 1760671533.486329,
+      "elapsed_seconds": 7.553615093231201,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 79,
+      "utc_time": "2025-10-17T03:25:33.594344+00:00",
+      "unix_timestamp": 1760671533.594344,
+      "elapsed_seconds": 7.661629915237427,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 80,
+      "utc_time": "2025-10-17T03:25:33.698457+00:00",
+      "unix_timestamp": 1760671533.698457,
+      "elapsed_seconds": 7.765743017196655,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 81,
+      "utc_time": "2025-10-17T03:25:33.785768+00:00",
+      "unix_timestamp": 1760671533.785768,
+      "elapsed_seconds": 7.853054046630859,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 82,
+      "utc_time": "2025-10-17T03:25:33.905809+00:00",
+      "unix_timestamp": 1760671533.905809,
+      "elapsed_seconds": 7.973094940185547,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 83,
+      "utc_time": "2025-10-17T03:25:33.993875+00:00",
+      "unix_timestamp": 1760671533.993875,
+      "elapsed_seconds": 8.061161041259766,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 84,
+      "utc_time": "2025-10-17T03:25:34.090699+00:00",
+      "unix_timestamp": 1760671534.090699,
+      "elapsed_seconds": 8.157984972000122,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 85,
+      "utc_time": "2025-10-17T03:25:34.201574+00:00",
+      "unix_timestamp": 1760671534.201574,
+      "elapsed_seconds": 8.268860101699829,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 86,
+      "utc_time": "2025-10-17T03:25:34.286641+00:00",
+      "unix_timestamp": 1760671534.286641,
+      "elapsed_seconds": 8.35392689704895,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 87,
+      "utc_time": "2025-10-17T03:25:34.475403+00:00",
+      "unix_timestamp": 1760671534.475403,
+      "elapsed_seconds": 8.542689085006714,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 88,
+      "utc_time": "2025-10-17T03:25:34.565648+00:00",
+      "unix_timestamp": 1760671534.565648,
+      "elapsed_seconds": 8.632934093475342,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 89,
+      "utc_time": "2025-10-17T03:25:34.748457+00:00",
+      "unix_timestamp": 1760671534.748457,
+      "elapsed_seconds": 8.81574296951294,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 90,
+      "utc_time": "2025-10-17T03:25:34.844498+00:00",
+      "unix_timestamp": 1760671534.844498,
+      "elapsed_seconds": 8.911783933639526,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 91,
+      "utc_time": "2025-10-17T03:25:35.018961+00:00",
+      "unix_timestamp": 1760671535.018961,
+      "elapsed_seconds": 9.086246967315674,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 92,
+      "utc_time": "2025-10-17T03:25:35.113131+00:00",
+      "unix_timestamp": 1760671535.113131,
+      "elapsed_seconds": 9.18041706085205,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 93,
+      "utc_time": "2025-10-17T03:25:35.226010+00:00",
+      "unix_timestamp": 1760671535.22601,
+      "elapsed_seconds": 9.293296098709106,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 94,
+      "utc_time": "2025-10-17T03:25:35.323367+00:00",
+      "unix_timestamp": 1760671535.323367,
+      "elapsed_seconds": 9.390653133392334,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 95,
+      "utc_time": "2025-10-17T03:25:35.422534+00:00",
+      "unix_timestamp": 1760671535.422534,
+      "elapsed_seconds": 9.489820003509521,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 96,
+      "utc_time": "2025-10-17T03:25:35.514294+00:00",
+      "unix_timestamp": 1760671535.514294,
+      "elapsed_seconds": 9.58157992362976,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 97,
+      "utc_time": "2025-10-17T03:25:35.610635+00:00",
+      "unix_timestamp": 1760671535.610635,
+      "elapsed_seconds": 9.677921056747437,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 98,
+      "utc_time": "2025-10-17T03:25:35.707237+00:00",
+      "unix_timestamp": 1760671535.707237,
+      "elapsed_seconds": 9.77452301979065,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 99,
+      "utc_time": "2025-10-17T03:25:35.804311+00:00",
+      "unix_timestamp": 1760671535.804311,
+      "elapsed_seconds": 9.871597051620483,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 100,
+      "utc_time": "2025-10-17T03:25:35.919350+00:00",
+      "unix_timestamp": 1760671535.91935,
+      "elapsed_seconds": 9.98663592338562,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 101,
+      "utc_time": "2025-10-17T03:25:36.022571+00:00",
+      "unix_timestamp": 1760671536.022571,
+      "elapsed_seconds": 10.08985710144043,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 102,
+      "utc_time": "2025-10-17T03:25:36.107762+00:00",
+      "unix_timestamp": 1760671536.107762,
+      "elapsed_seconds": 10.175048112869263,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 103,
+      "utc_time": "2025-10-17T03:25:36.201855+00:00",
+      "unix_timestamp": 1760671536.201855,
+      "elapsed_seconds": 10.26914095878601,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 104,
+      "utc_time": "2025-10-17T03:25:36.298813+00:00",
+      "unix_timestamp": 1760671536.298813,
+      "elapsed_seconds": 10.366099119186401,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 105,
+      "utc_time": "2025-10-17T03:25:36.383482+00:00",
+      "unix_timestamp": 1760671536.383482,
+      "elapsed_seconds": 10.450767993927002,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 106,
+      "utc_time": "2025-10-17T03:25:36.496699+00:00",
+      "unix_timestamp": 1760671536.496699,
+      "elapsed_seconds": 10.563985109329224,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 107,
+      "utc_time": "2025-10-17T03:25:36.584946+00:00",
+      "unix_timestamp": 1760671536.584946,
+      "elapsed_seconds": 10.652231931686401,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 108,
+      "utc_time": "2025-10-17T03:25:36.681672+00:00",
+      "unix_timestamp": 1760671536.681672,
+      "elapsed_seconds": 10.748958110809326,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 109,
+      "utc_time": "2025-10-17T03:25:36.777919+00:00",
+      "unix_timestamp": 1760671536.777919,
+      "elapsed_seconds": 10.845205068588257,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 110,
+      "utc_time": "2025-10-17T03:25:36.873049+00:00",
+      "unix_timestamp": 1760671536.873049,
+      "elapsed_seconds": 10.940335035324097,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 111,
+      "utc_time": "2025-10-17T03:25:36.972952+00:00",
+      "unix_timestamp": 1760671536.972952,
+      "elapsed_seconds": 11.04023790359497,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 112,
+      "utc_time": "2025-10-17T03:25:37.086041+00:00",
+      "unix_timestamp": 1760671537.086041,
+      "elapsed_seconds": 11.153326988220215,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 113,
+      "utc_time": "2025-10-17T03:25:37.177045+00:00",
+      "unix_timestamp": 1760671537.177045,
+      "elapsed_seconds": 11.244331121444702,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 114,
+      "utc_time": "2025-10-17T03:25:37.274153+00:00",
+      "unix_timestamp": 1760671537.274153,
+      "elapsed_seconds": 11.341439008712769,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 115,
+      "utc_time": "2025-10-17T03:25:37.371538+00:00",
+      "unix_timestamp": 1760671537.371538,
+      "elapsed_seconds": 11.438823938369751,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 116,
+      "utc_time": "2025-10-17T03:25:37.466485+00:00",
+      "unix_timestamp": 1760671537.466485,
+      "elapsed_seconds": 11.53377103805542,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 117,
+      "utc_time": "2025-10-17T03:25:37.561034+00:00",
+      "unix_timestamp": 1760671537.561034,
+      "elapsed_seconds": 11.62831997871399,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 118,
+      "utc_time": "2025-10-17T03:25:37.674533+00:00",
+      "unix_timestamp": 1760671537.674533,
+      "elapsed_seconds": 11.741818904876709,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 119,
+      "utc_time": "2025-10-17T03:25:37.772185+00:00",
+      "unix_timestamp": 1760671537.772185,
+      "elapsed_seconds": 11.839471101760864,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 120,
+      "utc_time": "2025-10-17T03:25:37.866498+00:00",
+      "unix_timestamp": 1760671537.866498,
+      "elapsed_seconds": 11.933784008026123,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 121,
+      "utc_time": "2025-10-17T03:25:37.964145+00:00",
+      "unix_timestamp": 1760671537.964145,
+      "elapsed_seconds": 12.031430959701538,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 122,
+      "utc_time": "2025-10-17T03:25:38.060982+00:00",
+      "unix_timestamp": 1760671538.060982,
+      "elapsed_seconds": 12.128268003463745,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 123,
+      "utc_time": "2025-10-17T03:25:38.168995+00:00",
+      "unix_timestamp": 1760671538.168995,
+      "elapsed_seconds": 12.236280918121338,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 124,
+      "utc_time": "2025-10-17T03:25:38.266226+00:00",
+      "unix_timestamp": 1760671538.266226,
+      "elapsed_seconds": 12.3335120677948,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 125,
+      "utc_time": "2025-10-17T03:25:38.361135+00:00",
+      "unix_timestamp": 1760671538.361135,
+      "elapsed_seconds": 12.428421020507812,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 126,
+      "utc_time": "2025-10-17T03:25:38.463199+00:00",
+      "unix_timestamp": 1760671538.463199,
+      "elapsed_seconds": 12.530484914779663,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 127,
+      "utc_time": "2025-10-17T03:25:38.554241+00:00",
+      "unix_timestamp": 1760671538.554241,
+      "elapsed_seconds": 12.621526956558228,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 128,
+      "utc_time": "2025-10-17T03:25:38.664850+00:00",
+      "unix_timestamp": 1760671538.66485,
+      "elapsed_seconds": 12.732136011123657,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 129,
+      "utc_time": "2025-10-17T03:25:38.762651+00:00",
+      "unix_timestamp": 1760671538.762651,
+      "elapsed_seconds": 12.829936981201172,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 130,
+      "utc_time": "2025-10-17T03:25:38.872864+00:00",
+      "unix_timestamp": 1760671538.872864,
+      "elapsed_seconds": 12.940150022506714,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 131,
+      "utc_time": "2025-10-17T03:25:38.970944+00:00",
+      "unix_timestamp": 1760671538.970944,
+      "elapsed_seconds": 13.038229942321777,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 132,
+      "utc_time": "2025-10-17T03:25:39.065938+00:00",
+      "unix_timestamp": 1760671539.065938,
+      "elapsed_seconds": 13.13322401046753,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 133,
+      "utc_time": "2025-10-17T03:25:39.167428+00:00",
+      "unix_timestamp": 1760671539.167428,
+      "elapsed_seconds": 13.234714031219482,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 134,
+      "utc_time": "2025-10-17T03:25:39.258267+00:00",
+      "unix_timestamp": 1760671539.258267,
+      "elapsed_seconds": 13.325552940368652,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 135,
+      "utc_time": "2025-10-17T03:25:39.354199+00:00",
+      "unix_timestamp": 1760671539.354199,
+      "elapsed_seconds": 13.42148494720459,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 136,
+      "utc_time": "2025-10-17T03:25:39.466214+00:00",
+      "unix_timestamp": 1760671539.466214,
+      "elapsed_seconds": 13.533499956130981,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 137,
+      "utc_time": "2025-10-17T03:25:39.550198+00:00",
+      "unix_timestamp": 1760671539.550198,
+      "elapsed_seconds": 13.617484092712402,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 138,
+      "utc_time": "2025-10-17T03:25:39.640108+00:00",
+      "unix_timestamp": 1760671539.640108,
+      "elapsed_seconds": 13.707394123077393,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 139,
+      "utc_time": "2025-10-17T03:25:39.742202+00:00",
+      "unix_timestamp": 1760671539.742202,
+      "elapsed_seconds": 13.80948805809021,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 140,
+      "utc_time": "2025-10-17T03:25:39.834183+00:00",
+      "unix_timestamp": 1760671539.834183,
+      "elapsed_seconds": 13.901468992233276,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 141,
+      "utc_time": "2025-10-17T03:25:39.930712+00:00",
+      "unix_timestamp": 1760671539.930712,
+      "elapsed_seconds": 13.997997999191284,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 142,
+      "utc_time": "2025-10-17T03:25:40.040081+00:00",
+      "unix_timestamp": 1760671540.040081,
+      "elapsed_seconds": 14.107367038726807,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 143,
+      "utc_time": "2025-10-17T03:25:40.123125+00:00",
+      "unix_timestamp": 1760671540.123125,
+      "elapsed_seconds": 14.19041109085083,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 144,
+      "utc_time": "2025-10-17T03:25:40.233187+00:00",
+      "unix_timestamp": 1760671540.233187,
+      "elapsed_seconds": 14.300472974777222,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 145,
+      "utc_time": "2025-10-17T03:25:40.328901+00:00",
+      "unix_timestamp": 1760671540.328901,
+      "elapsed_seconds": 14.39618706703186,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 146,
+      "utc_time": "2025-10-17T03:25:40.428838+00:00",
+      "unix_timestamp": 1760671540.428838,
+      "elapsed_seconds": 14.496124029159546,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 147,
+      "utc_time": "2025-10-17T03:25:40.529128+00:00",
+      "unix_timestamp": 1760671540.529128,
+      "elapsed_seconds": 14.59641408920288,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 148,
+      "utc_time": "2025-10-17T03:25:40.633229+00:00",
+      "unix_timestamp": 1760671540.633229,
+      "elapsed_seconds": 14.700515031814575,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 149,
+      "utc_time": "2025-10-17T03:25:40.714715+00:00",
+      "unix_timestamp": 1760671540.714715,
+      "elapsed_seconds": 14.78200101852417,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 150,
+      "utc_time": "2025-10-17T03:25:40.818547+00:00",
+      "unix_timestamp": 1760671540.818547,
+      "elapsed_seconds": 14.885833024978638,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 151,
+      "utc_time": "2025-10-17T03:25:40.924508+00:00",
+      "unix_timestamp": 1760671540.924508,
+      "elapsed_seconds": 14.991794109344482,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 152,
+      "utc_time": "2025-10-17T03:25:41.017492+00:00",
+      "unix_timestamp": 1760671541.017492,
+      "elapsed_seconds": 15.084778070449829,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 153,
+      "utc_time": "2025-10-17T03:25:41.120926+00:00",
+      "unix_timestamp": 1760671541.120926,
+      "elapsed_seconds": 15.188211917877197,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 154,
+      "utc_time": "2025-10-17T03:25:41.210879+00:00",
+      "unix_timestamp": 1760671541.210879,
+      "elapsed_seconds": 15.278165102005005,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 155,
+      "utc_time": "2025-10-17T03:25:41.309599+00:00",
+      "unix_timestamp": 1760671541.309599,
+      "elapsed_seconds": 15.376884937286377,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 156,
+      "utc_time": "2025-10-17T03:25:41.402871+00:00",
+      "unix_timestamp": 1760671541.402871,
+      "elapsed_seconds": 15.470156908035278,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 157,
+      "utc_time": "2025-10-17T03:25:41.496735+00:00",
+      "unix_timestamp": 1760671541.496735,
+      "elapsed_seconds": 15.564021110534668,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 158,
+      "utc_time": "2025-10-17T03:25:41.595055+00:00",
+      "unix_timestamp": 1760671541.595055,
+      "elapsed_seconds": 15.662341117858887,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 159,
+      "utc_time": "2025-10-17T03:25:41.706041+00:00",
+      "unix_timestamp": 1760671541.706041,
+      "elapsed_seconds": 15.773327112197876,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 160,
+      "utc_time": "2025-10-17T03:25:41.801477+00:00",
+      "unix_timestamp": 1760671541.801477,
+      "elapsed_seconds": 15.868762969970703,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 161,
+      "utc_time": "2025-10-17T03:25:41.897753+00:00",
+      "unix_timestamp": 1760671541.897753,
+      "elapsed_seconds": 15.965039014816284,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 162,
+      "utc_time": "2025-10-17T03:25:41.992488+00:00",
+      "unix_timestamp": 1760671541.992488,
+      "elapsed_seconds": 16.059773921966553,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 163,
+      "utc_time": "2025-10-17T03:25:42.092697+00:00",
+      "unix_timestamp": 1760671542.092697,
+      "elapsed_seconds": 16.159982919692993,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 164,
+      "utc_time": "2025-10-17T03:25:42.194477+00:00",
+      "unix_timestamp": 1760671542.194477,
+      "elapsed_seconds": 16.261763095855713,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 165,
+      "utc_time": "2025-10-17T03:25:42.287877+00:00",
+      "unix_timestamp": 1760671542.287877,
+      "elapsed_seconds": 16.355163097381592,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 166,
+      "utc_time": "2025-10-17T03:25:42.404513+00:00",
+      "unix_timestamp": 1760671542.404513,
+      "elapsed_seconds": 16.47179889678955,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 167,
+      "utc_time": "2025-10-17T03:25:42.502342+00:00",
+      "unix_timestamp": 1760671542.502342,
+      "elapsed_seconds": 16.5696280002594,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 168,
+      "utc_time": "2025-10-17T03:25:42.603293+00:00",
+      "unix_timestamp": 1760671542.603293,
+      "elapsed_seconds": 16.670578956604004,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 169,
+      "utc_time": "2025-10-17T03:25:42.687760+00:00",
+      "unix_timestamp": 1760671542.68776,
+      "elapsed_seconds": 16.755046129226685,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 170,
+      "utc_time": "2025-10-17T03:25:42.779575+00:00",
+      "unix_timestamp": 1760671542.779575,
+      "elapsed_seconds": 16.846861124038696,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 171,
+      "utc_time": "2025-10-17T03:25:42.881073+00:00",
+      "unix_timestamp": 1760671542.881073,
+      "elapsed_seconds": 16.94835901260376,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 172,
+      "utc_time": "2025-10-17T03:25:42.995832+00:00",
+      "unix_timestamp": 1760671542.995832,
+      "elapsed_seconds": 17.06311798095703,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 173,
+      "utc_time": "2025-10-17T03:25:43.095610+00:00",
+      "unix_timestamp": 1760671543.09561,
+      "elapsed_seconds": 17.162895917892456,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 174,
+      "utc_time": "2025-10-17T03:25:43.194865+00:00",
+      "unix_timestamp": 1760671543.194865,
+      "elapsed_seconds": 17.26215100288391,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 175,
+      "utc_time": "2025-10-17T03:25:43.295807+00:00",
+      "unix_timestamp": 1760671543.295807,
+      "elapsed_seconds": 17.36309289932251,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 176,
+      "utc_time": "2025-10-17T03:25:43.387622+00:00",
+      "unix_timestamp": 1760671543.387622,
+      "elapsed_seconds": 17.4549081325531,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 177,
+      "utc_time": "2025-10-17T03:25:43.494085+00:00",
+      "unix_timestamp": 1760671543.494085,
+      "elapsed_seconds": 17.561371088027954,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 178,
+      "utc_time": "2025-10-17T03:25:43.595220+00:00",
+      "unix_timestamp": 1760671543.59522,
+      "elapsed_seconds": 17.662506103515625,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 179,
+      "utc_time": "2025-10-17T03:25:43.673311+00:00",
+      "unix_timestamp": 1760671543.673311,
+      "elapsed_seconds": 17.740597009658813,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 180,
+      "utc_time": "2025-10-17T03:25:43.793563+00:00",
+      "unix_timestamp": 1760671543.793563,
+      "elapsed_seconds": 17.860848903656006,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 181,
+      "utc_time": "2025-10-17T03:25:43.880738+00:00",
+      "unix_timestamp": 1760671543.880738,
+      "elapsed_seconds": 17.948024034500122,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 182,
+      "utc_time": "2025-10-17T03:25:43.979929+00:00",
+      "unix_timestamp": 1760671543.979929,
+      "elapsed_seconds": 18.0472149848938,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 183,
+      "utc_time": "2025-10-17T03:25:44.081444+00:00",
+      "unix_timestamp": 1760671544.081444,
+      "elapsed_seconds": 18.148730039596558,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 184,
+      "utc_time": "2025-10-17T03:25:44.184394+00:00",
+      "unix_timestamp": 1760671544.184394,
+      "elapsed_seconds": 18.25167989730835,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 185,
+      "utc_time": "2025-10-17T03:25:44.265288+00:00",
+      "unix_timestamp": 1760671544.265288,
+      "elapsed_seconds": 18.332574129104614,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 186,
+      "utc_time": "2025-10-17T03:25:44.361085+00:00",
+      "unix_timestamp": 1760671544.361085,
+      "elapsed_seconds": 18.4283709526062,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 187,
+      "utc_time": "2025-10-17T03:25:44.460736+00:00",
+      "unix_timestamp": 1760671544.460736,
+      "elapsed_seconds": 18.528022050857544,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 188,
+      "utc_time": "2025-10-17T03:25:44.559028+00:00",
+      "unix_timestamp": 1760671544.559028,
+      "elapsed_seconds": 18.62631392478943,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 189,
+      "utc_time": "2025-10-17T03:25:44.658813+00:00",
+      "unix_timestamp": 1760671544.658813,
+      "elapsed_seconds": 18.726099014282227,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 190,
+      "utc_time": "2025-10-17T03:25:44.762431+00:00",
+      "unix_timestamp": 1760671544.762431,
+      "elapsed_seconds": 18.82971692085266,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 191,
+      "utc_time": "2025-10-17T03:25:44.859677+00:00",
+      "unix_timestamp": 1760671544.859677,
+      "elapsed_seconds": 18.926963090896606,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 192,
+      "utc_time": "2025-10-17T03:25:44.953263+00:00",
+      "unix_timestamp": 1760671544.953263,
+      "elapsed_seconds": 19.020549058914185,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 193,
+      "utc_time": "2025-10-17T03:25:45.049891+00:00",
+      "unix_timestamp": 1760671545.049891,
+      "elapsed_seconds": 19.11717700958252,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 194,
+      "utc_time": "2025-10-17T03:25:45.145766+00:00",
+      "unix_timestamp": 1760671545.145766,
+      "elapsed_seconds": 19.21305203437805,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 195,
+      "utc_time": "2025-10-17T03:25:45.246943+00:00",
+      "unix_timestamp": 1760671545.246943,
+      "elapsed_seconds": 19.314229011535645,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 196,
+      "utc_time": "2025-10-17T03:25:45.357112+00:00",
+      "unix_timestamp": 1760671545.357112,
+      "elapsed_seconds": 19.424397945404053,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 197,
+      "utc_time": "2025-10-17T03:25:45.463786+00:00",
+      "unix_timestamp": 1760671545.463786,
+      "elapsed_seconds": 19.53107190132141,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 198,
+      "utc_time": "2025-10-17T03:25:45.552441+00:00",
+      "unix_timestamp": 1760671545.552441,
+      "elapsed_seconds": 19.61972689628601,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 199,
+      "utc_time": "2025-10-17T03:25:45.642004+00:00",
+      "unix_timestamp": 1760671545.642004,
+      "elapsed_seconds": 19.709290027618408,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 200,
+      "utc_time": "2025-10-17T03:25:45.832966+00:00",
+      "unix_timestamp": 1760671545.832966,
+      "elapsed_seconds": 19.900252103805542,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 201,
+      "utc_time": "2025-10-17T03:25:45.945089+00:00",
+      "unix_timestamp": 1760671545.945089,
+      "elapsed_seconds": 20.012375116348267,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 202,
+      "utc_time": "2025-10-17T03:25:46.041974+00:00",
+      "unix_timestamp": 1760671546.041974,
+      "elapsed_seconds": 20.109260082244873,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 203,
+      "utc_time": "2025-10-17T03:25:46.235112+00:00",
+      "unix_timestamp": 1760671546.235112,
+      "elapsed_seconds": 20.302397966384888,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 204,
+      "utc_time": "2025-10-17T03:25:46.335624+00:00",
+      "unix_timestamp": 1760671546.335624,
+      "elapsed_seconds": 20.402909994125366,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 205,
+      "utc_time": "2025-10-17T03:25:46.425493+00:00",
+      "unix_timestamp": 1760671546.425493,
+      "elapsed_seconds": 20.49277901649475,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 206,
+      "utc_time": "2025-10-17T03:25:46.543663+00:00",
+      "unix_timestamp": 1760671546.543663,
+      "elapsed_seconds": 20.61094903945923,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 207,
+      "utc_time": "2025-10-17T03:25:46.634636+00:00",
+      "unix_timestamp": 1760671546.634636,
+      "elapsed_seconds": 20.701921939849854,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 208,
+      "utc_time": "2025-10-17T03:25:46.731695+00:00",
+      "unix_timestamp": 1760671546.731695,
+      "elapsed_seconds": 20.798980951309204,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 209,
+      "utc_time": "2025-10-17T03:25:46.812323+00:00",
+      "unix_timestamp": 1760671546.812323,
+      "elapsed_seconds": 20.87960910797119,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 210,
+      "utc_time": "2025-10-17T03:25:46.907369+00:00",
+      "unix_timestamp": 1760671546.907369,
+      "elapsed_seconds": 20.97465491294861,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 211,
+      "utc_time": "2025-10-17T03:25:47.001148+00:00",
+      "unix_timestamp": 1760671547.001148,
+      "elapsed_seconds": 21.06843400001526,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 212,
+      "utc_time": "2025-10-17T03:25:47.112921+00:00",
+      "unix_timestamp": 1760671547.112921,
+      "elapsed_seconds": 21.180207014083862,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 213,
+      "utc_time": "2025-10-17T03:25:47.209113+00:00",
+      "unix_timestamp": 1760671547.209113,
+      "elapsed_seconds": 21.27639889717102,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 214,
+      "utc_time": "2025-10-17T03:25:47.307532+00:00",
+      "unix_timestamp": 1760671547.307532,
+      "elapsed_seconds": 21.374818086624146,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 215,
+      "utc_time": "2025-10-17T03:25:47.402909+00:00",
+      "unix_timestamp": 1760671547.402909,
+      "elapsed_seconds": 21.470195055007935,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 216,
+      "utc_time": "2025-10-17T03:25:47.499837+00:00",
+      "unix_timestamp": 1760671547.499837,
+      "elapsed_seconds": 21.56712293624878,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 217,
+      "utc_time": "2025-10-17T03:25:47.593668+00:00",
+      "unix_timestamp": 1760671547.593668,
+      "elapsed_seconds": 21.660953998565674,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 218,
+      "utc_time": "2025-10-17T03:25:47.706451+00:00",
+      "unix_timestamp": 1760671547.706451,
+      "elapsed_seconds": 21.77373695373535,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 219,
+      "utc_time": "2025-10-17T03:25:47.804875+00:00",
+      "unix_timestamp": 1760671547.804875,
+      "elapsed_seconds": 21.87216091156006,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 220,
+      "utc_time": "2025-10-17T03:25:47.897734+00:00",
+      "unix_timestamp": 1760671547.897734,
+      "elapsed_seconds": 21.965019941329956,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 221,
+      "utc_time": "2025-10-17T03:25:47.995181+00:00",
+      "unix_timestamp": 1760671547.995181,
+      "elapsed_seconds": 22.062467098236084,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 222,
+      "utc_time": "2025-10-17T03:25:48.077863+00:00",
+      "unix_timestamp": 1760671548.077863,
+      "elapsed_seconds": 22.145148992538452,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 223,
+      "utc_time": "2025-10-17T03:25:48.168858+00:00",
+      "unix_timestamp": 1760671548.168858,
+      "elapsed_seconds": 22.236144065856934,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 224,
+      "utc_time": "2025-10-17T03:25:48.281150+00:00",
+      "unix_timestamp": 1760671548.28115,
+      "elapsed_seconds": 22.34843611717224,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 225,
+      "utc_time": "2025-10-17T03:25:48.378934+00:00",
+      "unix_timestamp": 1760671548.378934,
+      "elapsed_seconds": 22.44621992111206,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 226,
+      "utc_time": "2025-10-17T03:25:48.489571+00:00",
+      "unix_timestamp": 1760671548.489571,
+      "elapsed_seconds": 22.556857109069824,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 227,
+      "utc_time": "2025-10-17T03:25:48.591097+00:00",
+      "unix_timestamp": 1760671548.591097,
+      "elapsed_seconds": 22.65838313102722,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 228,
+      "utc_time": "2025-10-17T03:25:48.680726+00:00",
+      "unix_timestamp": 1760671548.680726,
+      "elapsed_seconds": 22.74801206588745,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 229,
+      "utc_time": "2025-10-17T03:25:48.795839+00:00",
+      "unix_timestamp": 1760671548.795839,
+      "elapsed_seconds": 22.86312508583069,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 230,
+      "utc_time": "2025-10-17T03:25:48.889768+00:00",
+      "unix_timestamp": 1760671548.889768,
+      "elapsed_seconds": 22.957053899765015,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 231,
+      "utc_time": "2025-10-17T03:25:49.001883+00:00",
+      "unix_timestamp": 1760671549.001883,
+      "elapsed_seconds": 23.06916904449463,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 232,
+      "utc_time": "2025-10-17T03:25:49.097370+00:00",
+      "unix_timestamp": 1760671549.09737,
+      "elapsed_seconds": 23.164655923843384,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 233,
+      "utc_time": "2025-10-17T03:25:49.177545+00:00",
+      "unix_timestamp": 1760671549.177545,
+      "elapsed_seconds": 23.244831085205078,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 234,
+      "utc_time": "2025-10-17T03:25:49.290420+00:00",
+      "unix_timestamp": 1760671549.29042,
+      "elapsed_seconds": 23.35770606994629,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 235,
+      "utc_time": "2025-10-17T03:25:49.385279+00:00",
+      "unix_timestamp": 1760671549.385279,
+      "elapsed_seconds": 23.45256495475769,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 236,
+      "utc_time": "2025-10-17T03:25:49.480542+00:00",
+      "unix_timestamp": 1760671549.480542,
+      "elapsed_seconds": 23.54782795906067,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 237,
+      "utc_time": "2025-10-17T03:25:49.582629+00:00",
+      "unix_timestamp": 1760671549.582629,
+      "elapsed_seconds": 23.649914979934692,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 238,
+      "utc_time": "2025-10-17T03:25:49.658638+00:00",
+      "unix_timestamp": 1760671549.658638,
+      "elapsed_seconds": 23.725924015045166,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 239,
+      "utc_time": "2025-10-17T03:25:49.779810+00:00",
+      "unix_timestamp": 1760671549.77981,
+      "elapsed_seconds": 23.84709596633911,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 240,
+      "utc_time": "2025-10-17T03:25:49.865704+00:00",
+      "unix_timestamp": 1760671549.865704,
+      "elapsed_seconds": 23.932990074157715,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 241,
+      "utc_time": "2025-10-17T03:25:49.979947+00:00",
+      "unix_timestamp": 1760671549.979947,
+      "elapsed_seconds": 24.04723310470581,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 242,
+      "utc_time": "2025-10-17T03:25:50.059708+00:00",
+      "unix_timestamp": 1760671550.059708,
+      "elapsed_seconds": 24.126994132995605,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 243,
+      "utc_time": "2025-10-17T03:25:50.153794+00:00",
+      "unix_timestamp": 1760671550.153794,
+      "elapsed_seconds": 24.22108006477356,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 244,
+      "utc_time": "2025-10-17T03:25:50.251972+00:00",
+      "unix_timestamp": 1760671550.251972,
+      "elapsed_seconds": 24.319257974624634,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 245,
+      "utc_time": "2025-10-17T03:25:50.346119+00:00",
+      "unix_timestamp": 1760671550.346119,
+      "elapsed_seconds": 24.413404941558838,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 246,
+      "utc_time": "2025-10-17T03:25:50.453960+00:00",
+      "unix_timestamp": 1760671550.45396,
+      "elapsed_seconds": 24.5212459564209,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 247,
+      "utc_time": "2025-10-17T03:25:50.539642+00:00",
+      "unix_timestamp": 1760671550.539642,
+      "elapsed_seconds": 24.60692811012268,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 248,
+      "utc_time": "2025-10-17T03:25:50.634272+00:00",
+      "unix_timestamp": 1760671550.634272,
+      "elapsed_seconds": 24.701558113098145,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 249,
+      "utc_time": "2025-10-17T03:25:50.730532+00:00",
+      "unix_timestamp": 1760671550.730532,
+      "elapsed_seconds": 24.797817945480347,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 250,
+      "utc_time": "2025-10-17T03:25:50.841962+00:00",
+      "unix_timestamp": 1760671550.841962,
+      "elapsed_seconds": 24.909248113632202,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 251,
+      "utc_time": "2025-10-17T03:25:50.937279+00:00",
+      "unix_timestamp": 1760671550.937279,
+      "elapsed_seconds": 25.004565000534058,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 252,
+      "utc_time": "2025-10-17T03:25:51.035297+00:00",
+      "unix_timestamp": 1760671551.035297,
+      "elapsed_seconds": 25.102582931518555,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 253,
+      "utc_time": "2025-10-17T03:25:51.145048+00:00",
+      "unix_timestamp": 1760671551.145048,
+      "elapsed_seconds": 25.212333917617798,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 254,
+      "utc_time": "2025-10-17T03:25:51.243495+00:00",
+      "unix_timestamp": 1760671551.243495,
+      "elapsed_seconds": 25.310781002044678,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 255,
+      "utc_time": "2025-10-17T03:25:51.337921+00:00",
+      "unix_timestamp": 1760671551.337921,
+      "elapsed_seconds": 25.40520691871643,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 256,
+      "utc_time": "2025-10-17T03:25:51.444034+00:00",
+      "unix_timestamp": 1760671551.444034,
+      "elapsed_seconds": 25.511320114135742,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 257,
+      "utc_time": "2025-10-17T03:25:51.531781+00:00",
+      "unix_timestamp": 1760671551.531781,
+      "elapsed_seconds": 25.599066972732544,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 258,
+      "utc_time": "2025-10-17T03:25:51.625922+00:00",
+      "unix_timestamp": 1760671551.625922,
+      "elapsed_seconds": 25.69320797920227,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 259,
+      "utc_time": "2025-10-17T03:25:51.739227+00:00",
+      "unix_timestamp": 1760671551.739227,
+      "elapsed_seconds": 25.80651307106018,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 260,
+      "utc_time": "2025-10-17T03:25:51.840539+00:00",
+      "unix_timestamp": 1760671551.840539,
+      "elapsed_seconds": 25.907824993133545,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 261,
+      "utc_time": "2025-10-17T03:25:51.937521+00:00",
+      "unix_timestamp": 1760671551.937521,
+      "elapsed_seconds": 26.004806995391846,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 262,
+      "utc_time": "2025-10-17T03:25:52.029284+00:00",
+      "unix_timestamp": 1760671552.029284,
+      "elapsed_seconds": 26.096570014953613,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 263,
+      "utc_time": "2025-10-17T03:25:52.120988+00:00",
+      "unix_timestamp": 1760671552.120988,
+      "elapsed_seconds": 26.188273906707764,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 264,
+      "utc_time": "2025-10-17T03:25:52.217652+00:00",
+      "unix_timestamp": 1760671552.217652,
+      "elapsed_seconds": 26.284938097000122,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 265,
+      "utc_time": "2025-10-17T03:25:52.330186+00:00",
+      "unix_timestamp": 1760671552.330186,
+      "elapsed_seconds": 26.39747190475464,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 266,
+      "utc_time": "2025-10-17T03:25:52.413041+00:00",
+      "unix_timestamp": 1760671552.413041,
+      "elapsed_seconds": 26.480327129364014,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 267,
+      "utc_time": "2025-10-17T03:25:52.508186+00:00",
+      "unix_timestamp": 1760671552.508186,
+      "elapsed_seconds": 26.575472116470337,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 268,
+      "utc_time": "2025-10-17T03:25:52.616860+00:00",
+      "unix_timestamp": 1760671552.61686,
+      "elapsed_seconds": 26.6841459274292,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 269,
+      "utc_time": "2025-10-17T03:25:52.713840+00:00",
+      "unix_timestamp": 1760671552.71384,
+      "elapsed_seconds": 26.781126022338867,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 270,
+      "utc_time": "2025-10-17T03:25:52.811362+00:00",
+      "unix_timestamp": 1760671552.811362,
+      "elapsed_seconds": 26.878648042678833,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 271,
+      "utc_time": "2025-10-17T03:25:52.905553+00:00",
+      "unix_timestamp": 1760671552.905553,
+      "elapsed_seconds": 26.97283911705017,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 272,
+      "utc_time": "2025-10-17T03:25:53.017481+00:00",
+      "unix_timestamp": 1760671553.017481,
+      "elapsed_seconds": 27.08476710319519,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 273,
+      "utc_time": "2025-10-17T03:25:53.116774+00:00",
+      "unix_timestamp": 1760671553.116774,
+      "elapsed_seconds": 27.184060096740723,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 274,
+      "utc_time": "2025-10-17T03:25:53.209480+00:00",
+      "unix_timestamp": 1760671553.20948,
+      "elapsed_seconds": 27.276766061782837,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 275,
+      "utc_time": "2025-10-17T03:25:53.309641+00:00",
+      "unix_timestamp": 1760671553.309641,
+      "elapsed_seconds": 27.3769268989563,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 276,
+      "utc_time": "2025-10-17T03:25:53.400636+00:00",
+      "unix_timestamp": 1760671553.400636,
+      "elapsed_seconds": 27.46792197227478,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 277,
+      "utc_time": "2025-10-17T03:25:53.518088+00:00",
+      "unix_timestamp": 1760671553.518088,
+      "elapsed_seconds": 27.585374116897583,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 278,
+      "utc_time": "2025-10-17T03:25:53.593079+00:00",
+      "unix_timestamp": 1760671553.593079,
+      "elapsed_seconds": 27.660365104675293,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 279,
+      "utc_time": "2025-10-17T03:25:53.690816+00:00",
+      "unix_timestamp": 1760671553.690816,
+      "elapsed_seconds": 27.75810194015503,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 280,
+      "utc_time": "2025-10-17T03:25:53.786519+00:00",
+      "unix_timestamp": 1760671553.786519,
+      "elapsed_seconds": 27.85380506515503,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 281,
+      "utc_time": "2025-10-17T03:25:53.882206+00:00",
+      "unix_timestamp": 1760671553.882206,
+      "elapsed_seconds": 27.94949197769165,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 282,
+      "utc_time": "2025-10-17T03:25:53.976940+00:00",
+      "unix_timestamp": 1760671553.97694,
+      "elapsed_seconds": 28.044225931167603,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 283,
+      "utc_time": "2025-10-17T03:25:54.089819+00:00",
+      "unix_timestamp": 1760671554.089819,
+      "elapsed_seconds": 28.157104969024658,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 284,
+      "utc_time": "2025-10-17T03:25:54.189974+00:00",
+      "unix_timestamp": 1760671554.189974,
+      "elapsed_seconds": 28.25726008415222,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 285,
+      "utc_time": "2025-10-17T03:25:54.289164+00:00",
+      "unix_timestamp": 1760671554.289164,
+      "elapsed_seconds": 28.356450080871582,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 286,
+      "utc_time": "2025-10-17T03:25:54.381689+00:00",
+      "unix_timestamp": 1760671554.381689,
+      "elapsed_seconds": 28.448975086212158,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 287,
+      "utc_time": "2025-10-17T03:25:54.474806+00:00",
+      "unix_timestamp": 1760671554.474806,
+      "elapsed_seconds": 28.542092084884644,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 288,
+      "utc_time": "2025-10-17T03:25:54.570364+00:00",
+      "unix_timestamp": 1760671554.570364,
+      "elapsed_seconds": 28.63765001296997,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 289,
+      "utc_time": "2025-10-17T03:25:54.683842+00:00",
+      "unix_timestamp": 1760671554.683842,
+      "elapsed_seconds": 28.75112795829773,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 290,
+      "utc_time": "2025-10-17T03:25:54.779932+00:00",
+      "unix_timestamp": 1760671554.779932,
+      "elapsed_seconds": 28.84721803665161,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 291,
+      "utc_time": "2025-10-17T03:25:54.874551+00:00",
+      "unix_timestamp": 1760671554.874551,
+      "elapsed_seconds": 28.941837072372437,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 292,
+      "utc_time": "2025-10-17T03:25:54.970058+00:00",
+      "unix_timestamp": 1760671554.970058,
+      "elapsed_seconds": 29.037343978881836,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 293,
+      "utc_time": "2025-10-17T03:25:55.065855+00:00",
+      "unix_timestamp": 1760671555.065855,
+      "elapsed_seconds": 29.133141040802002,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 294,
+      "utc_time": "2025-10-17T03:25:55.178390+00:00",
+      "unix_timestamp": 1760671555.17839,
+      "elapsed_seconds": 29.245676040649414,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 295,
+      "utc_time": "2025-10-17T03:25:55.289800+00:00",
+      "unix_timestamp": 1760671555.2898,
+      "elapsed_seconds": 29.357085943222046,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 296,
+      "utc_time": "2025-10-17T03:25:55.373852+00:00",
+      "unix_timestamp": 1760671555.373852,
+      "elapsed_seconds": 29.44113802909851,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 297,
+      "utc_time": "2025-10-17T03:25:55.467634+00:00",
+      "unix_timestamp": 1760671555.467634,
+      "elapsed_seconds": 29.53491997718811,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 298,
+      "utc_time": "2025-10-17T03:25:55.578813+00:00",
+      "unix_timestamp": 1760671555.578813,
+      "elapsed_seconds": 29.646099090576172,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 299,
+      "utc_time": "2025-10-17T03:25:55.673820+00:00",
+      "unix_timestamp": 1760671555.67382,
+      "elapsed_seconds": 29.741106033325195,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 300,
+      "utc_time": "2025-10-17T03:25:55.769734+00:00",
+      "unix_timestamp": 1760671555.769734,
+      "elapsed_seconds": 29.83701992034912,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 301,
+      "utc_time": "2025-10-17T03:25:55.864762+00:00",
+      "unix_timestamp": 1760671555.864762,
+      "elapsed_seconds": 29.932048082351685,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 302,
+      "utc_time": "2025-10-17T03:25:55.962028+00:00",
+      "unix_timestamp": 1760671555.962028,
+      "elapsed_seconds": 30.029314041137695,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 303,
+      "utc_time": "2025-10-17T03:25:56.057201+00:00",
+      "unix_timestamp": 1760671556.057201,
+      "elapsed_seconds": 30.124486923217773,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 304,
+      "utc_time": "2025-10-17T03:25:56.153597+00:00",
+      "unix_timestamp": 1760671556.153597,
+      "elapsed_seconds": 30.22088313102722,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 305,
+      "utc_time": "2025-10-17T03:25:56.248617+00:00",
+      "unix_timestamp": 1760671556.248617,
+      "elapsed_seconds": 30.315902948379517,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 306,
+      "utc_time": "2025-10-17T03:25:56.345229+00:00",
+      "unix_timestamp": 1760671556.345229,
+      "elapsed_seconds": 30.41251492500305,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 307,
+      "utc_time": "2025-10-17T03:25:56.460497+00:00",
+      "unix_timestamp": 1760671556.460497,
+      "elapsed_seconds": 30.527782917022705,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 308,
+      "utc_time": "2025-10-17T03:25:56.556130+00:00",
+      "unix_timestamp": 1760671556.55613,
+      "elapsed_seconds": 30.62341594696045,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 309,
+      "utc_time": "2025-10-17T03:25:56.652454+00:00",
+      "unix_timestamp": 1760671556.652454,
+      "elapsed_seconds": 30.71973991394043,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 310,
+      "utc_time": "2025-10-17T03:25:56.756181+00:00",
+      "unix_timestamp": 1760671556.756181,
+      "elapsed_seconds": 30.823467016220093,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 311,
+      "utc_time": "2025-10-17T03:25:56.848096+00:00",
+      "unix_timestamp": 1760671556.848096,
+      "elapsed_seconds": 30.915381908416748,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 312,
+      "utc_time": "2025-10-17T03:25:56.959942+00:00",
+      "unix_timestamp": 1760671556.959942,
+      "elapsed_seconds": 31.027228116989136,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 313,
+      "utc_time": "2025-10-17T03:25:57.049152+00:00",
+      "unix_timestamp": 1760671557.049152,
+      "elapsed_seconds": 31.116437911987305,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 314,
+      "utc_time": "2025-10-17T03:25:57.163266+00:00",
+      "unix_timestamp": 1760671557.163266,
+      "elapsed_seconds": 31.230551958084106,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 315,
+      "utc_time": "2025-10-17T03:25:57.274472+00:00",
+      "unix_timestamp": 1760671557.274472,
+      "elapsed_seconds": 31.341758012771606,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 316,
+      "utc_time": "2025-10-17T03:25:57.368079+00:00",
+      "unix_timestamp": 1760671557.368079,
+      "elapsed_seconds": 31.435364961624146,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 317,
+      "utc_time": "2025-10-17T03:25:57.456309+00:00",
+      "unix_timestamp": 1760671557.456309,
+      "elapsed_seconds": 31.523595094680786,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 318,
+      "utc_time": "2025-10-17T03:25:57.532604+00:00",
+      "unix_timestamp": 1760671557.532604,
+      "elapsed_seconds": 31.599889993667603,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 319,
+      "utc_time": "2025-10-17T03:25:57.638043+00:00",
+      "unix_timestamp": 1760671557.638043,
+      "elapsed_seconds": 31.705328941345215,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 320,
+      "utc_time": "2025-10-17T03:25:57.736363+00:00",
+      "unix_timestamp": 1760671557.736363,
+      "elapsed_seconds": 31.803648948669434,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 321,
+      "utc_time": "2025-10-17T03:25:57.833005+00:00",
+      "unix_timestamp": 1760671557.833005,
+      "elapsed_seconds": 31.900290966033936,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 322,
+      "utc_time": "2025-10-17T03:25:57.929198+00:00",
+      "unix_timestamp": 1760671557.929198,
+      "elapsed_seconds": 31.99648404121399,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 323,
+      "utc_time": "2025-10-17T03:25:58.026098+00:00",
+      "unix_timestamp": 1760671558.026098,
+      "elapsed_seconds": 32.09338402748108,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 324,
+      "utc_time": "2025-10-17T03:25:58.124697+00:00",
+      "unix_timestamp": 1760671558.124697,
+      "elapsed_seconds": 32.19198298454285,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 325,
+      "utc_time": "2025-10-17T03:25:58.217050+00:00",
+      "unix_timestamp": 1760671558.21705,
+      "elapsed_seconds": 32.28433609008789,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 326,
+      "utc_time": "2025-10-17T03:25:58.315132+00:00",
+      "unix_timestamp": 1760671558.315132,
+      "elapsed_seconds": 32.38241791725159,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 327,
+      "utc_time": "2025-10-17T03:25:58.410518+00:00",
+      "unix_timestamp": 1760671558.410518,
+      "elapsed_seconds": 32.47780394554138,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 328,
+      "utc_time": "2025-10-17T03:25:58.504923+00:00",
+      "unix_timestamp": 1760671558.504923,
+      "elapsed_seconds": 32.57220911979675,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 329,
+      "utc_time": "2025-10-17T03:25:58.604235+00:00",
+      "unix_timestamp": 1760671558.604235,
+      "elapsed_seconds": 32.671520948410034,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 330,
+      "utc_time": "2025-10-17T03:25:58.699441+00:00",
+      "unix_timestamp": 1760671558.699441,
+      "elapsed_seconds": 32.76672697067261,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 331,
+      "utc_time": "2025-10-17T03:25:58.802986+00:00",
+      "unix_timestamp": 1760671558.802986,
+      "elapsed_seconds": 32.87027192115784,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 332,
+      "utc_time": "2025-10-17T03:25:58.908156+00:00",
+      "unix_timestamp": 1760671558.908156,
+      "elapsed_seconds": 32.97544193267822,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 333,
+      "utc_time": "2025-10-17T03:25:59.010224+00:00",
+      "unix_timestamp": 1760671559.010224,
+      "elapsed_seconds": 33.0775101184845,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 334,
+      "utc_time": "2025-10-17T03:25:59.098247+00:00",
+      "unix_timestamp": 1760671559.098247,
+      "elapsed_seconds": 33.1655330657959,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 335,
+      "utc_time": "2025-10-17T03:25:59.201790+00:00",
+      "unix_timestamp": 1760671559.20179,
+      "elapsed_seconds": 33.269076108932495,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 336,
+      "utc_time": "2025-10-17T03:25:59.289991+00:00",
+      "unix_timestamp": 1760671559.289991,
+      "elapsed_seconds": 33.357276916503906,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 337,
+      "utc_time": "2025-10-17T03:25:59.385567+00:00",
+      "unix_timestamp": 1760671559.385567,
+      "elapsed_seconds": 33.452852964401245,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 338,
+      "utc_time": "2025-10-17T03:25:59.482240+00:00",
+      "unix_timestamp": 1760671559.48224,
+      "elapsed_seconds": 33.54952597618103,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 339,
+      "utc_time": "2025-10-17T03:25:59.576549+00:00",
+      "unix_timestamp": 1760671559.576549,
+      "elapsed_seconds": 33.64383506774902,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 340,
+      "utc_time": "2025-10-17T03:25:59.673270+00:00",
+      "unix_timestamp": 1760671559.67327,
+      "elapsed_seconds": 33.74055600166321,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 341,
+      "utc_time": "2025-10-17T03:25:59.771326+00:00",
+      "unix_timestamp": 1760671559.771326,
+      "elapsed_seconds": 33.83861207962036,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 342,
+      "utc_time": "2025-10-17T03:25:59.867066+00:00",
+      "unix_timestamp": 1760671559.867066,
+      "elapsed_seconds": 33.93435192108154,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 343,
+      "utc_time": "2025-10-17T03:25:59.960993+00:00",
+      "unix_timestamp": 1760671559.960993,
+      "elapsed_seconds": 34.028279066085815,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 344,
+      "utc_time": "2025-10-17T03:26:00.056992+00:00",
+      "unix_timestamp": 1760671560.056992,
+      "elapsed_seconds": 34.12427806854248,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 345,
+      "utc_time": "2025-10-17T03:26:00.154615+00:00",
+      "unix_timestamp": 1760671560.154615,
+      "elapsed_seconds": 34.221900939941406,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 346,
+      "utc_time": "2025-10-17T03:26:00.248251+00:00",
+      "unix_timestamp": 1760671560.248251,
+      "elapsed_seconds": 34.315536975860596,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 347,
+      "utc_time": "2025-10-17T03:26:00.349232+00:00",
+      "unix_timestamp": 1760671560.349232,
+      "elapsed_seconds": 34.41651797294617,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 348,
+      "utc_time": "2025-10-17T03:26:00.454151+00:00",
+      "unix_timestamp": 1760671560.454151,
+      "elapsed_seconds": 34.52143692970276,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 349,
+      "utc_time": "2025-10-17T03:26:00.522487+00:00",
+      "unix_timestamp": 1760671560.522487,
+      "elapsed_seconds": 34.58977293968201,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 350,
+      "utc_time": "2025-10-17T03:26:00.636557+00:00",
+      "unix_timestamp": 1760671560.636557,
+      "elapsed_seconds": 34.703843116760254,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 351,
+      "utc_time": "2025-10-17T03:26:00.728522+00:00",
+      "unix_timestamp": 1760671560.728522,
+      "elapsed_seconds": 34.79580807685852,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 352,
+      "utc_time": "2025-10-17T03:26:00.821890+00:00",
+      "unix_timestamp": 1760671560.82189,
+      "elapsed_seconds": 34.8891761302948,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 353,
+      "utc_time": "2025-10-17T03:26:00.912515+00:00",
+      "unix_timestamp": 1760671560.912515,
+      "elapsed_seconds": 34.97980093955994,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 354,
+      "utc_time": "2025-10-17T03:26:01.002200+00:00",
+      "unix_timestamp": 1760671561.0022,
+      "elapsed_seconds": 35.069485902786255,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 355,
+      "utc_time": "2025-10-17T03:26:01.096685+00:00",
+      "unix_timestamp": 1760671561.096685,
+      "elapsed_seconds": 35.163970947265625,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 356,
+      "utc_time": "2025-10-17T03:26:01.210136+00:00",
+      "unix_timestamp": 1760671561.210136,
+      "elapsed_seconds": 35.277421951293945,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 357,
+      "utc_time": "2025-10-17T03:26:01.289830+00:00",
+      "unix_timestamp": 1760671561.28983,
+      "elapsed_seconds": 35.35711598396301,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 358,
+      "utc_time": "2025-10-17T03:26:01.387960+00:00",
+      "unix_timestamp": 1760671561.38796,
+      "elapsed_seconds": 35.45524597167969,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 359,
+      "utc_time": "2025-10-17T03:26:01.485290+00:00",
+      "unix_timestamp": 1760671561.48529,
+      "elapsed_seconds": 35.55257606506348,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 360,
+      "utc_time": "2025-10-17T03:26:01.576026+00:00",
+      "unix_timestamp": 1760671561.576026,
+      "elapsed_seconds": 35.643311977386475,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 361,
+      "utc_time": "2025-10-17T03:26:01.657808+00:00",
+      "unix_timestamp": 1760671561.657808,
+      "elapsed_seconds": 35.72509407997131,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 362,
+      "utc_time": "2025-10-17T03:26:01.769346+00:00",
+      "unix_timestamp": 1760671561.769346,
+      "elapsed_seconds": 35.83663201332092,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 363,
+      "utc_time": "2025-10-17T03:26:01.865252+00:00",
+      "unix_timestamp": 1760671561.865252,
+      "elapsed_seconds": 35.93253803253174,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 364,
+      "utc_time": "2025-10-17T03:26:01.961197+00:00",
+      "unix_timestamp": 1760671561.961197,
+      "elapsed_seconds": 36.02848291397095,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 365,
+      "utc_time": "2025-10-17T03:26:02.063535+00:00",
+      "unix_timestamp": 1760671562.063535,
+      "elapsed_seconds": 36.130820989608765,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 366,
+      "utc_time": "2025-10-17T03:26:02.155750+00:00",
+      "unix_timestamp": 1760671562.15575,
+      "elapsed_seconds": 36.22303605079651,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 367,
+      "utc_time": "2025-10-17T03:26:02.249139+00:00",
+      "unix_timestamp": 1760671562.249139,
+      "elapsed_seconds": 36.31642508506775,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 368,
+      "utc_time": "2025-10-17T03:26:02.362112+00:00",
+      "unix_timestamp": 1760671562.362112,
+      "elapsed_seconds": 36.42939805984497,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 369,
+      "utc_time": "2025-10-17T03:26:02.460521+00:00",
+      "unix_timestamp": 1760671562.460521,
+      "elapsed_seconds": 36.527806997299194,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 370,
+      "utc_time": "2025-10-17T03:26:02.536671+00:00",
+      "unix_timestamp": 1760671562.536671,
+      "elapsed_seconds": 36.60395693778992,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 371,
+      "utc_time": "2025-10-17T03:26:02.633173+00:00",
+      "unix_timestamp": 1760671562.633173,
+      "elapsed_seconds": 36.700459003448486,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 372,
+      "utc_time": "2025-10-17T03:26:02.729270+00:00",
+      "unix_timestamp": 1760671562.72927,
+      "elapsed_seconds": 36.79655599594116,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 373,
+      "utc_time": "2025-10-17T03:26:02.826926+00:00",
+      "unix_timestamp": 1760671562.826926,
+      "elapsed_seconds": 36.89421200752258,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 374,
+      "utc_time": "2025-10-17T03:26:02.940415+00:00",
+      "unix_timestamp": 1760671562.940415,
+      "elapsed_seconds": 37.00770092010498,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 375,
+      "utc_time": "2025-10-17T03:26:03.035572+00:00",
+      "unix_timestamp": 1760671563.035572,
+      "elapsed_seconds": 37.10285806655884,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 376,
+      "utc_time": "2025-10-17T03:26:03.130464+00:00",
+      "unix_timestamp": 1760671563.130464,
+      "elapsed_seconds": 37.197750091552734,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 377,
+      "utc_time": "2025-10-17T03:26:03.230918+00:00",
+      "unix_timestamp": 1760671563.230918,
+      "elapsed_seconds": 37.29820394515991,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 378,
+      "utc_time": "2025-10-17T03:26:03.323982+00:00",
+      "unix_timestamp": 1760671563.323982,
+      "elapsed_seconds": 37.39126801490784,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 379,
+      "utc_time": "2025-10-17T03:26:03.416733+00:00",
+      "unix_timestamp": 1760671563.416733,
+      "elapsed_seconds": 37.4840190410614,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 380,
+      "utc_time": "2025-10-17T03:26:03.534714+00:00",
+      "unix_timestamp": 1760671563.534714,
+      "elapsed_seconds": 37.60199999809265,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 381,
+      "utc_time": "2025-10-17T03:26:03.612087+00:00",
+      "unix_timestamp": 1760671563.612087,
+      "elapsed_seconds": 37.679373025894165,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 382,
+      "utc_time": "2025-10-17T03:26:03.695363+00:00",
+      "unix_timestamp": 1760671563.695363,
+      "elapsed_seconds": 37.762649059295654,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 383,
+      "utc_time": "2025-10-17T03:26:03.787149+00:00",
+      "unix_timestamp": 1760671563.787149,
+      "elapsed_seconds": 37.854434967041016,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 384,
+      "utc_time": "2025-10-17T03:26:03.884300+00:00",
+      "unix_timestamp": 1760671563.8843,
+      "elapsed_seconds": 37.9515860080719,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 385,
+      "utc_time": "2025-10-17T03:26:03.978167+00:00",
+      "unix_timestamp": 1760671563.978167,
+      "elapsed_seconds": 38.04545307159424,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 386,
+      "utc_time": "2025-10-17T03:26:04.089641+00:00",
+      "unix_timestamp": 1760671564.089641,
+      "elapsed_seconds": 38.15692710876465,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 387,
+      "utc_time": "2025-10-17T03:26:04.185544+00:00",
+      "unix_timestamp": 1760671564.185544,
+      "elapsed_seconds": 38.252830028533936,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 388,
+      "utc_time": "2025-10-17T03:26:04.281563+00:00",
+      "unix_timestamp": 1760671564.281563,
+      "elapsed_seconds": 38.348849058151245,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 389,
+      "utc_time": "2025-10-17T03:26:04.379047+00:00",
+      "unix_timestamp": 1760671564.379047,
+      "elapsed_seconds": 38.446332931518555,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 390,
+      "utc_time": "2025-10-17T03:26:04.473465+00:00",
+      "unix_timestamp": 1760671564.473465,
+      "elapsed_seconds": 38.5407509803772,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 391,
+      "utc_time": "2025-10-17T03:26:04.570204+00:00",
+      "unix_timestamp": 1760671564.570204,
+      "elapsed_seconds": 38.637490034103394,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 392,
+      "utc_time": "2025-10-17T03:26:04.681120+00:00",
+      "unix_timestamp": 1760671564.68112,
+      "elapsed_seconds": 38.74840593338013,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 393,
+      "utc_time": "2025-10-17T03:26:04.764424+00:00",
+      "unix_timestamp": 1760671564.764424,
+      "elapsed_seconds": 38.83171010017395,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 394,
+      "utc_time": "2025-10-17T03:26:04.844218+00:00",
+      "unix_timestamp": 1760671564.844218,
+      "elapsed_seconds": 38.91150403022766,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 395,
+      "utc_time": "2025-10-17T03:26:04.941373+00:00",
+      "unix_timestamp": 1760671564.941373,
+      "elapsed_seconds": 39.00865912437439,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 396,
+      "utc_time": "2025-10-17T03:26:05.032611+00:00",
+      "unix_timestamp": 1760671565.032611,
+      "elapsed_seconds": 39.0998969078064,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 397,
+      "utc_time": "2025-10-17T03:26:05.129445+00:00",
+      "unix_timestamp": 1760671565.129445,
+      "elapsed_seconds": 39.196731090545654,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 398,
+      "utc_time": "2025-10-17T03:26:05.244935+00:00",
+      "unix_timestamp": 1760671565.244935,
+      "elapsed_seconds": 39.31222105026245,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 399,
+      "utc_time": "2025-10-17T03:26:05.327800+00:00",
+      "unix_timestamp": 1760671565.3278,
+      "elapsed_seconds": 39.39508605003357,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 400,
+      "utc_time": "2025-10-17T03:26:05.424355+00:00",
+      "unix_timestamp": 1760671565.424355,
+      "elapsed_seconds": 39.4916410446167,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 401,
+      "utc_time": "2025-10-17T03:26:05.515133+00:00",
+      "unix_timestamp": 1760671565.515133,
+      "elapsed_seconds": 39.58241891860962,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 402,
+      "utc_time": "2025-10-17T03:26:05.689863+00:00",
+      "unix_timestamp": 1760671565.689863,
+      "elapsed_seconds": 39.75714898109436,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 403,
+      "utc_time": "2025-10-17T03:26:05.803206+00:00",
+      "unix_timestamp": 1760671565.803206,
+      "elapsed_seconds": 39.87049198150635,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 404,
+      "utc_time": "2025-10-17T03:26:05.883789+00:00",
+      "unix_timestamp": 1760671565.883789,
+      "elapsed_seconds": 39.951075077056885,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 405,
+      "utc_time": "2025-10-17T03:26:05.995317+00:00",
+      "unix_timestamp": 1760671565.995317,
+      "elapsed_seconds": 40.06260299682617,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 406,
+      "utc_time": "2025-10-17T03:26:06.073828+00:00",
+      "unix_timestamp": 1760671566.073828,
+      "elapsed_seconds": 40.14111399650574,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 407,
+      "utc_time": "2025-10-17T03:26:06.179482+00:00",
+      "unix_timestamp": 1760671566.179482,
+      "elapsed_seconds": 40.2467679977417,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 408,
+      "utc_time": "2025-10-17T03:26:06.265777+00:00",
+      "unix_timestamp": 1760671566.265777,
+      "elapsed_seconds": 40.33306312561035,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 409,
+      "utc_time": "2025-10-17T03:26:06.379456+00:00",
+      "unix_timestamp": 1760671566.379456,
+      "elapsed_seconds": 40.44674205780029,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 410,
+      "utc_time": "2025-10-17T03:26:06.473735+00:00",
+      "unix_timestamp": 1760671566.473735,
+      "elapsed_seconds": 40.54102110862732,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 411,
+      "utc_time": "2025-10-17T03:26:06.573534+00:00",
+      "unix_timestamp": 1760671566.573534,
+      "elapsed_seconds": 40.640820026397705,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 412,
+      "utc_time": "2025-10-17T03:26:06.665975+00:00",
+      "unix_timestamp": 1760671566.665975,
+      "elapsed_seconds": 40.73326110839844,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 413,
+      "utc_time": "2025-10-17T03:26:06.765655+00:00",
+      "unix_timestamp": 1760671566.765655,
+      "elapsed_seconds": 40.83294105529785,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 414,
+      "utc_time": "2025-10-17T03:26:06.858987+00:00",
+      "unix_timestamp": 1760671566.858987,
+      "elapsed_seconds": 40.92627310752869,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 415,
+      "utc_time": "2025-10-17T03:26:06.969674+00:00",
+      "unix_timestamp": 1760671566.969674,
+      "elapsed_seconds": 41.03696012496948,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 416,
+      "utc_time": "2025-10-17T03:26:07.051338+00:00",
+      "unix_timestamp": 1760671567.051338,
+      "elapsed_seconds": 41.11862397193909,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 417,
+      "utc_time": "2025-10-17T03:26:07.145774+00:00",
+      "unix_timestamp": 1760671567.145774,
+      "elapsed_seconds": 41.21305990219116,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 418,
+      "utc_time": "2025-10-17T03:26:07.243211+00:00",
+      "unix_timestamp": 1760671567.243211,
+      "elapsed_seconds": 41.31049704551697,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 419,
+      "utc_time": "2025-10-17T03:26:07.339158+00:00",
+      "unix_timestamp": 1760671567.339158,
+      "elapsed_seconds": 41.40644407272339,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 420,
+      "utc_time": "2025-10-17T03:26:07.445798+00:00",
+      "unix_timestamp": 1760671567.445798,
+      "elapsed_seconds": 41.513083934783936,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 421,
+      "utc_time": "2025-10-17T03:26:07.548717+00:00",
+      "unix_timestamp": 1760671567.548717,
+      "elapsed_seconds": 41.61600303649902,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 422,
+      "utc_time": "2025-10-17T03:26:07.643074+00:00",
+      "unix_timestamp": 1760671567.643074,
+      "elapsed_seconds": 41.710360050201416,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 423,
+      "utc_time": "2025-10-17T03:26:07.738513+00:00",
+      "unix_timestamp": 1760671567.738513,
+      "elapsed_seconds": 41.80579900741577,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 424,
+      "utc_time": "2025-10-17T03:26:07.838558+00:00",
+      "unix_timestamp": 1760671567.838558,
+      "elapsed_seconds": 41.90584397315979,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 425,
+      "utc_time": "2025-10-17T03:26:07.931497+00:00",
+      "unix_timestamp": 1760671567.931497,
+      "elapsed_seconds": 41.998783111572266,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 426,
+      "utc_time": "2025-10-17T03:26:08.030050+00:00",
+      "unix_timestamp": 1760671568.03005,
+      "elapsed_seconds": 42.09733605384827,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 427,
+      "utc_time": "2025-10-17T03:26:08.122771+00:00",
+      "unix_timestamp": 1760671568.122771,
+      "elapsed_seconds": 42.190057039260864,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 428,
+      "utc_time": "2025-10-17T03:26:08.225596+00:00",
+      "unix_timestamp": 1760671568.225596,
+      "elapsed_seconds": 42.29288196563721,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 429,
+      "utc_time": "2025-10-17T03:26:08.316792+00:00",
+      "unix_timestamp": 1760671568.316792,
+      "elapsed_seconds": 42.38407802581787,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 430,
+      "utc_time": "2025-10-17T03:26:08.506278+00:00",
+      "unix_timestamp": 1760671568.506278,
+      "elapsed_seconds": 42.57356405258179,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 431,
+      "utc_time": "2025-10-17T03:26:08.600455+00:00",
+      "unix_timestamp": 1760671568.600455,
+      "elapsed_seconds": 42.66774106025696,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 432,
+      "utc_time": "2025-10-17T03:26:08.700013+00:00",
+      "unix_timestamp": 1760671568.700013,
+      "elapsed_seconds": 42.76729893684387,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 433,
+      "utc_time": "2025-10-17T03:26:08.778664+00:00",
+      "unix_timestamp": 1760671568.778664,
+      "elapsed_seconds": 42.84595012664795,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 434,
+      "utc_time": "2025-10-17T03:26:08.874388+00:00",
+      "unix_timestamp": 1760671568.874388,
+      "elapsed_seconds": 42.94167399406433,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 435,
+      "utc_time": "2025-10-17T03:26:08.970095+00:00",
+      "unix_timestamp": 1760671568.970095,
+      "elapsed_seconds": 43.0373809337616,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 436,
+      "utc_time": "2025-10-17T03:26:09.064531+00:00",
+      "unix_timestamp": 1760671569.064531,
+      "elapsed_seconds": 43.13181710243225,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 437,
+      "utc_time": "2025-10-17T03:26:09.164561+00:00",
+      "unix_timestamp": 1760671569.164561,
+      "elapsed_seconds": 43.231847047805786,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 438,
+      "utc_time": "2025-10-17T03:26:09.275817+00:00",
+      "unix_timestamp": 1760671569.275817,
+      "elapsed_seconds": 43.34310293197632,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 439,
+      "utc_time": "2025-10-17T03:26:09.369515+00:00",
+      "unix_timestamp": 1760671569.369515,
+      "elapsed_seconds": 43.436800956726074,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 440,
+      "utc_time": "2025-10-17T03:26:09.466849+00:00",
+      "unix_timestamp": 1760671569.466849,
+      "elapsed_seconds": 43.53413510322571,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 441,
+      "utc_time": "2025-10-17T03:26:09.547340+00:00",
+      "unix_timestamp": 1760671569.54734,
+      "elapsed_seconds": 43.61462593078613,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 442,
+      "utc_time": "2025-10-17T03:26:09.642064+00:00",
+      "unix_timestamp": 1760671569.642064,
+      "elapsed_seconds": 43.70935010910034,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 443,
+      "utc_time": "2025-10-17T03:26:09.737839+00:00",
+      "unix_timestamp": 1760671569.737839,
+      "elapsed_seconds": 43.80512499809265,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 444,
+      "utc_time": "2025-10-17T03:26:09.849623+00:00",
+      "unix_timestamp": 1760671569.849623,
+      "elapsed_seconds": 43.916908979415894,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 445,
+      "utc_time": "2025-10-17T03:26:09.947121+00:00",
+      "unix_timestamp": 1760671569.947121,
+      "elapsed_seconds": 44.01440691947937,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 446,
+      "utc_time": "2025-10-17T03:26:10.052193+00:00",
+      "unix_timestamp": 1760671570.052193,
+      "elapsed_seconds": 44.119478940963745,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 447,
+      "utc_time": "2025-10-17T03:26:10.137587+00:00",
+      "unix_timestamp": 1760671570.137587,
+      "elapsed_seconds": 44.20487308502197,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 448,
+      "utc_time": "2025-10-17T03:26:10.244050+00:00",
+      "unix_timestamp": 1760671570.24405,
+      "elapsed_seconds": 44.311336040496826,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 449,
+      "utc_time": "2025-10-17T03:26:10.336459+00:00",
+      "unix_timestamp": 1760671570.336459,
+      "elapsed_seconds": 44.40374493598938,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 450,
+      "utc_time": "2025-10-17T03:26:10.426152+00:00",
+      "unix_timestamp": 1760671570.426152,
+      "elapsed_seconds": 44.49343800544739,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 451,
+      "utc_time": "2025-10-17T03:26:10.525013+00:00",
+      "unix_timestamp": 1760671570.525013,
+      "elapsed_seconds": 44.59229898452759,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 452,
+      "utc_time": "2025-10-17T03:26:10.617843+00:00",
+      "unix_timestamp": 1760671570.617843,
+      "elapsed_seconds": 44.685128927230835,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 453,
+      "utc_time": "2025-10-17T03:26:10.732837+00:00",
+      "unix_timestamp": 1760671570.732837,
+      "elapsed_seconds": 44.8001229763031,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 454,
+      "utc_time": "2025-10-17T03:26:10.824436+00:00",
+      "unix_timestamp": 1760671570.824436,
+      "elapsed_seconds": 44.891721963882446,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 455,
+      "utc_time": "2025-10-17T03:26:10.931572+00:00",
+      "unix_timestamp": 1760671570.931572,
+      "elapsed_seconds": 44.9988579750061,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 456,
+      "utc_time": "2025-10-17T03:26:11.003340+00:00",
+      "unix_timestamp": 1760671571.00334,
+      "elapsed_seconds": 45.07062602043152,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 457,
+      "utc_time": "2025-10-17T03:26:11.106476+00:00",
+      "unix_timestamp": 1760671571.106476,
+      "elapsed_seconds": 45.17376208305359,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 458,
+      "utc_time": "2025-10-17T03:26:11.194603+00:00",
+      "unix_timestamp": 1760671571.194603,
+      "elapsed_seconds": 45.26188898086548,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 459,
+      "utc_time": "2025-10-17T03:26:11.290582+00:00",
+      "unix_timestamp": 1760671571.290582,
+      "elapsed_seconds": 45.3578679561615,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 460,
+      "utc_time": "2025-10-17T03:26:11.386513+00:00",
+      "unix_timestamp": 1760671571.386513,
+      "elapsed_seconds": 45.45379900932312,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 461,
+      "utc_time": "2025-10-17T03:26:11.484538+00:00",
+      "unix_timestamp": 1760671571.484538,
+      "elapsed_seconds": 45.55182409286499,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 462,
+      "utc_time": "2025-10-17T03:26:11.592373+00:00",
+      "unix_timestamp": 1760671571.592373,
+      "elapsed_seconds": 45.659658908843994,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 463,
+      "utc_time": "2025-10-17T03:26:11.672914+00:00",
+      "unix_timestamp": 1760671571.672914,
+      "elapsed_seconds": 45.74020004272461,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 464,
+      "utc_time": "2025-10-17T03:26:11.771476+00:00",
+      "unix_timestamp": 1760671571.771476,
+      "elapsed_seconds": 45.838762044906616,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 465,
+      "utc_time": "2025-10-17T03:26:11.867191+00:00",
+      "unix_timestamp": 1760671571.867191,
+      "elapsed_seconds": 45.93447709083557,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 466,
+      "utc_time": "2025-10-17T03:26:11.960776+00:00",
+      "unix_timestamp": 1760671571.960776,
+      "elapsed_seconds": 46.02806210517883,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 467,
+      "utc_time": "2025-10-17T03:26:12.063622+00:00",
+      "unix_timestamp": 1760671572.063622,
+      "elapsed_seconds": 46.13090801239014,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 468,
+      "utc_time": "2025-10-17T03:26:12.171472+00:00",
+      "unix_timestamp": 1760671572.171472,
+      "elapsed_seconds": 46.2387580871582,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 469,
+      "utc_time": "2025-10-17T03:26:12.267364+00:00",
+      "unix_timestamp": 1760671572.267364,
+      "elapsed_seconds": 46.33465003967285,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 470,
+      "utc_time": "2025-10-17T03:26:12.363413+00:00",
+      "unix_timestamp": 1760671572.363413,
+      "elapsed_seconds": 46.43069911003113,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 471,
+      "utc_time": "2025-10-17T03:26:12.459338+00:00",
+      "unix_timestamp": 1760671572.459338,
+      "elapsed_seconds": 46.52662396430969,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 472,
+      "utc_time": "2025-10-17T03:26:12.554552+00:00",
+      "unix_timestamp": 1760671572.554552,
+      "elapsed_seconds": 46.621838092803955,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 473,
+      "utc_time": "2025-10-17T03:26:12.648726+00:00",
+      "unix_timestamp": 1760671572.648726,
+      "elapsed_seconds": 46.7160120010376,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 474,
+      "utc_time": "2025-10-17T03:26:12.748610+00:00",
+      "unix_timestamp": 1760671572.74861,
+      "elapsed_seconds": 46.81589603424072,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 475,
+      "utc_time": "2025-10-17T03:26:12.861882+00:00",
+      "unix_timestamp": 1760671572.861882,
+      "elapsed_seconds": 46.92916798591614,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 476,
+      "utc_time": "2025-10-17T03:26:12.952751+00:00",
+      "unix_timestamp": 1760671572.952751,
+      "elapsed_seconds": 47.020036935806274,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 477,
+      "utc_time": "2025-10-17T03:26:13.034105+00:00",
+      "unix_timestamp": 1760671573.034105,
+      "elapsed_seconds": 47.101391077041626,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 478,
+      "utc_time": "2025-10-17T03:26:13.130887+00:00",
+      "unix_timestamp": 1760671573.130887,
+      "elapsed_seconds": 47.19817304611206,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 479,
+      "utc_time": "2025-10-17T03:26:13.224768+00:00",
+      "unix_timestamp": 1760671573.224768,
+      "elapsed_seconds": 47.29205393791199,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 480,
+      "utc_time": "2025-10-17T03:26:13.341948+00:00",
+      "unix_timestamp": 1760671573.341948,
+      "elapsed_seconds": 47.409234046936035,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 481,
+      "utc_time": "2025-10-17T03:26:13.443641+00:00",
+      "unix_timestamp": 1760671573.443641,
+      "elapsed_seconds": 47.510926961898804,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 482,
+      "utc_time": "2025-10-17T03:26:13.529945+00:00",
+      "unix_timestamp": 1760671573.529945,
+      "elapsed_seconds": 47.59723091125488,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 483,
+      "utc_time": "2025-10-17T03:26:13.625094+00:00",
+      "unix_timestamp": 1760671573.625094,
+      "elapsed_seconds": 47.69237995147705,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 484,
+      "utc_time": "2025-10-17T03:26:13.721001+00:00",
+      "unix_timestamp": 1760671573.721001,
+      "elapsed_seconds": 47.78828692436218,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 485,
+      "utc_time": "2025-10-17T03:26:13.818080+00:00",
+      "unix_timestamp": 1760671573.81808,
+      "elapsed_seconds": 47.88536596298218,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 486,
+      "utc_time": "2025-10-17T03:26:13.913601+00:00",
+      "unix_timestamp": 1760671573.913601,
+      "elapsed_seconds": 47.980886936187744,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 487,
+      "utc_time": "2025-10-17T03:26:14.010683+00:00",
+      "unix_timestamp": 1760671574.010683,
+      "elapsed_seconds": 48.07796907424927,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 488,
+      "utc_time": "2025-10-17T03:26:14.105463+00:00",
+      "unix_timestamp": 1760671574.105463,
+      "elapsed_seconds": 48.172749042510986,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 489,
+      "utc_time": "2025-10-17T03:26:14.200838+00:00",
+      "unix_timestamp": 1760671574.200838,
+      "elapsed_seconds": 48.26812410354614,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 490,
+      "utc_time": "2025-10-17T03:26:14.297913+00:00",
+      "unix_timestamp": 1760671574.297913,
+      "elapsed_seconds": 48.36519908905029,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 491,
+      "utc_time": "2025-10-17T03:26:14.393988+00:00",
+      "unix_timestamp": 1760671574.393988,
+      "elapsed_seconds": 48.46127390861511,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 492,
+      "utc_time": "2025-10-17T03:26:14.488604+00:00",
+      "unix_timestamp": 1760671574.488604,
+      "elapsed_seconds": 48.55589008331299,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 493,
+      "utc_time": "2025-10-17T03:26:14.602806+00:00",
+      "unix_timestamp": 1760671574.602806,
+      "elapsed_seconds": 48.67009210586548,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 494,
+      "utc_time": "2025-10-17T03:26:14.699660+00:00",
+      "unix_timestamp": 1760671574.69966,
+      "elapsed_seconds": 48.7669460773468,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 495,
+      "utc_time": "2025-10-17T03:26:14.794551+00:00",
+      "unix_timestamp": 1760671574.794551,
+      "elapsed_seconds": 48.8618369102478,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 496,
+      "utc_time": "2025-10-17T03:26:14.889997+00:00",
+      "unix_timestamp": 1760671574.889997,
+      "elapsed_seconds": 48.95728302001953,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 497,
+      "utc_time": "2025-10-17T03:26:14.972924+00:00",
+      "unix_timestamp": 1760671574.972924,
+      "elapsed_seconds": 49.040210008621216,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 498,
+      "utc_time": "2025-10-17T03:26:15.081574+00:00",
+      "unix_timestamp": 1760671575.081574,
+      "elapsed_seconds": 49.14885997772217,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 499,
+      "utc_time": "2025-10-17T03:26:15.178087+00:00",
+      "unix_timestamp": 1760671575.178087,
+      "elapsed_seconds": 49.245373010635376,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 500,
+      "utc_time": "2025-10-17T03:26:15.272306+00:00",
+      "unix_timestamp": 1760671575.272306,
+      "elapsed_seconds": 49.33959197998047,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 501,
+      "utc_time": "2025-10-17T03:26:15.369742+00:00",
+      "unix_timestamp": 1760671575.369742,
+      "elapsed_seconds": 49.43702793121338,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 502,
+      "utc_time": "2025-10-17T03:26:15.466447+00:00",
+      "unix_timestamp": 1760671575.466447,
+      "elapsed_seconds": 49.53373312950134,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 503,
+      "utc_time": "2025-10-17T03:26:15.657332+00:00",
+      "unix_timestamp": 1760671575.657332,
+      "elapsed_seconds": 49.72461795806885,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 504,
+      "utc_time": "2025-10-17T03:26:15.752451+00:00",
+      "unix_timestamp": 1760671575.752451,
+      "elapsed_seconds": 49.81973695755005,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 505,
+      "utc_time": "2025-10-17T03:26:15.835065+00:00",
+      "unix_timestamp": 1760671575.835065,
+      "elapsed_seconds": 49.90235090255737,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 506,
+      "utc_time": "2025-10-17T03:26:15.930406+00:00",
+      "unix_timestamp": 1760671575.930406,
+      "elapsed_seconds": 49.9976921081543,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 507,
+      "utc_time": "2025-10-17T03:26:16.026523+00:00",
+      "unix_timestamp": 1760671576.026523,
+      "elapsed_seconds": 50.09380912780762,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 508,
+      "utc_time": "2025-10-17T03:26:16.120949+00:00",
+      "unix_timestamp": 1760671576.120949,
+      "elapsed_seconds": 50.18823504447937,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 509,
+      "utc_time": "2025-10-17T03:26:16.238176+00:00",
+      "unix_timestamp": 1760671576.238176,
+      "elapsed_seconds": 50.3054621219635,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 510,
+      "utc_time": "2025-10-17T03:26:16.312692+00:00",
+      "unix_timestamp": 1760671576.312692,
+      "elapsed_seconds": 50.37997794151306,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 511,
+      "utc_time": "2025-10-17T03:26:16.408700+00:00",
+      "unix_timestamp": 1760671576.4087,
+      "elapsed_seconds": 50.47598600387573,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 512,
+      "utc_time": "2025-10-17T03:26:16.505181+00:00",
+      "unix_timestamp": 1760671576.505181,
+      "elapsed_seconds": 50.57246708869934,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 513,
+      "utc_time": "2025-10-17T03:26:16.606432+00:00",
+      "unix_timestamp": 1760671576.606432,
+      "elapsed_seconds": 50.673717975616455,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 514,
+      "utc_time": "2025-10-17T03:26:16.701273+00:00",
+      "unix_timestamp": 1760671576.701273,
+      "elapsed_seconds": 50.768558979034424,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 515,
+      "utc_time": "2025-10-17T03:26:16.817269+00:00",
+      "unix_timestamp": 1760671576.817269,
+      "elapsed_seconds": 50.88455510139465,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 516,
+      "utc_time": "2025-10-17T03:26:16.909827+00:00",
+      "unix_timestamp": 1760671576.909827,
+      "elapsed_seconds": 50.977113008499146,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 517,
+      "utc_time": "2025-10-17T03:26:17.008544+00:00",
+      "unix_timestamp": 1760671577.008544,
+      "elapsed_seconds": 51.07582998275757,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 518,
+      "utc_time": "2025-10-17T03:26:17.098317+00:00",
+      "unix_timestamp": 1760671577.098317,
+      "elapsed_seconds": 51.165602922439575,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 519,
+      "utc_time": "2025-10-17T03:26:17.193631+00:00",
+      "unix_timestamp": 1760671577.193631,
+      "elapsed_seconds": 51.26091694831848,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 520,
+      "utc_time": "2025-10-17T03:26:17.291728+00:00",
+      "unix_timestamp": 1760671577.291728,
+      "elapsed_seconds": 51.35901403427124,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 521,
+      "utc_time": "2025-10-17T03:26:17.385950+00:00",
+      "unix_timestamp": 1760671577.38595,
+      "elapsed_seconds": 51.45323610305786,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 522,
+      "utc_time": "2025-10-17T03:26:17.481412+00:00",
+      "unix_timestamp": 1760671577.481412,
+      "elapsed_seconds": 51.54869794845581,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 523,
+      "utc_time": "2025-10-17T03:26:17.577006+00:00",
+      "unix_timestamp": 1760671577.577006,
+      "elapsed_seconds": 51.64429211616516,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 524,
+      "utc_time": "2025-10-17T03:26:17.688103+00:00",
+      "unix_timestamp": 1760671577.688103,
+      "elapsed_seconds": 51.75538897514343,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 525,
+      "utc_time": "2025-10-17T03:26:17.784201+00:00",
+      "unix_timestamp": 1760671577.784201,
+      "elapsed_seconds": 51.851486921310425,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 526,
+      "utc_time": "2025-10-17T03:26:17.865502+00:00",
+      "unix_timestamp": 1760671577.865502,
+      "elapsed_seconds": 51.932788133621216,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 527,
+      "utc_time": "2025-10-17T03:26:17.976969+00:00",
+      "unix_timestamp": 1760671577.976969,
+      "elapsed_seconds": 52.04425501823425,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 528,
+      "utc_time": "2025-10-17T03:26:18.073055+00:00",
+      "unix_timestamp": 1760671578.073055,
+      "elapsed_seconds": 52.14034104347229,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 529,
+      "utc_time": "2025-10-17T03:26:18.169220+00:00",
+      "unix_timestamp": 1760671578.16922,
+      "elapsed_seconds": 52.23650598526001,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 530,
+      "utc_time": "2025-10-17T03:26:18.266455+00:00",
+      "unix_timestamp": 1760671578.266455,
+      "elapsed_seconds": 52.33374094963074,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 531,
+      "utc_time": "2025-10-17T03:26:18.360446+00:00",
+      "unix_timestamp": 1760671578.360446,
+      "elapsed_seconds": 52.42773199081421,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 532,
+      "utc_time": "2025-10-17T03:26:18.456894+00:00",
+      "unix_timestamp": 1760671578.456894,
+      "elapsed_seconds": 52.52417993545532,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 533,
+      "utc_time": "2025-10-17T03:26:18.568218+00:00",
+      "unix_timestamp": 1760671578.568218,
+      "elapsed_seconds": 52.63550400733948,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 534,
+      "utc_time": "2025-10-17T03:26:18.666240+00:00",
+      "unix_timestamp": 1760671578.66624,
+      "elapsed_seconds": 52.73352599143982,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 535,
+      "utc_time": "2025-10-17T03:26:18.760728+00:00",
+      "unix_timestamp": 1760671578.760728,
+      "elapsed_seconds": 52.82801389694214,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 536,
+      "utc_time": "2025-10-17T03:26:18.856608+00:00",
+      "unix_timestamp": 1760671578.856608,
+      "elapsed_seconds": 52.92389392852783,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 537,
+      "utc_time": "2025-10-17T03:26:18.938255+00:00",
+      "unix_timestamp": 1760671578.938255,
+      "elapsed_seconds": 53.0055410861969,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 538,
+      "utc_time": "2025-10-17T03:26:19.032221+00:00",
+      "unix_timestamp": 1760671579.032221,
+      "elapsed_seconds": 53.099507093429565,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 539,
+      "utc_time": "2025-10-17T03:26:19.129468+00:00",
+      "unix_timestamp": 1760671579.129468,
+      "elapsed_seconds": 53.19675397872925,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 540,
+      "utc_time": "2025-10-17T03:26:19.223981+00:00",
+      "unix_timestamp": 1760671579.223981,
+      "elapsed_seconds": 53.29126691818237,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 541,
+      "utc_time": "2025-10-17T03:26:19.320857+00:00",
+      "unix_timestamp": 1760671579.320857,
+      "elapsed_seconds": 53.38814306259155,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 542,
+      "utc_time": "2025-10-17T03:26:19.417546+00:00",
+      "unix_timestamp": 1760671579.417546,
+      "elapsed_seconds": 53.48483204841614,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 543,
+      "utc_time": "2025-10-17T03:26:19.514388+00:00",
+      "unix_timestamp": 1760671579.514388,
+      "elapsed_seconds": 53.581674098968506,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 544,
+      "utc_time": "2025-10-17T03:26:19.609466+00:00",
+      "unix_timestamp": 1760671579.609466,
+      "elapsed_seconds": 53.6767520904541,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 545,
+      "utc_time": "2025-10-17T03:26:19.721997+00:00",
+      "unix_timestamp": 1760671579.721997,
+      "elapsed_seconds": 53.78928303718567,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 546,
+      "utc_time": "2025-10-17T03:26:19.805839+00:00",
+      "unix_timestamp": 1760671579.805839,
+      "elapsed_seconds": 53.873125076293945,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 547,
+      "utc_time": "2025-10-17T03:26:19.919799+00:00",
+      "unix_timestamp": 1760671579.919799,
+      "elapsed_seconds": 53.98708510398865,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 548,
+      "utc_time": "2025-10-17T03:26:19.993813+00:00",
+      "unix_timestamp": 1760671579.993813,
+      "elapsed_seconds": 54.0610990524292,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 549,
+      "utc_time": "2025-10-17T03:26:20.089521+00:00",
+      "unix_timestamp": 1760671580.089521,
+      "elapsed_seconds": 54.15680694580078,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 550,
+      "utc_time": "2025-10-17T03:26:20.185572+00:00",
+      "unix_timestamp": 1760671580.185572,
+      "elapsed_seconds": 54.25285792350769,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 551,
+      "utc_time": "2025-10-17T03:26:20.297436+00:00",
+      "unix_timestamp": 1760671580.297436,
+      "elapsed_seconds": 54.36472201347351,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 552,
+      "utc_time": "2025-10-17T03:26:20.393766+00:00",
+      "unix_timestamp": 1760671580.393766,
+      "elapsed_seconds": 54.46105194091797,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 553,
+      "utc_time": "2025-10-17T03:26:20.491767+00:00",
+      "unix_timestamp": 1760671580.491767,
+      "elapsed_seconds": 54.55905294418335,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 554,
+      "utc_time": "2025-10-17T03:26:20.586713+00:00",
+      "unix_timestamp": 1760671580.586713,
+      "elapsed_seconds": 54.6539990901947,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 555,
+      "utc_time": "2025-10-17T03:26:20.680798+00:00",
+      "unix_timestamp": 1760671580.680798,
+      "elapsed_seconds": 54.74808406829834,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 556,
+      "utc_time": "2025-10-17T03:26:20.777610+00:00",
+      "unix_timestamp": 1760671580.77761,
+      "elapsed_seconds": 54.84489607810974,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 557,
+      "utc_time": "2025-10-17T03:26:20.887960+00:00",
+      "unix_timestamp": 1760671580.88796,
+      "elapsed_seconds": 54.95524597167969,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 558,
+      "utc_time": "2025-10-17T03:26:20.985303+00:00",
+      "unix_timestamp": 1760671580.985303,
+      "elapsed_seconds": 55.05258893966675,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 559,
+      "utc_time": "2025-10-17T03:26:21.070557+00:00",
+      "unix_timestamp": 1760671581.070557,
+      "elapsed_seconds": 55.13784313201904,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 560,
+      "utc_time": "2025-10-17T03:26:21.160883+00:00",
+      "unix_timestamp": 1760671581.160883,
+      "elapsed_seconds": 55.228168964385986,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 561,
+      "utc_time": "2025-10-17T03:26:21.256819+00:00",
+      "unix_timestamp": 1760671581.256819,
+      "elapsed_seconds": 55.32410502433777,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 562,
+      "utc_time": "2025-10-17T03:26:21.353302+00:00",
+      "unix_timestamp": 1760671581.353302,
+      "elapsed_seconds": 55.42058801651001,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 563,
+      "utc_time": "2025-10-17T03:26:21.465686+00:00",
+      "unix_timestamp": 1760671581.465686,
+      "elapsed_seconds": 55.53297209739685,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 564,
+      "utc_time": "2025-10-17T03:26:21.561907+00:00",
+      "unix_timestamp": 1760671581.561907,
+      "elapsed_seconds": 55.62919306755066,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 565,
+      "utc_time": "2025-10-17T03:26:21.661287+00:00",
+      "unix_timestamp": 1760671581.661287,
+      "elapsed_seconds": 55.72857308387756,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 566,
+      "utc_time": "2025-10-17T03:26:21.753550+00:00",
+      "unix_timestamp": 1760671581.75355,
+      "elapsed_seconds": 55.82083606719971,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 567,
+      "utc_time": "2025-10-17T03:26:21.849073+00:00",
+      "unix_timestamp": 1760671581.849073,
+      "elapsed_seconds": 55.916358947753906,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 568,
+      "utc_time": "2025-10-17T03:26:21.945559+00:00",
+      "unix_timestamp": 1760671581.945559,
+      "elapsed_seconds": 56.012845039367676,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 569,
+      "utc_time": "2025-10-17T03:26:22.057875+00:00",
+      "unix_timestamp": 1760671582.057875,
+      "elapsed_seconds": 56.125160932540894,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 570,
+      "utc_time": "2025-10-17T03:26:22.152766+00:00",
+      "unix_timestamp": 1760671582.152766,
+      "elapsed_seconds": 56.220052003860474,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 571,
+      "utc_time": "2025-10-17T03:26:22.248949+00:00",
+      "unix_timestamp": 1760671582.248949,
+      "elapsed_seconds": 56.316235065460205,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 572,
+      "utc_time": "2025-10-17T03:26:22.344741+00:00",
+      "unix_timestamp": 1760671582.344741,
+      "elapsed_seconds": 56.41202712059021,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 573,
+      "utc_time": "2025-10-17T03:26:22.429290+00:00",
+      "unix_timestamp": 1760671582.42929,
+      "elapsed_seconds": 56.49657607078552,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 574,
+      "utc_time": "2025-10-17T03:26:22.531280+00:00",
+      "unix_timestamp": 1760671582.53128,
+      "elapsed_seconds": 56.59856605529785,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 575,
+      "utc_time": "2025-10-17T03:26:22.636541+00:00",
+      "unix_timestamp": 1760671582.636541,
+      "elapsed_seconds": 56.703826904296875,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 576,
+      "utc_time": "2025-10-17T03:26:22.736718+00:00",
+      "unix_timestamp": 1760671582.736718,
+      "elapsed_seconds": 56.804003953933716,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 577,
+      "utc_time": "2025-10-17T03:26:22.810028+00:00",
+      "unix_timestamp": 1760671582.810028,
+      "elapsed_seconds": 56.87731409072876,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 578,
+      "utc_time": "2025-10-17T03:26:22.905245+00:00",
+      "unix_timestamp": 1760671582.905245,
+      "elapsed_seconds": 56.97253108024597,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 579,
+      "utc_time": "2025-10-17T03:26:22.984847+00:00",
+      "unix_timestamp": 1760671582.984847,
+      "elapsed_seconds": 57.052133083343506,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 580,
+      "utc_time": "2025-10-17T03:26:23.080259+00:00",
+      "unix_timestamp": 1760671583.080259,
+      "elapsed_seconds": 57.14754509925842,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 581,
+      "utc_time": "2025-10-17T03:26:23.194136+00:00",
+      "unix_timestamp": 1760671583.194136,
+      "elapsed_seconds": 57.26142191886902,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 582,
+      "utc_time": "2025-10-17T03:26:23.288229+00:00",
+      "unix_timestamp": 1760671583.288229,
+      "elapsed_seconds": 57.355515003204346,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 583,
+      "utc_time": "2025-10-17T03:26:23.368524+00:00",
+      "unix_timestamp": 1760671583.368524,
+      "elapsed_seconds": 57.43581008911133,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 584,
+      "utc_time": "2025-10-17T03:26:23.464581+00:00",
+      "unix_timestamp": 1760671583.464581,
+      "elapsed_seconds": 57.531867027282715,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 585,
+      "utc_time": "2025-10-17T03:26:23.562340+00:00",
+      "unix_timestamp": 1760671583.56234,
+      "elapsed_seconds": 57.62962603569031,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 586,
+      "utc_time": "2025-10-17T03:26:23.645256+00:00",
+      "unix_timestamp": 1760671583.645256,
+      "elapsed_seconds": 57.71254205703735,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 587,
+      "utc_time": "2025-10-17T03:26:23.753765+00:00",
+      "unix_timestamp": 1760671583.753765,
+      "elapsed_seconds": 57.82105112075806,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 588,
+      "utc_time": "2025-10-17T03:26:23.850158+00:00",
+      "unix_timestamp": 1760671583.850158,
+      "elapsed_seconds": 57.9174439907074,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 589,
+      "utc_time": "2025-10-17T03:26:23.944582+00:00",
+      "unix_timestamp": 1760671583.944582,
+      "elapsed_seconds": 58.01186800003052,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 590,
+      "utc_time": "2025-10-17T03:26:24.025308+00:00",
+      "unix_timestamp": 1760671584.025308,
+      "elapsed_seconds": 58.09259390830994,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 591,
+      "utc_time": "2025-10-17T03:26:24.122678+00:00",
+      "unix_timestamp": 1760671584.122678,
+      "elapsed_seconds": 58.189964056015015,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 592,
+      "utc_time": "2025-10-17T03:26:24.217245+00:00",
+      "unix_timestamp": 1760671584.217245,
+      "elapsed_seconds": 58.284531116485596,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 593,
+      "utc_time": "2025-10-17T03:26:24.328250+00:00",
+      "unix_timestamp": 1760671584.32825,
+      "elapsed_seconds": 58.395535945892334,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 594,
+      "utc_time": "2025-10-17T03:26:24.425340+00:00",
+      "unix_timestamp": 1760671584.42534,
+      "elapsed_seconds": 58.49262595176697,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 595,
+      "utc_time": "2025-10-17T03:26:24.521330+00:00",
+      "unix_timestamp": 1760671584.52133,
+      "elapsed_seconds": 58.588616132736206,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 596,
+      "utc_time": "2025-10-17T03:26:24.617094+00:00",
+      "unix_timestamp": 1760671584.617094,
+      "elapsed_seconds": 58.68438005447388,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 597,
+      "utc_time": "2025-10-17T03:26:24.713738+00:00",
+      "unix_timestamp": 1760671584.713738,
+      "elapsed_seconds": 58.78102397918701,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 598,
+      "utc_time": "2025-10-17T03:26:24.824493+00:00",
+      "unix_timestamp": 1760671584.824493,
+      "elapsed_seconds": 58.89177894592285,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 599,
+      "utc_time": "2025-10-17T03:26:24.919560+00:00",
+      "unix_timestamp": 1760671584.91956,
+      "elapsed_seconds": 58.98684597015381,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 600,
+      "utc_time": "2025-10-17T03:26:25.015963+00:00",
+      "unix_timestamp": 1760671585.015963,
+      "elapsed_seconds": 59.08324909210205,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 601,
+      "utc_time": "2025-10-17T03:26:25.113060+00:00",
+      "unix_timestamp": 1760671585.11306,
+      "elapsed_seconds": 59.18034601211548,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 602,
+      "utc_time": "2025-10-17T03:26:25.208857+00:00",
+      "unix_timestamp": 1760671585.208857,
+      "elapsed_seconds": 59.276143074035645,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 603,
+      "utc_time": "2025-10-17T03:26:25.305452+00:00",
+      "unix_timestamp": 1760671585.305452,
+      "elapsed_seconds": 59.37273812294006,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 604,
+      "utc_time": "2025-10-17T03:26:25.415850+00:00",
+      "unix_timestamp": 1760671585.41585,
+      "elapsed_seconds": 59.48313593864441,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 605,
+      "utc_time": "2025-10-17T03:26:25.513908+00:00",
+      "unix_timestamp": 1760671585.513908,
+      "elapsed_seconds": 59.581193923950195,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 606,
+      "utc_time": "2025-10-17T03:26:25.596279+00:00",
+      "unix_timestamp": 1760671585.596279,
+      "elapsed_seconds": 59.663564920425415,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 607,
+      "utc_time": "2025-10-17T03:26:25.689799+00:00",
+      "unix_timestamp": 1760671585.689799,
+      "elapsed_seconds": 59.75708508491516,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 608,
+      "utc_time": "2025-10-17T03:26:25.784419+00:00",
+      "unix_timestamp": 1760671585.784419,
+      "elapsed_seconds": 59.8517050743103,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 609,
+      "utc_time": "2025-10-17T03:26:25.884078+00:00",
+      "unix_timestamp": 1760671585.884078,
+      "elapsed_seconds": 59.951364040374756,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 610,
+      "utc_time": "2025-10-17T03:26:26.004382+00:00",
+      "unix_timestamp": 1760671586.004382,
+      "elapsed_seconds": 60.07166790962219,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 611,
+      "utc_time": "2025-10-17T03:26:26.099298+00:00",
+      "unix_timestamp": 1760671586.099298,
+      "elapsed_seconds": 60.16658401489258,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 612,
+      "utc_time": "2025-10-17T03:26:26.168575+00:00",
+      "unix_timestamp": 1760671586.168575,
+      "elapsed_seconds": 60.23586106300354,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 613,
+      "utc_time": "2025-10-17T03:26:26.265854+00:00",
+      "unix_timestamp": 1760671586.265854,
+      "elapsed_seconds": 60.33313989639282,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 614,
+      "utc_time": "2025-10-17T03:26:26.361515+00:00",
+      "unix_timestamp": 1760671586.361515,
+      "elapsed_seconds": 60.4288010597229,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 615,
+      "utc_time": "2025-10-17T03:26:26.457645+00:00",
+      "unix_timestamp": 1760671586.457645,
+      "elapsed_seconds": 60.52493095397949,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 616,
+      "utc_time": "2025-10-17T03:26:26.568659+00:00",
+      "unix_timestamp": 1760671586.568659,
+      "elapsed_seconds": 60.635945081710815,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 617,
+      "utc_time": "2025-10-17T03:26:26.665683+00:00",
+      "unix_timestamp": 1760671586.665683,
+      "elapsed_seconds": 60.73296904563904,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 618,
+      "utc_time": "2025-10-17T03:26:26.760629+00:00",
+      "unix_timestamp": 1760671586.760629,
+      "elapsed_seconds": 60.82791495323181,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 619,
+      "utc_time": "2025-10-17T03:26:26.858306+00:00",
+      "unix_timestamp": 1760671586.858306,
+      "elapsed_seconds": 60.92559194564819,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 620,
+      "utc_time": "2025-10-17T03:26:26.968725+00:00",
+      "unix_timestamp": 1760671586.968725,
+      "elapsed_seconds": 61.03601098060608,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 621,
+      "utc_time": "2025-10-17T03:26:27.081490+00:00",
+      "unix_timestamp": 1760671587.08149,
+      "elapsed_seconds": 61.148776054382324,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 622,
+      "utc_time": "2025-10-17T03:26:27.176032+00:00",
+      "unix_timestamp": 1760671587.176032,
+      "elapsed_seconds": 61.2433180809021,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 623,
+      "utc_time": "2025-10-17T03:26:27.287443+00:00",
+      "unix_timestamp": 1760671587.287443,
+      "elapsed_seconds": 61.35472893714905,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 624,
+      "utc_time": "2025-10-17T03:26:27.384985+00:00",
+      "unix_timestamp": 1760671587.384985,
+      "elapsed_seconds": 61.45227098464966,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 625,
+      "utc_time": "2025-10-17T03:26:27.480332+00:00",
+      "unix_timestamp": 1760671587.480332,
+      "elapsed_seconds": 61.54761791229248,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 626,
+      "utc_time": "2025-10-17T03:26:27.578847+00:00",
+      "unix_timestamp": 1760671587.578847,
+      "elapsed_seconds": 61.646132946014404,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 627,
+      "utc_time": "2025-10-17T03:26:27.688387+00:00",
+      "unix_timestamp": 1760671587.688387,
+      "elapsed_seconds": 61.75567293167114,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 628,
+      "utc_time": "2025-10-17T03:26:27.786543+00:00",
+      "unix_timestamp": 1760671587.786543,
+      "elapsed_seconds": 61.85382890701294,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 629,
+      "utc_time": "2025-10-17T03:26:27.898015+00:00",
+      "unix_timestamp": 1760671587.898015,
+      "elapsed_seconds": 61.96530103683472,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 630,
+      "utc_time": "2025-10-17T03:26:27.992502+00:00",
+      "unix_timestamp": 1760671587.992502,
+      "elapsed_seconds": 62.05978798866272,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 631,
+      "utc_time": "2025-10-17T03:26:28.089633+00:00",
+      "unix_timestamp": 1760671588.089633,
+      "elapsed_seconds": 62.15691900253296,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 632,
+      "utc_time": "2025-10-17T03:26:28.201786+00:00",
+      "unix_timestamp": 1760671588.201786,
+      "elapsed_seconds": 62.26907205581665,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 633,
+      "utc_time": "2025-10-17T03:26:28.306203+00:00",
+      "unix_timestamp": 1760671588.306203,
+      "elapsed_seconds": 62.373488903045654,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 634,
+      "utc_time": "2025-10-17T03:26:28.403659+00:00",
+      "unix_timestamp": 1760671588.403659,
+      "elapsed_seconds": 62.47094511985779,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 635,
+      "utc_time": "2025-10-17T03:26:28.511930+00:00",
+      "unix_timestamp": 1760671588.51193,
+      "elapsed_seconds": 62.57921600341797,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 636,
+      "utc_time": "2025-10-17T03:26:28.610113+00:00",
+      "unix_timestamp": 1760671588.610113,
+      "elapsed_seconds": 62.677398920059204,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 637,
+      "utc_time": "2025-10-17T03:26:28.703714+00:00",
+      "unix_timestamp": 1760671588.703714,
+      "elapsed_seconds": 62.770999908447266,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 638,
+      "utc_time": "2025-10-17T03:26:28.796230+00:00",
+      "unix_timestamp": 1760671588.79623,
+      "elapsed_seconds": 62.863516092300415,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 639,
+      "utc_time": "2025-10-17T03:26:28.908015+00:00",
+      "unix_timestamp": 1760671588.908015,
+      "elapsed_seconds": 62.975301027297974,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 640,
+      "utc_time": "2025-10-17T03:26:29.003248+00:00",
+      "unix_timestamp": 1760671589.003248,
+      "elapsed_seconds": 63.070533990859985,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 641,
+      "utc_time": "2025-10-17T03:26:29.115632+00:00",
+      "unix_timestamp": 1760671589.115632,
+      "elapsed_seconds": 63.182918071746826,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 642,
+      "utc_time": "2025-10-17T03:26:29.195055+00:00",
+      "unix_timestamp": 1760671589.195055,
+      "elapsed_seconds": 63.262341022491455,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 643,
+      "utc_time": "2025-10-17T03:26:29.289729+00:00",
+      "unix_timestamp": 1760671589.289729,
+      "elapsed_seconds": 63.35701513290405,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 644,
+      "utc_time": "2025-10-17T03:26:29.391918+00:00",
+      "unix_timestamp": 1760671589.391918,
+      "elapsed_seconds": 63.45920395851135,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 645,
+      "utc_time": "2025-10-17T03:26:29.485828+00:00",
+      "unix_timestamp": 1760671589.485828,
+      "elapsed_seconds": 63.55311393737793,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 646,
+      "utc_time": "2025-10-17T03:26:29.577447+00:00",
+      "unix_timestamp": 1760671589.577447,
+      "elapsed_seconds": 63.64473295211792,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 647,
+      "utc_time": "2025-10-17T03:26:29.689111+00:00",
+      "unix_timestamp": 1760671589.689111,
+      "elapsed_seconds": 63.756397008895874,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 648,
+      "utc_time": "2025-10-17T03:26:29.770736+00:00",
+      "unix_timestamp": 1760671589.770736,
+      "elapsed_seconds": 63.838021993637085,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 649,
+      "utc_time": "2025-10-17T03:26:29.886813+00:00",
+      "unix_timestamp": 1760671589.886813,
+      "elapsed_seconds": 63.95409893989563,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 650,
+      "utc_time": "2025-10-17T03:26:29.979336+00:00",
+      "unix_timestamp": 1760671589.979336,
+      "elapsed_seconds": 64.04662203788757,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 651,
+      "utc_time": "2025-10-17T03:26:30.076247+00:00",
+      "unix_timestamp": 1760671590.076247,
+      "elapsed_seconds": 64.1435329914093,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 652,
+      "utc_time": "2025-10-17T03:26:30.183892+00:00",
+      "unix_timestamp": 1760671590.183892,
+      "elapsed_seconds": 64.25117802619934,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 653,
+      "utc_time": "2025-10-17T03:26:30.298001+00:00",
+      "unix_timestamp": 1760671590.298001,
+      "elapsed_seconds": 64.36528706550598,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 654,
+      "utc_time": "2025-10-17T03:26:30.393128+00:00",
+      "unix_timestamp": 1760671590.393128,
+      "elapsed_seconds": 64.4604139328003,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 655,
+      "utc_time": "2025-10-17T03:26:30.489390+00:00",
+      "unix_timestamp": 1760671590.48939,
+      "elapsed_seconds": 64.5566759109497,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 656,
+      "utc_time": "2025-10-17T03:26:30.586102+00:00",
+      "unix_timestamp": 1760671590.586102,
+      "elapsed_seconds": 64.65338802337646,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 657,
+      "utc_time": "2025-10-17T03:26:30.697366+00:00",
+      "unix_timestamp": 1760671590.697366,
+      "elapsed_seconds": 64.76465201377869,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 658,
+      "utc_time": "2025-10-17T03:26:30.792660+00:00",
+      "unix_timestamp": 1760671590.79266,
+      "elapsed_seconds": 64.85994601249695,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 659,
+      "utc_time": "2025-10-17T03:26:30.905736+00:00",
+      "unix_timestamp": 1760671590.905736,
+      "elapsed_seconds": 64.97302198410034,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 660,
+      "utc_time": "2025-10-17T03:26:31.005467+00:00",
+      "unix_timestamp": 1760671591.005467,
+      "elapsed_seconds": 65.07275295257568,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 661,
+      "utc_time": "2025-10-17T03:26:31.115119+00:00",
+      "unix_timestamp": 1760671591.115119,
+      "elapsed_seconds": 65.1824049949646,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 662,
+      "utc_time": "2025-10-17T03:26:31.213719+00:00",
+      "unix_timestamp": 1760671591.213719,
+      "elapsed_seconds": 65.28100490570068,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 663,
+      "utc_time": "2025-10-17T03:26:31.308819+00:00",
+      "unix_timestamp": 1760671591.308819,
+      "elapsed_seconds": 65.37610507011414,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 664,
+      "utc_time": "2025-10-17T03:26:31.404391+00:00",
+      "unix_timestamp": 1760671591.404391,
+      "elapsed_seconds": 65.47167706489563,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 665,
+      "utc_time": "2025-10-17T03:26:31.536728+00:00",
+      "unix_timestamp": 1760671591.536728,
+      "elapsed_seconds": 65.60401391983032,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 666,
+      "utc_time": "2025-10-17T03:26:31.610034+00:00",
+      "unix_timestamp": 1760671591.610034,
+      "elapsed_seconds": 65.67732000350952,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 667,
+      "utc_time": "2025-10-17T03:26:31.722325+00:00",
+      "unix_timestamp": 1760671591.722325,
+      "elapsed_seconds": 65.78961110115051,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 668,
+      "utc_time": "2025-10-17T03:26:31.816998+00:00",
+      "unix_timestamp": 1760671591.816998,
+      "elapsed_seconds": 65.88428401947021,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 669,
+      "utc_time": "2025-10-17T03:26:31.912321+00:00",
+      "unix_timestamp": 1760671591.912321,
+      "elapsed_seconds": 65.97960710525513,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 670,
+      "utc_time": "2025-10-17T03:26:32.024066+00:00",
+      "unix_timestamp": 1760671592.024066,
+      "elapsed_seconds": 66.0913519859314,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 671,
+      "utc_time": "2025-10-17T03:26:32.138295+00:00",
+      "unix_timestamp": 1760671592.138295,
+      "elapsed_seconds": 66.20558094978333,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 672,
+      "utc_time": "2025-10-17T03:26:32.217332+00:00",
+      "unix_timestamp": 1760671592.217332,
+      "elapsed_seconds": 66.28461790084839,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 673,
+      "utc_time": "2025-10-17T03:26:32.313914+00:00",
+      "unix_timestamp": 1760671592.313914,
+      "elapsed_seconds": 66.38120007514954,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 674,
+      "utc_time": "2025-10-17T03:26:32.409898+00:00",
+      "unix_timestamp": 1760671592.409898,
+      "elapsed_seconds": 66.47718405723572,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 675,
+      "utc_time": "2025-10-17T03:26:32.521489+00:00",
+      "unix_timestamp": 1760671592.521489,
+      "elapsed_seconds": 66.58877491950989,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 676,
+      "utc_time": "2025-10-17T03:26:32.617532+00:00",
+      "unix_timestamp": 1760671592.617532,
+      "elapsed_seconds": 66.68481802940369,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 677,
+      "utc_time": "2025-10-17T03:26:32.729205+00:00",
+      "unix_timestamp": 1760671592.729205,
+      "elapsed_seconds": 66.79649090766907,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 678,
+      "utc_time": "2025-10-17T03:26:32.824157+00:00",
+      "unix_timestamp": 1760671592.824157,
+      "elapsed_seconds": 66.8914430141449,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 679,
+      "utc_time": "2025-10-17T03:26:32.921913+00:00",
+      "unix_timestamp": 1760671592.921913,
+      "elapsed_seconds": 66.98919892311096,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 680,
+      "utc_time": "2025-10-17T03:26:33.037918+00:00",
+      "unix_timestamp": 1760671593.037918,
+      "elapsed_seconds": 67.1052041053772,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 681,
+      "utc_time": "2025-10-17T03:26:33.130551+00:00",
+      "unix_timestamp": 1760671593.130551,
+      "elapsed_seconds": 67.1978371143341,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 682,
+      "utc_time": "2025-10-17T03:26:33.224299+00:00",
+      "unix_timestamp": 1760671593.224299,
+      "elapsed_seconds": 67.2915849685669,
+      "thermal_active": true,
+      "webcam_active": true
+    },
+    {
+      "frame_number": 683,
+      "utc_time": "2025-10-17T03:26:33.336129+00:00",
+      "unix_timestamp": 1760671593.336129,
+      "elapsed_seconds": 67.4034149646759,
+      "thermal_active": true,
+      "webcam_active": true
+    }
+  ]
+}
