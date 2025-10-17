@@ -19,6 +19,7 @@ import time
 import csv
 import msvcrt
 import argparse
+import signal
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -48,6 +49,7 @@ class PowerSupplyLiveMonitor:
         self.csv_file = None
         self.csv_writer = None
         self.output_dir = Path(output_dir) if output_dir else None
+        self.shutdown_requested = False
 
     def _load_config(self):
         """Load configuration from JSON file."""
@@ -476,7 +478,7 @@ class PowerSupplyLiveMonitor:
         sample_count = 0
 
         try:
-            while True:
+            while not self.shutdown_requested:
                 # Read all measurements
                 measurements = self.read_all_measurements()
 
@@ -490,6 +492,9 @@ class PowerSupplyLiveMonitor:
                 # Check for 'Q' keypress
                 start_time = time.time()
                 while time.time() - start_time < 1.0:
+                    if self.shutdown_requested:
+                        print("\n\n[STOP] Shutdown requested - stopping recording...")
+                        return
                     if msvcrt.kbhit():
                         key = msvcrt.getch().decode('utf-8').upper()
                         if key == 'Q':
@@ -544,6 +549,15 @@ Press 'Q' at any time to stop recording and turn off all supplies.
     except FileNotFoundError as e:
         print(f"\n[ERROR] {e}")
         sys.exit(1)
+
+    # Setup signal handlers for graceful shutdown
+    def signal_handler(signum, frame):
+        """Handle termination signals by requesting graceful shutdown."""
+        print(f"\n\n[SIGNAL] Received signal {signum} - initiating graceful shutdown...")
+        monitor.shutdown_requested = True
+
+    signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGINT, signal_handler)
 
     try:
         # Connect to all supplies
