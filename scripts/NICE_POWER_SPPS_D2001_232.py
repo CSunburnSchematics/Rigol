@@ -99,13 +99,29 @@ class NicePowerSupply:
         self._send_command(f'<07000000{self._format_device_addr()}>')
         time.sleep(1)
 
+    def enable_output(self):
+        """Enable output (alias for turn_on for clarity)"""
+        self.turn_on()
+
+    def disable_output(self):
+        """
+        Disable output completely.
+        Sets voltage to 0V first, then sends the explicit OFF command.
+        """
+        # Set voltage to 0V first for safety
+        self.set_voltage(0.0)
+        time.sleep(0.2)
+
+        # Send explicit OFF command
+        self._send_command(f'<07200000{self._format_device_addr()}>')
+        time.sleep(0.3)
+
     def turn_off(self):
         """
-        Turn off output by setting voltage to 0.
-        Note: The explicit OFF command <07200000...> doesn't work properly.
-        Setting voltage to 0 automatically turns off the output.
+        Turn off output by disabling it completely.
+        This sets voltage to 0V and sends the explicit OFF command.
         """
-        self.set_voltage(0.0)
+        self.disable_output()
 
     def set_voltage(self, voltage):
        
