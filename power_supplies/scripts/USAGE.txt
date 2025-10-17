@@ -1,0 +1,142 @@
+Power Supply Controller - Quick Reference
+==========================================
+
+Controls both Rigol DP832A (via USB) and NICE Power supplies (D2001/D6001/D8001)
+
+COMMAND LINE USAGE
+------------------
+
+From anywhere in CMD:
+
+=== SETUP ===
+
+1. Verify and remap COM ports (run this FIRST after power cycles!):
+   python "C:\Users\Sunburn\Sunburn code\Power_Supplies\scripts\verify_and_remap_nice_power.py"
+
+=== ONE-TIME CONFIGURATION ===
+
+2. Default config:
+   python "C:\Users\Sunburn\Sunburn code\Power_Supplies\scripts\nice_power_controller.py" "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\config\nice_power_config.json"
+
+3. High voltage config:
+   python "C:\Users\Sunburn\Sunburn code\Power_Supplies\scripts\nice_power_controller.py" "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\config\nice_power_high_voltage.json"
+
+4. LTC Rad Test Board config:
+   python "C:\Users\Sunburn\Sunburn code\Power_Supplies\scripts\nice_power_controller.py" "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\config\ltc_rad_test_board_config.json"
+
+5. Show help:
+   python "C:\Users\Sunburn\Sunburn code\Power_Supplies\scripts\nice_power_controller.py" -h
+
+=== LIVE MONITORING AND RECORDING ===
+
+6. Live monitor with continuous logging (Press 'Q' to stop):
+   python "C:\Users\Sunburn\Sunburn code\Power_Supplies\scripts\power_supply_live_monitor.py" "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\config\ltc_rad_test_board_config.json"
+
+   - Configures all power supplies from config
+   - Maintains voltages at set levels
+   - Samples all voltages/currents at 1Hz
+   - Logs to timestamped CSV file
+   - Creates folder: Master_Radiation_Test/power_supply_recording_YYYYMMDD_HHMMSS/
+   - Press 'Q' to stop recording and turn off all supplies
+
+   Works with any config file!
+
+
+AVAILABLE CONFIGS
+-----------------
+
+Location: C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\config\
+
+1. nice_power_config.json
+   Rigol DP832A:
+   - CH1: 28.0V @ 3.2A (ON)
+   - CH2: 0.0V @ 0.1A (OFF)
+   - CH3: 0.0V @ 0.1A (OFF)
+   NICE Power:
+   - D2001: 2.0V @ 0.1A
+   - D6001: 6.0V @ 0.1A
+   - D8001: 8.0V @ 0.1A
+
+2. nice_power_high_voltage.json
+   Rigol DP832A:
+   - CH1: 30.0V @ 3.0A (ON)
+   - CH2: 5.0V @ 1.0A (ON)
+   - CH3: 0.0V @ 0.1A (OFF)
+   NICE Power:
+   - D2001: 50.0V @ 0.2A
+   - D6001: 100.0V @ 0.2A
+   - D8001: 150.0V @ 0.2A
+
+3. ltc_rad_test_board_config.json
+   Rigol DP832A:
+   - CH1: 12.0V @ 3.2A (ON)
+   - CH2: 5.0V @ 3.2A (ON)
+   - CH3: 2.5V @ 3.2A (ON)
+   NICE Power:
+   - D2001: 0.0V @ 0.1A (OFF)
+   - D6001: 0.0V @ 0.1A (OFF)
+   - D8001: 0.0V @ 0.1A (OFF)
+
+
+CREATING NEW CONFIGS
+---------------------
+
+1. Copy an existing config file:
+   cd "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\config"
+   copy nice_power_config.json my_custom_test.json
+
+2. Edit the new file:
+
+   For Rigol DP832A (USB, auto-detected by serial number):
+   - channels."1".voltage: Set CH1 voltage
+   - channels."1".current: Set CH1 current limit
+   - channels."1".enabled: true/false to enable/disable channel
+   - Repeat for channels 2 and 3
+
+   For NICE Power supplies (serial/COM port):
+   - default_voltage: Set your desired voltage
+   - default_current: Set your desired current limit
+   - com_port: Update if COM ports changed
+   - description: Add a meaningful description
+
+3. Run with your new config:
+   python "C:\Users\Sunburn\Sunburn code\Power_Supplies\scripts\nice_power_controller.py" "C:\Users\Sunburn\Sunburn code\Master_Radiation_Test\config\my_custom_test.json"
+
+
+IMPORTANT NOTES
+---------------
+
+1. Rigol Power Supply (USB):
+   - Auto-detected via USB - no COM port needed
+   - Identified by serial number: DP8B261601128
+   - Must be connected via USB before running script
+   - Uses PyVISA for communication
+
+2. NICE Power Supply COM Port Changes:
+   COM ports change after power cycles! Run verification script:
+
+   python "C:\Users\Sunburn\Sunburn code\Power_Supplies\scripts\verify_and_remap_nice_power.py"
+
+   This script will:
+   - Detect all NICE Power supplies
+   - Set COM ports to test voltages (2V, 6V, 8V)
+   - Tell you which COM port is displaying which voltage
+   - Ask you to identify which device (D2001/D6001/D8001) is showing that voltage
+   - Automatically update ALL config files
+   - Save the mapping to nice_power_device_map.txt
+
+   Current Device Mapping (verify before use!):
+   - COM10 = D6001 (600V max)
+   - COM15 = D2001 (200V max)
+   - COM7  = D8001 (800V max)
+
+3. Safety:
+   - Script automatically turns OFF all supplies when done
+   - Always verify voltages match config before connecting DUT
+   - Script enforces max voltage limits for NICE supplies
+   - Rigol channels can be individually enabled/disabled in config
+
+4. What Gets Configured:
+   - Rigol: Channels configured as specified in config (voltage, current, enabled)
+   - NICE: All supplies set to their default_voltage from config
+   - Both: Automatically turned off when script exits
