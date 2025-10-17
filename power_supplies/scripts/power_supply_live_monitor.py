@@ -390,29 +390,64 @@ class PowerSupplyLiveMonitor:
         self.csv_file.flush()
 
     def display_measurements(self, measurements, sample_count):
-        """Display measurements in terminal."""
-        print("\n" + "=" * 70)
-        print(f"Sample #{sample_count} - {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}")
-        print("=" * 70)
+        """Display measurements in static table (updates in place)."""
+        # Clear screen and move cursor to home position
+        print("\033[2J\033[H", end="")
 
-        # Rigol
+        # Header
+        print("=" * 90)
+        print(f"POWER SUPPLY LIVE MONITOR - Sample #{sample_count}")
+        print(f"Time: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}")
+        print(f"Recording: {self.recording_folder.name}")
+        print("=" * 90)
+        print()
+
+        # Table header
+        print(f"{'Supply':<20} {'Port/Channel':<12} {'Voltage':<12} {'Current':<12} {'Power':<12}")
+        print("-" * 90)
+
+        # Rigol channels
         if self.rigol_supply:
-            print("\n[Rigol Power Supply]")
-            for ch_num in self.rigol_config['channels'].keys():
+            for ch_num in sorted(self.rigol_config['channels'].keys()):
                 ch = int(ch_num)
                 if ch in measurements['rigol']:
                     m = measurements['rigol'][ch]
-                    print(f"  CH{ch}: {m['voltage']:.3f}V, {m['current']:.3f}A, {m['power']:.3f}W")
+                    name = f"Rigol CH{ch}"
+                    port = "USB"
+                    voltage = f"{m['voltage']:.3f} V"
+                    current = f"{m['current']:.3f} A"
+                    power = f"{m['power']:.3f} W"
+                    print(f"{name:<20} {port:<12} {voltage:<12} {current:<12} {power:<12}")
 
-        # NICE
+        # NICE supplies
         if measurements['nice']:
-            print("\n[NICE Power Supplies]")
             for name in sorted(measurements['nice'].keys()):
                 m = measurements['nice'][name]
                 com_port = self.nice_supplies[name]['settings']['com_port']
-                print(f"  {name:8s} ({com_port}): {m['voltage']:.3f}V, {m['current']:.3f}A")
+                voltage = f"{m['voltage']:.3f} V"
+                current = f"{m['current']:.3f} A"
+                power = f"{m['voltage'] * m['current']:.3f} W"
+                print(f"{name:<20} {com_port:<12} {voltage:<12} {current:<12} {power:<12}")
 
-        print("\nPress 'Q' to stop recording and turn off all supplies...")
+        print("-" * 90)
+        print()
+        print("Press 'Q' to stop recording and turn off all supplies...")
+        print()
+
+        # Show status indicators
+        total_supplies = 0
+        connected_supplies = 0
+
+        if self.rigol_supply:
+            total_supplies += len(self.rigol_config['channels'])
+            connected_supplies += len(self.rigol_config['channels'])
+
+        for supply in self.nice_supplies.values():
+            total_supplies += 1
+            if supply['connected']:
+                connected_supplies += 1
+
+        print(f"Status: {connected_supplies}/{total_supplies} supplies connected | Sampling at 1 Hz")
 
     def turn_off_all(self):
         """Turn off all connected power supplies."""
@@ -435,11 +470,11 @@ class PowerSupplyLiveMonitor:
         for name, supply in self.nice_supplies.items():
             if supply['connected']:
                 try:
-                    print(f"[{name}] Turning off...")
-                    supply['instance'].set_voltage(0.0)
+                    print(f"[{name}] Turning off and disabling output...")
+                    supply['instance'].turn_off()  # Uses new disable_output() method
                     time.sleep(0.3)
                     v = supply['instance'].measure_voltage()
-                    print(f"[{name}] Off - Voltage: {v:.3f}V")
+                    print(f"[{name}] Off - Voltage: {v:.3f}V, Output disabled")
                 except Exception as e:
                     print(f"[{name}] Error turning off: {e}")
 
