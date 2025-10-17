@@ -51,11 +51,11 @@
     "nice_power": {
       "SPPS_D2001_232": {
         "baudrate": 9600,
-        "vout": 2.0,
+        "vout": 8.0,
         "iout_max": 0.1
       },
       "SPPS_D6001_232": {
-        "com_port": "COM11",
+        "com_port": "COM16",
         "baudrate": 9600,
         "vout": 6.0,
         "iout_max": 0.1
