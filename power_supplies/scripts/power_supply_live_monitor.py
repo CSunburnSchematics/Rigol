@@ -205,7 +205,8 @@ class PowerSupplyLiveMonitor:
 
     def create_recording_folder(self):
         """Create timestamped folder for recording data."""
-        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+        self.start_time = datetime.now(timezone.utc)
+        timestamp = self.start_time.strftime("%Y%m%d_%H%M%S")
         folder_name = f"power_supply_recording_{timestamp}"
 
         master_rad_test_dir = SUNBURN_CODE_DIR / "Master_Radiation_Test"
@@ -215,6 +216,73 @@ class PowerSupplyLiveMonitor:
 
         print(f"\n[Recording] Folder created: {self.recording_folder}")
         return self.recording_folder
+
+    def create_manifest(self):
+        """Create a manifest file with configuration details."""
+        manifest_path = self.recording_folder / "power_supply_manifest.txt"
+
+        with open(manifest_path, 'w') as f:
+            f.write("=" * 70 + "\n")
+            f.write("POWER SUPPLY RECORDING MANIFEST\n")
+            f.write("=" * 70 + "\n\n")
+
+            f.write(f"Recording Start Time (UTC): {self.start_time.isoformat()}\n")
+            f.write(f"Recording Folder: {self.recording_folder.name}\n\n")
+
+            f.write("CONFIGURATION FILE:\n")
+            f.write("-" * 70 + "\n")
+            f.write(f"Path: {self.config_path}\n")
+            f.write(f"Name: {self.config_path.name}\n\n")
+
+            # Rigol configuration
+            if self.rigol_supply and self.rigol_config:
+                f.write("RIGOL POWER SUPPLY CONFIGURATION:\n")
+                f.write("-" * 70 + "\n")
+                f.write(f"Model: {self.rigol_config['model']}\n")
+                f.write(f"Serial: {self.rigol_config['serial_number']}\n")
+                f.write(f"Channels:\n")
+                for ch_num, ch_config in self.rigol_config['channels'].items():
+                    enabled = ch_config.get('enabled', True)
+                    status = "ON" if enabled and ch_config['voltage'] > 0 else "OFF"
+                    f.write(f"  CH{ch_num}: {ch_config['voltage']}V @ {ch_config['current']}A ({status})\n")
+                f.write("\n")
+
+            # NICE power supplies configuration
+            if self.nice_supplies:
+                f.write("NICE POWER SUPPLIES CONFIGURATION:\n")
+                f.write("-" * 70 + "\n")
+                for name in sorted(self.nice_supplies.keys()):
+                    supply = self.nice_supplies[name]
+                    settings = supply['settings']
+                    connected = supply['connected']
+                    status = "CONNECTED" if connected else "NOT CONNECTED"
+                    f.write(f"{name}:\n")
+                    f.write(f"  Model: {settings['model']}\n")
+                    f.write(f"  COM Port: {settings['com_port']}\n")
+                    f.write(f"  Voltage: {settings['default_voltage']}V\n")
+                    f.write(f"  Current: {settings['default_current']}A\n")
+                    f.write(f"  Status: {status}\n")
+                    f.write(f"  Description: {settings['description']}\n\n")
+
+            f.write("SYSTEM INFORMATION:\n")
+            f.write("-" * 70 + "\n")
+            f.write(f"Python: {sys.version}\n")
+            f.write(f"Platform: {sys.platform}\n\n")
+
+            f.write("OUTPUT FILES:\n")
+            f.write("-" * 70 + "\n")
+            f.write(f"CSV Data: power_supply_data.csv\n")
+            f.write(f"Sample Rate: 1 Hz\n")
+            f.write(f"Manifest: power_supply_manifest.txt\n\n")
+
+            f.write("NOTES:\n")
+            f.write("-" * 70 + "\n")
+            f.write("- Press 'Q' or Ctrl+C to stop recording\n")
+            f.write("- All supplies automatically turn off when recording stops\n")
+            f.write("- Timestamps are in UTC timezone\n")
+
+        print(f"[Recording] Manifest created: {manifest_path}")
+        return manifest_path
 
     def setup_csv_file(self):
         """Create CSV file and writer with headers."""
@@ -477,8 +545,9 @@ Press 'Q' at any time to stop recording and turn off all supplies.
         monitor.configure_rigol()
         monitor.configure_nice_supplies()
 
-        # Create recording folder and CSV
+        # Create recording folder, manifest, and CSV
         monitor.create_recording_folder()
+        monitor.create_manifest()
         monitor.setup_csv_file()
 
         # Run monitoring loop
