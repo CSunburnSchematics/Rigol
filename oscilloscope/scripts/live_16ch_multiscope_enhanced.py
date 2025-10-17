@@ -101,7 +101,7 @@ def capture_channel(scope, channel, preamble_cache):
     except:
         return None
 
-def capture_thread_for_scope(scope_info, config, data_queue, stop_event, stats, channel_names):
+def capture_thread_for_scope(scope_info, config, data_queue, stop_event, stats, channel_names, csv_path):
     """Capture thread for one oscilloscope (4 channels)"""
     scope = scope_info['scope']
     scope_idx = scope_info['index']
@@ -111,7 +111,7 @@ def capture_thread_for_scope(scope_info, config, data_queue, stop_event, stats, 
 
     # Setup CSV file for this scope
     timestamp_str = datetime.now().strftime('%Y%m%d_%H%M%S')
-    csv_filename = f'../../data/multiscope_{serial}_{timestamp_str}.csv'
+    csv_filename = os.path.join(csv_path, f'multiscope_{serial}_{timestamp_str}.csv')
     csv_file = open(csv_filename, 'w', newline='')
     csv_writer = csv.writer(csv_file)
 
@@ -241,7 +241,11 @@ def on_key(event):
 
 def load_config(config_file):
     """Load configuration from JSON file"""
-    config_path = os.path.join(os.path.dirname(__file__), "..", "configs", config_file)
+    # Support both relative and absolute paths
+    if os.path.isabs(config_file):
+        config_path = config_file
+    else:
+        config_path = os.path.join(os.path.dirname(__file__), "..", "configs", config_file)
 
     if not os.path.exists(config_path):
         print(f"ERROR: Config file not found: {config_path}")
@@ -294,6 +298,37 @@ def main():
 
     # Extract capture settings
     capture_config = config['capture_settings']
+
+    # Get output paths from config and resolve relative to config directory
+    output_config = config.get('output', {})
+    csv_path_config = output_config.get('csv_path', '../../data')
+    screenshot_path_config = output_config.get('screenshot_path', '../../plots')
+
+    # Get config directory for resolving relative paths
+    config_dir = os.path.dirname(os.path.abspath(config_file)) if os.path.isabs(config_file) else os.path.join(os.path.dirname(__file__), "..", "configs")
+
+    # Resolve paths relative to config directory
+    if not os.path.isabs(csv_path_config):
+        csv_path = os.path.abspath(os.path.join(config_dir, csv_path_config))
+    else:
+        csv_path = csv_path_config
+
+    if not os.path.isabs(screenshot_path_config):
+        screenshot_path = os.path.abspath(os.path.join(config_dir, screenshot_path_config))
+    else:
+        screenshot_path = screenshot_path_config
+
+    # Create timestamped session folder using UTC
+    timestamp_str = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')
+    session_folder_name = f"scope_recording_{timestamp_str}"
+    session_folder = os.path.join(csv_path, session_folder_name)
+
+    # Create the session folder (both CSV and screenshots go here)
+    os.makedirs(session_folder, exist_ok=True)
+    csv_path = session_folder
+    screenshot_path = session_folder
+
+    print(f"Recording session folder: {session_folder}")
 
     # Connect to all scopes
     scope_infos = connect_to_scopes()
@@ -438,7 +473,7 @@ def main():
         scope_idx = scope_info['index']
         thread = threading.Thread(
             target=capture_thread_for_scope,
-            args=(scope_info, capture_config, data_queue, stop_event, stats, scope_channel_names[scope_idx]),
+            args=(scope_info, capture_config, data_queue, stop_event, stats, scope_channel_names[scope_idx], csv_path),
             daemon=True
         )
         thread.start()
@@ -765,11 +800,8 @@ def main():
                 print("\r" + " | ".join(status_lines), end="", flush=True)
                 last_stats_print = current_time
 
-            # Process GUI events to keep window responsive
-            plt.pause(0.001)
-
-            # Small sleep to prevent busy-waiting
-            time.sleep(0.005)
+            # Small sleep
+            time.sleep(0.01)
 
     except KeyboardInterrupt:
         print("\n\nInterrupted by user")
@@ -790,7 +822,7 @@ def main():
 
     # Save screenshot
     timestamp_str = datetime.now().strftime('%Y%m%d_%H%M%S')
-    screenshot_filename = f'../../plots/multiscope_16ch_{timestamp_str}.png'
+    screenshot_filename = os.path.join(screenshot_path, f'multiscope_16ch_{timestamp_str}.png')
     try:
         print("\nSaving screenshot...")
         fig.savefig(screenshot_filename, dpi=150, bbox_inches='tight')
@@ -846,7 +878,7 @@ def main():
     print("\n" + "\n".join(stats_output))
 
     # Save stats to file
-    stats_filename = f'../../data/performance_{os.path.splitext(os.path.basename(config_file))[0]}_{timestamp_str}.txt'
+    stats_filename = os.path.join(csv_path, f'performance_{os.path.splitext(os.path.basename(config_file))[0]}_{timestamp_str}.txt')
     try:
         with open(stats_filename, 'w') as f:
             f.write("\n".join(stats_output))
