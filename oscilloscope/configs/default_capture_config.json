@@ -1,0 +1,63 @@
+{
+  "capture_settings": {
+    "duration_seconds": 30,
+    "points_per_channel": 120,
+    "capture_mode": "RAW",
+    "update_interval_ms": 50,
+    "max_display_time_seconds": 10,
+    "max_points_per_channel": 10000
+  },
+  "oscilloscope": {
+    "timeout_ms": 1000,
+    "chunk_size": 102400,
+    "timebase_seconds": 0.001,
+    "run_mode": "RUN",
+    "channels": {
+      "1": {
+        "enabled": true,
+        "scale_volts_per_div": 1.0,
+        "offset_volts": 0.0,
+        "probe_attenuation": 10,
+        "coupling": "DC"
+      },
+      "2": {
+        "enabled": true,
+        "scale_volts_per_div": 1.0,
+        "offset_volts": 0.0,
+        "probe_attenuation": 10,
+        "coupling": "DC"
+      },
+      "3": {
+        "enabled": true,
+        "scale_volts_per_div": 1.0,
+        "offset_volts": 0.0,
+        "probe_attenuation": 10,
+        "coupling": "DC"
+      },
+      "4": {
+        "enabled": true,
+        "scale_volts_per_div": 1.0,
+        "offset_volts": 0.0,
+        "probe_attenuation": 10,
+        "coupling": "DC"
+      }
+    }
+  },
+  "output": {
+    "csv_enabled": true,
+    "csv_path": "../../data",
+    "csv_prefix": "live_4ch",
+    "screenshot_enabled": true,
+    "screenshot_path": "../../plots",
+    "screenshot_prefix": "live_4ch_screenshot"
+  },
+  "display": {
+    "figure_width": 18,
+    "figure_height": 14,
+    "histogram_bins": 50,
+    "show_stats": true,
+    "show_histogram": true,
+    "show_detail_waveforms": true,
+    "detail_waveform_count": 10
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "power_supplies": {
+    "rigol": {
+      "serial_number": "DP8B261601128",
+      "model": "DP832A",
+      "specs": {
+        "ch1_max_voltage": 32.0,
+        "ch1_max_current": 3.2,
+        "ch2_max_voltage": 32.0,
+        "ch2_max_current": 3.2,
+        "ch3_max_voltage": 5.3,
+        "ch3_max_current": 3.2
+      },
+      "channels": {
+        "1": {
+          "voltage": 0,
+          "current": 3.2,
+          "enabled": false
+        },
+        "2": {
+          "voltage": 0,
+          "current": 3.2,
+          "enabled": false
+        },
+        "3": {
+          "voltage": 0,
+          "current": 3.2,
+          "enabled": false
+        }
+      }
+    },
+    "D2001": {
+      "com_port": "COM15",
+      "model": "SPPS_D2001_232",
+      "max_voltage": 200,
+      "max_current": 1.1,
+      "default_voltage": 64,
+      "default_current": 1,
+      "baudrate": 9600,
+      "device_addr": 0,
+      "description": "200V NICE Power Supply"
+    },
+    "D6001": {
+      "com_port": "COM10",
+      "model": "SPPS_D6001_232",
+      "max_voltage": 600,
+      "max_current": 1.1,
+      "default_voltage": 520,
+      "default_current": 1,
+      "baudrate": 9600,
+      "device_addr": 0,
+      "description": "600V NICE Power Supply"
+    },
+    "D8001": {
+      "com_port": "COM7",
+      "model": "SPPS_D8001_232",
+      "max_voltage": 800,
+      "max_current": 1.1,
+      "default_voltage": 640,
+      "default_current": 1,
+      "baudrate": 9600,
+      "device_addr": 0,
+      "description": "800V NICE Power Supply"
+    }
+  },
+  "notes": [
+    "GAN 80% VDS Rad Test Board Configuration",
+    "Voltages are 20% higher than 60% VDS test (80% = 60% * 1.2)",
+    "Rigol DP832A disabled (0V) for this test",
+    "NICE Power supplies provide high voltage test conditions",
+    "All NICE Power models use the D2001 custom ASCII protocol",
+    "COM port assignments change after power cycles - verify before use",
+    "Run verify_and_remap_nice_power.py to remap ports if needed",
+    "CRITICAL: Current limits set to 1A to prevent voltage sag at high voltages"
+  ],
+  "specifications": {
+    "rigol_dp832a": {
+      "ch1": "0-32V @ 0-3.2A",
+      "ch2": "0-32V @ 0-3.2A",
+      "ch3": "0-5.3V @ 0-3.2A"
+    },
+    "nice_power": {
+      "d2001": "0-200V @ 0-1.1A",
+      "d6001": "0-600V @ 0-1.1A",
+      "d8001": "0-800V @ 0-1.1A"
+    }
+  }
+}
