@@ -37,7 +37,7 @@ class PowerSupplyLiveMonitor:
     Live monitoring and logging for Rigol and NICE Power supplies.
     """
 
-    def __init__(self, config_path):
+    def __init__(self, config_path, output_dir=None):
         """Initialize monitor with config file."""
         self.config_path = Path(config_path)
         self.config = self._load_config()
@@ -47,6 +47,7 @@ class PowerSupplyLiveMonitor:
         self.recording_folder = None
         self.csv_file = None
         self.csv_writer = None
+        self.output_dir = Path(output_dir) if output_dir else None
 
     def _load_config(self):
         """Load configuration from JSON file."""
@@ -209,8 +210,12 @@ class PowerSupplyLiveMonitor:
         timestamp = self.start_time.strftime("%Y%m%d_%H%M%S")
         folder_name = f"power_supply_recording_{timestamp}"
 
-        master_rad_test_dir = SUNBURN_CODE_DIR / "Master_Radiation_Test"
-        self.recording_folder = master_rad_test_dir / folder_name
+        # Use output_dir if specified, otherwise use default location
+        if self.output_dir:
+            self.recording_folder = self.output_dir / folder_name
+        else:
+            master_rad_test_dir = SUNBURN_CODE_DIR / "Master_Radiation_Test"
+            self.recording_folder = master_rad_test_dir / folder_name
 
         self.recording_folder.mkdir(parents=True, exist_ok=True)
 
@@ -517,17 +522,25 @@ Press 'Q' at any time to stop recording and turn off all supplies.
         type=str,
         help='Path to configuration JSON file'
     )
+    parser.add_argument(
+        '--output-dir',
+        type=str,
+        default=None,
+        help='Optional output directory (default: Master_Radiation_Test/)'
+    )
 
     args = parser.parse_args()
 
     print("Power Supply Live Monitor for Radiation Testing")
     print("=" * 70)
     print(f"Config: {args.config}")
+    if args.output_dir:
+        print(f"Output dir: {args.output_dir}")
     print("=" * 70)
 
     # Create monitor
     try:
-        monitor = PowerSupplyLiveMonitor(config_path=args.config)
+        monitor = PowerSupplyLiveMonitor(config_path=args.config, output_dir=args.output_dir)
     except FileNotFoundError as e:
         print(f"\n[ERROR] {e}")
         sys.exit(1)
